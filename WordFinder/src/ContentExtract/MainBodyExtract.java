@@ -17,7 +17,7 @@ import database.FilePreprocess;
 
 /**
  * 提取正文的类
- * 
+ * 2012 03 20
  * @author Owner
  * 
  */

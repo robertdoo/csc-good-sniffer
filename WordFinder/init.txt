@@ -1,0 +1,93 @@
+DROP DATABASE IF EXISTS log;
+CREATE DATABASE log;
+
+DROP DATABASE IF EXISTS RealtimeData;
+CREATE DATABASE RealtimeData;
+
+DROP DATABASE IF EXISTS Rule;
+CREATE DATABASE Rule;
+
+DROP DATABASE IF EXISTS SearchResult;
+CREATE DATABASE SearchResult;
+
+DROP DATABASE IF EXISTS synonym;
+CREATE DATABASE synonym;
+
+DROP DATABASE IF EXISTS test;
+CREATE DATABASE test;
+
+DROP DATABASE IF EXISTS UserInfo;
+CREATE DATABASE UserInfo;
+
+DROP DATABASE IF EXISTS WarningInfo;
+CREATE DATABASE WarningInfo;
+
+set names GBK;
+
+USE RealtimeData;
+CREATE TABLE  file (
+  fileNo int(10) unsigned NOT NULL auto_increment,
+  title varchar(100) default NULL,
+  url varchar(500) default NULL,
+  PRIMARY KEY  (fileNo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+USE synonym;
+CREATE TABLE synonymwords (
+  id int(10) unsigned NOT NULL auto_increment,
+  words varchar(500) default NULL,
+  PRIMARY KEY  (id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+INSERT INTO synonymwords (words) VALUES 
+ ('十四所 14所 中国电子科技集团第十四研究所'),
+ ('航母 航空母舰 瓦良格 明斯克'),
+ ('搜索引擎 百度 谷歌 必应 雅虎 搜狐'),
+ ('数据库 数据仓库 MySQL SQLServer Oracle');
+
+USE test;
+CREATE TABLE file (
+  fileNo int(10) unsigned NOT NULL auto_increment,
+  title varchar(100) default NULL,
+  url varchar(500) default NULL,
+  PRIMARY KEY  (fileNo)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE  image (
+  id int(10) unsigned NOT NULL auto_increment,
+  title varchar(500) character set utf8 default NULL,
+  url varchar(500) default NULL,
+  site varchar(500) default NULL,
+  localPath varchar(500) default NULL,
+  examined tinyint(1) NOT NULL default '0',
+  storeTime timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  examinedResult varchar(100) character set utf8 default NULL,
+  PRIMARY KEY  (id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE url (
+  id int(10) unsigned NOT NULL auto_increment,
+  url varchar(200) default NULL,
+  name varchar(45) default NULL,
+  categoryName varchar(45) NOT NULL,
+  PRIMARY KEY  (id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE  urlcategory (
+  id int(10) unsigned NOT NULL auto_increment,
+  name varchar(45) NOT NULL,
+  PRIMARY KEY  (id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+INSERT INTO urlcategory(name) VALUES('其他'),('股吧'),('论坛'),('求职');
+
+USE UserInfo;
+CREATE TABLE registerinfo (  
+  UserName varchar(20) NOT NULL,  
+  Password varchar(20) NOT NULL, 
+  Identity varchar(20) NOT NULL,  
+  LastLoginTime varchar(45) NOT NULL,
+  PRIMARY KEY(UserName)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8; 
+
+insert into registerinfo values('admin','admin','管理员','0000-00-00');

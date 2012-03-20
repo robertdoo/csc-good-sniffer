@@ -1,0 +1,22 @@
+<style type="text/css">
+  .subject {
+	BORDER-COLLAPSE:collapse;
+	BORDER: #a1a1a1 1px solid;
+	MARGIN:5px 0px 2px 0px;
+  }
+  .tableth {
+	BACKGROUND: #e7e7e7;
+	BORDER: #a1a1a1 1px solid;
+  }
+  .tabletd {
+	BORDER: #a1a1a1 1px solid;
+  }
+
+body {font-size:10pt}
+table {font-size:10pt}
+
+A:link {TEXT-DECORATION: none;COLOR: #0000FF;font-size:11pt}
+A:visited {TEXT-DECORATION: none;COLOR: #706A5E;font-size:11pt}
+A:active {TEXT-DECORATION: none;COLOR: #706A5E;font-size:11pt}
+A:hover {TEXT-DECORATION: underline;COLOR: #FF0000;font-size:11pt}
+</style>

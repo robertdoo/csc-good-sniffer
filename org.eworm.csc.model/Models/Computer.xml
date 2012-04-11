@@ -1,0 +1,6 @@
+<Model>
+	<Name>Computer</Name>
+	<Properties>
+		<Property name="Year"></Property>
+	</Properties>
+</Model>

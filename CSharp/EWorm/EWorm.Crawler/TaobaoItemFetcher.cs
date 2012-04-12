@@ -27,7 +27,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"<strong id=\042J_StrPrice\042 >(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"id=\042J_StrPrice\042\s*?>(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品卖家的信誉度
@@ -44,36 +44,45 @@ namespace EWorm.Crawler
         /// 生成淘宝搜索的地址
         /// </summary>
         /// <param name="keyword">搜索的关键字</param>
+        /// <param name="pageIndex">表明搜索的页码，从0开始</param>
         /// <returns></returns>
-        public string BuildSearchTaobaoUrl(string keyword)
+        public string BuildSearchTaobaoUrl(string keyword, int pageIndex)
         {
-            return String.Format("http://s.taobao.com/search?q=" + keyword);
+            // 淘宝搜索结果分页大小： 40
+            int pageSize = 40;
+
+            string url = String.Format("http://s.taobao.com/search?q={0}&s={1}", keyword, pageIndex * pageSize);
+            return url;
         }
 
         /// <summary>
         /// 抓取搜索结果中显示的商品
         /// </summary>
-        /// <param name="keyword"></param>
+        /// <param name="keyword">要搜索的商品的关键字</param>
+        /// <param name="pageToFetch">表明要抓取多少页的商品</param>
         /// <returns></returns>
-        public IEnumerable<Goods> FetchByKeyword(string keyword)
+        public IEnumerable<Goods> FetchByKeyword(string keyword, int pageToFetch = 1)
         {
             // 记录已经抓过的Url（去重复）
             var fetched = new HashSet<string>();
             var goodsList = new List<Goods>();
 
-            string searchUrl = BuildSearchTaobaoUrl(keyword);
-            string searchResult = Http.Get(searchUrl);
-
-            // 匹配出商品的Url
-            var itemMatches = ItemUrlPattern.Matches(searchResult);
-            foreach (var itemMatch in itemMatches.OfType<Match>())
+            for (int pageIndex = 0; pageIndex < pageToFetch; pageIndex++)
             {
-                string itemUrl = itemMatch.Groups["Url"].Value;
-                if (!fetched.Contains(itemUrl))
+                string searchUrl = BuildSearchTaobaoUrl(keyword, pageIndex);
+                string searchResult = Http.Get(searchUrl);
+
+                // 匹配出商品的Url
+                var itemMatches = ItemUrlPattern.Matches(searchResult);
+                foreach (var itemMatch in itemMatches.OfType<Match>())
                 {
-                    Goods goods = FetchGoods(itemUrl);
-                    goodsList.Add(goods);
-                    fetched.Add(itemUrl);
+                    string itemUrl = itemMatch.Groups["Url"].Value;
+                    if (!fetched.Contains(itemUrl))
+                    {
+                        Goods goods = FetchGoods(itemUrl);
+                        goodsList.Add(goods);
+                        fetched.Add(itemUrl);
+                    }
                 }
             }
             return goodsList;
@@ -82,7 +91,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
-        /// <param name="itemUrl"></param>
+        /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
@@ -102,7 +111,7 @@ namespace EWorm.Crawler
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value),                
+                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };

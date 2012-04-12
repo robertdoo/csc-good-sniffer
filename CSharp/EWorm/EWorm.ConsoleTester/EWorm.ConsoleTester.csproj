@@ -2,18 +2,20 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{169AF643-C55E-4053-9F9D-FF597B3E11F7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{AE87D178-9232-405E-A143-6BEEC5FC7ED6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EWorm.Crawler</RootNamespace>
-    <AssemblyName>EWorm.Crawler</AssemblyName>
+    <RootNamespace>EWorm.ConsoleTester</RootNamespace>
+    <AssemblyName>EWorm.ConsoleTester</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,7 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,15 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivony.Core">
-      <HintPath>lib\Jumony\Ivony.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Ivony.Html">
-      <HintPath>lib\Jumony\Ivony.Html.dll</HintPath>
-    </Reference>
-    <Reference Include="Ivony.Html.Parser">
-      <HintPath>lib\Jumony\Ivony.Html.Parser.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Http.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaobaoItemFetcher.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EWorm.Crawler\EWorm.Crawler.csproj">
+      <Project>{169AF643-C55E-4053-9F9D-FF597B3E11F7}</Project>
+      <Name>EWorm.Crawler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>

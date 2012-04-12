@@ -57,22 +57,26 @@ namespace EWorm.Crawler
         /// <returns></returns>
         public IEnumerable<Goods> FetchByKeyword(string keyword)
         {
-            HashSet<string> fetched = new HashSet<string>();
-            var list = new List<Goods>();
+            // 记录已经抓过的Url（去重复）
+            var fetched = new HashSet<string>();
+            var goodsList = new List<Goods>();
+
             string searchUrl = BuildSearchTaobaoUrl(keyword);
             string searchResult = Http.Get(searchUrl);
-            var matches = ItemUrlPattern.Matches(searchResult);
-            foreach (var match in matches.OfType<Match>())
+
+            // 匹配出商品的Url
+            var itemMatches = ItemUrlPattern.Matches(searchResult);
+            foreach (var itemMatch in itemMatches.OfType<Match>())
             {
-                string itemUrl = match.Groups["Url"].Value;
+                string itemUrl = itemMatch.Groups["Url"].Value;
                 if (!fetched.Contains(itemUrl))
                 {
                     Goods goods = FetchGoods(itemUrl);
-                    list.Add(goods);
+                    goodsList.Add(goods);
                     fetched.Add(itemUrl);
                 }
             }
-            return list;
+            return goodsList;
         }
 
         /// <summary>
@@ -86,19 +90,23 @@ namespace EWorm.Crawler
             {
                 this.BeforeFetchItem.Invoke(itemUrl);
             }
+
             string itemResult = Http.Get(itemUrl);
+
             Match titleMatch, priceMatch, creditMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
+
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value),                
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
-                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value)
             };
+
             if (this.FetchItemComplete != null)
             {
                 this.FetchItemComplete.Invoke(goods);

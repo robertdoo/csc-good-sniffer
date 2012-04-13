@@ -34,5 +34,7 @@ namespace EWorm.Model
         /// 卖家信用值
         /// </summary>
         public int SellerCredit { get; set; }
+
+        public IEnumerable<Property> Properties { get; set; }
     }
 }

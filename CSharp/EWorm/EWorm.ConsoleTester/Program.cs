@@ -12,9 +12,13 @@ namespace EWorm.ConsoleTester
         {
             TaobaoItemFetcher fetcher = new TaobaoItemFetcher();
             fetcher.FetchItemComplete += new FetchItemCompletedEvent(fetcher_FetchItemComplete);
-            var result = fetcher.FetchByKeyword("固态硬盘", 10);
-            Console.WriteLine(String.Format("{0} result fetched.", result.Count()));
-            Console.ReadKey();
+            while (true)
+            {
+                Console.Write("输入关键字：");
+                String keyword = Console.ReadLine();
+                var result = fetcher.FetchByKeyword(keyword, 10);
+                Console.WriteLine(String.Format("{0} result fetched.", result.Count()));
+            }
         }
 
         static void fetcher_FetchItemComplete(Model.Goods goods)

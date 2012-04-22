@@ -29,11 +29,13 @@ namespace EWorm.Model
         /// 抓取时商品的价格
         /// </summary>
         public double Price { get; set; }
+        public string Price2 { get; set; }
 
         /// <summary>
         /// 卖家信用值
         /// </summary>
         public int SellerCredit { get; set; }
+        
 
         public IEnumerable<Property> Properties { get; set; }
     }

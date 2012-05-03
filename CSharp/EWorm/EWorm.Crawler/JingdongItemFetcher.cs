@@ -17,12 +17,12 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配淘宝上一个商品的Url
         /// </summary>
-        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://www.360buy.com/product/\d+\.html)", RegexOptions.Compiled);
+        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://www.360buy.com/product/\d+.html)", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的标题
         /// </summary>
-        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)</h1>", RegexOptions.Compiled);
+        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)<font", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的价格

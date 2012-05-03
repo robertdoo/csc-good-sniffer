@@ -29,7 +29,7 @@ namespace EWorm.Model
         /// 抓取时商品的价格
         /// </summary>
         public double Price { get; set; }
-        public string Price2 { get; set; }
+        public int Price3 { get; set; }
 
         /// <summary>
         /// 卖家信用值

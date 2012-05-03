@@ -12,28 +12,28 @@ namespace EWorm.Crawler
 {
     public delegate void BeforeFetchAmazonItemEvent(string itemUrl);
     public delegate void FetchAmazonItemCompletedEvent(Goods goods);
-    class AmazonItemFetcher
+    public class AmazonItemFetcher
     {
         #region 正则表达式
         /// <summary>
         /// 匹配淘宝上一个商品的Url
         /// </summary>
-        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://item.taobao.com/item.htm\?id=\d+)", RegexOptions.Compiled);
+        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://www.amazon.cn/.+?)\042", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的标题
         /// </summary>
-        private static readonly Regex TitlePattern = new Regex(@"<div class=\042tb-detail-hd\042>\s*?<h3>(?<Title>.+?)</h3>", RegexOptions.Compiled);
+    //    private static readonly Regex TitlePattern = new Regex(@"<div class=\042tb-detail-hd\042>\s*?<h3>(?<Title>.+?)</h3>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"id=\042J_StrPrice\042\s*?>(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
+     //   private static readonly Regex PricePattern = new Regex(@"id=\042J_StrPrice\042\s*?>(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品卖家的信誉度
         /// </summary>
-        private static readonly Regex CreditPattern = new Regex(@"http://pics.taobaocdn.com/newrank/s_(?<Level1>red|blue|cap|crown)_(?<Level2>[1-5])\.gif", RegexOptions.Compiled);
+     //   private static readonly Regex CreditPattern = new Regex(@"http://pics.taobaocdn.com/newrank/s_(?<Level1>red|blue|cap|crown)_(?<Level2>[1-5])\.gif", RegexOptions.Compiled);
         #endregion
 
         #region 事件
@@ -53,11 +53,11 @@ namespace EWorm.Crawler
             // 太平洋搜索结果搜索结果分页pageNo相差1，首页无pageNo
             if (pageIndex == 0)
             {
-                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}", keyword);
+                url = String.Format("http://www.amazon.cn/s/field-keywords={0}", keyword);
             }
             else
             {
-                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}&pageNo={1}", keyword, pageIndex + 1);
+                url = String.Format("http://www.amazon.cn/s/field-keywords={0}&page={1}", keyword, pageIndex + 1);
             }
             return url;
         }
@@ -76,6 +76,7 @@ namespace EWorm.Crawler
             for (int pageIndex = 0; pageIndex < pageToFetch; pageIndex++)
             {
                 string searchUrl = BuildSearchAmazonUrl(keyword, pageIndex);
+                Console.Write(searchUrl);
                 string searchResult = Http.Get(searchUrl);
 
                 // 匹配出商品的Url
@@ -108,15 +109,15 @@ namespace EWorm.Crawler
 
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch, creditMatch;
-            titleMatch = TitlePattern.Match(itemResult);
-            priceMatch = PricePattern.Match(itemResult);
-            creditMatch = CreditPattern.Match(itemResult);
+         //   Match titleMatch, priceMatch, creditMatch;
+        //    titleMatch = TitlePattern.Match(itemResult);
+        //    priceMatch = PricePattern.Match(itemResult);
+        //    creditMatch = CreditPattern.Match(itemResult);
 
             Goods goods = new Goods()
             {
-                Title = titleMatch.Groups["Title"].Value,
-                Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+         //       Title = titleMatch.Groups["Title"].Value,
+          //      Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };

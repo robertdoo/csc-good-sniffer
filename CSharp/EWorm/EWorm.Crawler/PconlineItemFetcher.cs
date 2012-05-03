@@ -17,7 +17,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配淘宝上一个商品的Url
         /// </summary>
-        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://product.pconline.com.cn/\D+\/[^s][^e]\D+\/\d+\.html)", RegexOptions.Compiled);
+        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://product.pconline.com.cn/\D+/[^s][^e]\D+/\d+.html)", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的标题
@@ -27,7 +27,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"class=""price-b""\s*?>(?<Price>\d+)", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@">(?<Price>\d+)</i>", RegexOptions.Compiled);
   
         #endregion
        
@@ -109,10 +109,13 @@ namespace EWorm.Crawler
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
-                Price2 = priceMatch.Groups["Price"].Value,
+                //Price3 =Convert.ToInt32( priceMatch.Groups["Price"].Value),
+                
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };
+            String s = priceMatch.Groups["Price"].Value;
+            Console.Write(s);
 
             if (this.FetchItemComplete != null)
             {

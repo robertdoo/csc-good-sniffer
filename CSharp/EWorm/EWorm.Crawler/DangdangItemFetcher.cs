@@ -22,12 +22,12 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品页面上商品的标题
         /// </summary>
-        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)</h1>", RegexOptions.Compiled);
+        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)<span>?.+?</span>?</h1>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"id=\042salePriceTag\042\s*?>\￥(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"id=\042salePriceTag\042\s*?>\￥(?<Price>\d+\.?\d{2}?)", RegexOptions.Compiled);
 
         #endregion
 
@@ -109,7 +109,7 @@ namespace EWorm.Crawler
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
-                Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                Price3 = Convert.ToInt32(priceMatch.Groups["Price"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };

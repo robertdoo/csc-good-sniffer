@@ -11,6 +11,62 @@ namespace EWorm.ConsoleTester
     {
         static void Main(string[] args)
         {
+            foreach (var fetcher in GoodsFetcherManager.Instance.GetAllFetcher())
+            {
+                Console.WriteLine("加载商家：" + GoodsFetcherManager.Instance.GetMetadata(fetcher).Name);
+                fetcher.OnGoodsFetched += OnGoodsFetched;
+            }
+            Console.WriteLine();
+            Console.WriteLine("请输入关键字：");
+            string keyword = Console.ReadLine();
+            GoodsFetcherManager.Instance.FetchByKeywordInAllShops(keyword, 100);
+        }
+
+        private static void OnGoodsFetched(IGoodsFetcher fetcher, Goods goods)
+        {
+            Console.WriteLine(String.Format("{0} 返回的结果:", GoodsFetcherManager.Instance.GetMetadata(fetcher).Name));
+            Console.WriteLine("Title: " + goods.Title);
+            Console.WriteLine("Url: " + goods.SellingUrl);
+            Console.WriteLine("Price: " + goods.Price);
+            Console.WriteLine("Credit: " + goods.SellerCredit);
+            Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine();
+        }
+        /*
+        static void fetcher_FetchItemComplete(Model.Goods goods)
+        {
+            Console.WriteLine("Title: " + goods.Title);
+            Console.WriteLine("Url: " + goods.SellingUrl);
+            Console.WriteLine("Price: " + goods.Price);
+            Console.WriteLine("Credit: " + goods.SellerCredit);
+            Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine();
+        }
+        static void fetcher_FetchPconItemComplete(Model.Goods goods)
+        {
+            Console.WriteLine("Title: " + goods.Title);
+            Console.WriteLine("Url: " + goods.SellingUrl);
+            Console.WriteLine("Price: " + goods.Price2);
+            Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine();
+        }
+        static void fetcher_FetchJingdongItemComplete(Model.Goods goods)
+        {
+            Console.WriteLine("Title: " + goods.Title);
+            Console.WriteLine("Url: " + goods.SellingUrl);
+            Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine();
+        }
+        static void fetcher_FetchDangdangItemComplete(Model.Goods goods)
+        {
+            Console.WriteLine("Title: " + goods.Title);
+            Console.WriteLine("Price: " + goods.Price);
+            Console.WriteLine("Url: " + goods.SellingUrl);
+            Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine();
+        }
+
+        
             TaobaoItemFetcher fetcher = new TaobaoItemFetcher();
             PconlineItemFetcher fetcher2 = new PconlineItemFetcher();
             JingdongItemFetcher fetcher3 = new JingdongItemFetcher();
@@ -71,6 +127,9 @@ namespace EWorm.ConsoleTester
                     Console.WriteLine(String.Format("{0} result fetched.", result.Count()));
                 }
             }
+<<<<<<< .mine
+            */
+=======
         }
 
         static void fetcher_FetchItemComplete(Model.Goods goods)
@@ -105,6 +164,7 @@ namespace EWorm.ConsoleTester
             Console.WriteLine("Update: " + goods.UpdateTime);
             Console.WriteLine();
         }
+>>>>>>> .r45
         static void fetcher_FetchSuningItemComplete(Model.Goods goods)
         {
           //  Console.WriteLine("Title: " + goods.Title);

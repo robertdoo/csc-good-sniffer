@@ -41,7 +41,9 @@
       <HintPath>lib\Jumony\Ivony.Html.Parser.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,26 +51,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AmazonItemFetcher.cs" />
-    <Compile Include="DangdangItemFetcher.cs" />
+    <Compile Include="Fetchers\AmazonItemFetcher.cs" />
+    <Compile Include="Fetchers\DangdangItemFetcher.cs" />
+    <Compile Include="GoodsFetcherAttribute.cs" />
+    <Compile Include="GoodsFetcherEvents.cs" />
+    <Compile Include="GoodsFetcherManager.cs" />
     <Compile Include="Http.cs" />
-    <Compile Include="JingdongItemFetcher.cs" />
-    <Compile Include="PconlineItemFetcher.cs" />
+    <Compile Include="IGoodsFetcher.cs" />
+    <Compile Include="IGoodsFetcherMetadata.cs" />
+    <Compile Include="Fetchers\JingdongItemFetcher.cs" />
+    <Compile Include="Fetchers\PconlineItemFetcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SuningItemFetcher.cs" />
-    <Compile Include="TaobaoItemFetcher.cs" />
+    <Compile Include="Fetchers\SuningItemFetcher.cs" />
+    <Compile Include="Fetchers\TaobaoItemFetcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="lib\Ivony.Core.dll" />
-    <Content Include="lib\Ivony.Core.XML" />
-    <Content Include="lib\Ivony.Html.dll" />
-    <Content Include="lib\Ivony.Html.Parser.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

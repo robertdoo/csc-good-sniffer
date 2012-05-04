@@ -11,7 +11,8 @@
     <RootNamespace>EWorm.ConsoleTester</RootNamespace>
     <AssemblyName>EWorm.ConsoleTester</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -48,13 +49,20 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EWorm.Crawler\EWorm.Crawler.csproj">
-      <Project>{169AF643-C55E-4053-9F9D-FF597B3E11F7}</Project>
+      <Project>{169af643-c55e-4053-9f9d-ff597b3e11f7}</Project>
       <Name>EWorm.Crawler</Name>
     </ProjectReference>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EWorm\EWorm.csproj">
+      <Project>{c17b57f3-283d-466e-89e8-1adfedb50248}</Project>
+      <Name>EWorm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

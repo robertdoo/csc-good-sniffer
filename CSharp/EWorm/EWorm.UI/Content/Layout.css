@@ -26,8 +26,13 @@ div
 {
     width: 79%;
 }
-#footer 
+#footer
 {
     background: yellow;
     height: 100px;
+}
+div.round
+{
+    border-radius: 20px;
+    padding: 30px;
 }

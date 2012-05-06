@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link href="@Url.Content("~/Content/Layout.css")" rel="Stylesheet" type="text/css" />
+<html>
+<head>
+</head>
+<div id="main">
+    <div id="top"></div>
+    <div id="search-bar">
+        <form id="search-form">
+            <input id="keyword" type="text" />
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    <div id="sections">
+    @for(int i=0;i<10;i++){
+        <div class="section"></div>
+        <div class="section"></div>
+        <div class="section border"></div>
+        }
+    </div>
+</div>
+</html>

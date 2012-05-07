@@ -41,6 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EWorm.Crawler\EWorm.Crawler.csproj">
+      <Project>{169AF643-C55E-4053-9F9D-FF597B3E11F7}</Project>
+      <Name>EWorm.Crawler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
+      <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
+      <Name>EWorm.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

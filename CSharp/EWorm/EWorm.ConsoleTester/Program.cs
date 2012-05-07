@@ -32,6 +32,5 @@ namespace EWorm.ConsoleTester
             Console.WriteLine("Update: " + goods.UpdateTime);
             Console.WriteLine();
         }
-    
     }
 }

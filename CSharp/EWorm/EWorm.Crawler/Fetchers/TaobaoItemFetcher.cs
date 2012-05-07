@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetchers
 {
-    [GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079",name: "Taobao",url: "http://www.taobao.com")]
+    [GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079", name: "Taobao", url: "http://www.taobao.com")]
     public class TaobaoItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -119,9 +119,9 @@ namespace EWorm.Crawler.Fetchers
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
+
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
-            string fileName = Http.DownloadImage(imageurl);
-            Console.Write(fileName);
+            string downloadedImage = Http.DownloadImage(imageurl);
 
             Goods goods = new Goods()
             {
@@ -130,6 +130,7 @@ namespace EWorm.Crawler.Fetchers
                 SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
+                ImagePath = downloadedImage
             };
 
             Match propertyListMatch = PropertyListPattern.Match(itemResult);

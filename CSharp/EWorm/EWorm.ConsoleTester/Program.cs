@@ -20,6 +20,7 @@ namespace EWorm.ConsoleTester
             Console.WriteLine("请输入关键字：");
             string keyword = Console.ReadLine();
             GoodsFetcherManager.Instance.FetchByKeywordInAllShops(keyword, 100);
+            Console.Read();
         }
 
         private static void OnGoodsFetched(IGoodsFetcher fetcher, Goods goods)
@@ -30,6 +31,13 @@ namespace EWorm.ConsoleTester
             Console.WriteLine("Price: " + goods.Price);
             Console.WriteLine("Credit: " + goods.SellerCredit);
             Console.WriteLine("Update: " + goods.UpdateTime);
+            if (goods.Properties != null)
+            {
+                foreach (var property in goods.Properties.OfType<StringProperty>())
+                {
+                    Console.WriteLine(String.Format("{0}: {1}", property.Name, property.Value));
+                }
+            }
             Console.WriteLine();
         }
     }

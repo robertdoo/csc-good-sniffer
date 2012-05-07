@@ -26,10 +26,14 @@ namespace EWorm.Model
         public DateTime UpdateTime { get; set; }
 
         /// <summary>
+        /// 保存图片
+        /// </summary>
+        public String ImagePath { get; set; }
+
+        /// <summary>
         /// 抓取时商品的价格
         /// </summary>
         public double Price { get; set; }
-        public int Price3 { get; set; }
 
         /// <summary>
         /// 卖家信用值

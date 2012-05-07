@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    [GoodsFetcher(guid: "8CD62BE2-640F-A964-09E1-E96C19EDF8BE",name: "Dangdang",url: "http://www.dangdang.com")]
+    //[GoodsFetcher(guid: "8CD62BE2-640F-A964-09E1-E96C19EDF8BE",name: "Dangdang",url: "http://www.dangdang.com")]
  
     public class DangdangItemFetcher : IGoodsFetcher
     {
@@ -116,13 +116,14 @@ namespace EWorm.Crawler
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value, creditMatch.Groups["Level3"].Value, creditMatch.Groups["Level4"].Value, creditMatch.Groups["Level5"].Value),
+                SellerCredit = CalculateDangdangCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value, creditMatch.Groups["Level3"].Value, creditMatch.Groups["Level4"].Value, creditMatch.Groups["Level5"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };
             return goods;
         }
-        public int CalculateTaobaoCredit(string level1, string level2,string level3, string level4, string level5)
+
+        public int CalculateDangdangCredit(string level1, string level2,string level3, string level4, string level5)
         {
             if (String.IsNullOrWhiteSpace(level1) || String.IsNullOrWhiteSpace(level2) || String.IsNullOrWhiteSpace(level3) || String.IsNullOrWhiteSpace(level4) || String.IsNullOrWhiteSpace(level5))
             {

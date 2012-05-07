@@ -10,6 +10,8 @@ namespace EWorm.Model
     /// </summary>
     public class Goods
     {
+        public int Id { get; set; }
+
         /// <summary>
         /// 商品的标题
         /// </summary>

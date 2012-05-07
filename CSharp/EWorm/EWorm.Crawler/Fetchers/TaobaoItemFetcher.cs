@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetchers
 {
-    //[GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079",name: "Taobao",url: "http://www.taobao.com")]
+    [GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079",name: "Taobao",url: "http://www.taobao.com")]
     public class TaobaoItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -38,8 +38,18 @@ namespace EWorm.Crawler.Fetchers
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"<img id=\042J_ImgBooth\042 src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品的属性列表
+        /// </summary>
+        private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品属性
+        /// </summary>
+        private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion
-       
+
 
         /// <summary>
         /// 淘宝搜索结果分页大小： 40
@@ -118,6 +128,25 @@ namespace EWorm.Crawler.Fetchers
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };
+
+            Match propertyListMatch = PropertyListPattern.Match(itemResult);
+            if (propertyListMatch.Success)
+            {
+                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
+                var propertyMatches = PropertyPattern.Matches(propertyResult);
+                var properties = new List<Property>();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    Property property = new StringProperty()
+                    {
+                        Name = propertyMatch.Groups["Name"].Value,
+                        Value = propertyMatch.Groups["Value"].Value
+                    };
+                    properties.Add(property);
+                }
+                goods.Properties = properties;
+            }
+
             return goods;
         }
 

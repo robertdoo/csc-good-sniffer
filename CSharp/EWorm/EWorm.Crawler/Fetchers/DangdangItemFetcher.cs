@@ -6,12 +6,13 @@ using EWorm.Model;
 using System.Text.RegularExpressions;
 using Ivony.Html.Parser;
 using Ivony.Html;
+using System.Threading;
 
 namespace EWorm.Crawler
 {
-    public delegate void BeforeFetchDangdangItemEvent(string itemUrl);
-    public delegate void FetchDangdangItemCompletedEvent(Goods goods);
-    public class DangdangItemFetcher
+    [GoodsFetcher(guid: "8CD62BE2-640F-A964-09E1-E96C19EDF8BE",name: "Dangdang",url: "http://www.dangdang.com")]
+ 
+    public class DangdangItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
         /// <summary>
@@ -22,19 +23,19 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品页面上商品的标题
         /// </summary>
-        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)</h1>", RegexOptions.Compiled);
+        private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)<[/,s,f]", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"id=\042salePriceTag\042\s*?>\￥(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"<span class=\042num.*?\042>\￥(?<Price>.+?)</span>", RegexOptions.Compiled);
 
-        #endregion
+        /// <summary>
+        /// 匹配商品页面上商品卖家的信誉度
+        /// </summary>
+        private static readonly Regex CreditPattern = new Regex(@"<span><img src=\'images/(?<Level1>.+?).gif\' /><img src=\'images/(?<Level2>.+?).gif\' /><img src=\'images/(?<Level3>.+?).gif\' /><img src=\'images/(?<Level4>.+?).gif\' /><img src=\'images/(?<Level5>.+?).gif\' /></span>", RegexOptions.Compiled);
+        #endregion                                                
 
-        #region 事件
-        public event BeforeFetchDangdangItemEvent BeforeFetchItem;
-        public event FetchDangdangItemCompletedEvent FetchItemComplete;
-        #endregion
 
         /// <summary>
         /// 生成太平洋网站搜索的地址
@@ -62,32 +63,42 @@ namespace EWorm.Crawler
         /// <param name="keyword">要搜索的商品的关键字</param>
         /// <param name="pageToFetch">表明要抓取多少页的商品</param>
         /// <returns></returns>
-        public IEnumerable<Goods> FetchByKeyword(string keyword, int pageToFetch = 1)
+        public void FetchByKeyword(string keyword, int limit)
         {
-            // 记录已经抓过的Url（去重复）
-            var fetched = new HashSet<string>();
-            var goodsList = new List<Goods>();
-
-            for (int pageIndex = 0; pageIndex < pageToFetch; pageIndex++)
+            Thread fetchThread = new Thread(new ThreadStart(delegate
             {
-                string searchUrl = BuildSearchDangdangUrl(keyword, pageIndex);
-                string searchResult = Http.Get(searchUrl);
+                // 记录已经抓过的Url（去重复）
+                var fetched = new HashSet<string>();
 
-                // 匹配出商品的Url
-                var itemMatches = ItemUrlPattern.Matches(searchResult);
-                foreach (var itemMatch in itemMatches.OfType<Match>())
+                int page = 0;
+                while (fetched.Count < limit)
                 {
-                    string itemUrl = itemMatch.Groups["Url"].Value;
-                    if (!fetched.Contains(itemUrl))
+                    string searchUrl = BuildSearchDangdangUrl(keyword, page++);
+                    string searchResult = Http.Get(searchUrl);
+
+                    // 匹配出商品的Url
+                    var itemMatches = ItemUrlPattern.Matches(searchResult);
+                    if (itemMatches.Count == 0)
+                        return;
+                    foreach (var itemMatch in itemMatches.OfType<Match>())
                     {
-                        Goods goods = FetchGoods(itemUrl);
-                        goodsList.Add(goods);
-                        fetched.Add(itemUrl);
+                        string itemUrl = itemMatch.Groups["Url"].Value;
+                        if (!fetched.Contains(itemUrl))
+                        {
+                            Goods goods = FetchGoods(itemUrl);
+                            if (OnGoodsFetched != null)
+                            {
+                                OnGoodsFetched.BeginInvoke(this, goods, null, null);
+                            }
+                            fetched.Add(itemUrl);
+                        }
                     }
                 }
-            }
-            return goodsList;
+            }));
+            fetchThread.Start();
         }
+
+        public event GoodsFetchedEvent OnGoodsFetched;
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
@@ -95,30 +106,93 @@ namespace EWorm.Crawler
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
-            if (this.BeforeFetchItem != null)
-            {
-                this.BeforeFetchItem.Invoke(itemUrl);
-            }
-
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch,priceMatch;//  creditMatch;
+            Match titleMatch,priceMatch,creditMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
-
+            creditMatch = CreditPattern.Match(itemResult);
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value, creditMatch.Groups["Level3"].Value, creditMatch.Groups["Level4"].Value, creditMatch.Groups["Level5"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };
-
-            if (this.FetchItemComplete != null)
-            {
-                this.FetchItemComplete.Invoke(goods);
-            }
             return goods;
+        }
+        public int CalculateTaobaoCredit(string level1, string level2,string level3, string level4, string level5)
+        {
+            if (String.IsNullOrWhiteSpace(level1) || String.IsNullOrWhiteSpace(level2) || String.IsNullOrWhiteSpace(level3) || String.IsNullOrWhiteSpace(level4) || String.IsNullOrWhiteSpace(level5))
+            {
+                return 0;
+            }
+            int credit = 0;
+            Console.Write(level1);
+            switch (level1) 
+            {
+                case"star_red":
+                    credit += 10;
+                    break;
+                case"star_red2":
+                    credit += 5;
+                    break;
+                case"star_gray":
+                    credit += 0;
+                    break;
+            }
+            switch (level2)
+            {
+                case "star_red":
+                    credit += 10;
+                    break;
+                case "star_red2":
+                    credit += 5;
+                    break;
+                case "star_gray":
+                    credit += 0;
+                    break;
+            }
+            switch (level3)
+            {
+                case "star_red":
+                    credit += 10;
+                    break;
+                case "star_red2":
+                    credit += 5;
+                    break;
+                case "star_gray":
+                    credit += 0;
+                    break;
+            }
+            switch (level4)
+            {
+                case "star_red":
+                    credit += 10;
+                    break;
+                case "star_red2":
+                    credit += 5;
+                    break;
+                case "star_gray":
+                    credit += 0;
+                    break;
+            }
+            switch (level5)
+            {
+                case "star_red":
+                    credit += 10;
+                    break;
+                case "star_red2":
+                    credit += 5;
+                    break;
+                case "star_gray":
+                    credit += 0;
+                    break;
+            }
+
+            return credit;
+        
         }
     }
 }

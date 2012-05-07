@@ -7,17 +7,18 @@ using System.Text.RegularExpressions;
 using Ivony.Html.Parser;
 using Ivony.Html;
 using System.Web;
+using System.Threading;
 
 namespace EWorm.Crawler.Fetcher
 {
-    [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "PcOnline", url: "http://www.pconline.com")]
+   // [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com")]
     public class PconlineItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
         /// <summary>
         /// 匹配淘宝上一个商品的Url
         /// </summary>
-        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://product.pconline.com.cn/\D+\/[^s][^e]\D+\/\d+\.html)", RegexOptions.Compiled);
+        private static readonly Regex ItemUrlPattern = new Regex(@"(?<Url>http://product.pconline.com.cn/\D+/[^s][^e]\D+/\d+\.html)", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的标题
@@ -27,12 +28,8 @@ namespace EWorm.Crawler.Fetcher
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"class=""price-b""\s*?>(?<Price>\d+)", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"i class=\042price\042>(?<Price>\d+?)</i>", RegexOptions.Compiled);
 
-        #endregion
-
-        #region 事件
-        public event GoodsFetchedEvent OnGoodsFetched;
         #endregion
 
         /// <summary>
@@ -63,32 +60,40 @@ namespace EWorm.Crawler.Fetcher
         /// <returns></returns>
         public void FetchByKeyword(string keyword, int limit)
         {
-            // 记录已经抓过的Url（去重复）
-            var fetched = new HashSet<string>();
-
-            int page = 0;
-            while (fetched.Count < limit)
+            Thread fetchThread = new Thread(new ThreadStart(delegate
             {
-                string searchUrl = BuildSearchPconlineUrl(keyword, page++);
-                string searchResult = Http.Get(searchUrl);
+                // 记录已经抓过的Url（去重复）
+                var fetched = new HashSet<string>();
 
-                // 匹配出商品的Url
-                var itemMatches = ItemUrlPattern.Matches(searchResult);
-                if (itemMatches.Count == 0)
+                int page = 0;
+                while (fetched.Count < limit)
                 {
-                    return;
-                }
-                foreach (var itemMatch in itemMatches.OfType<Match>())
-                {
-                    string itemUrl = itemMatch.Groups["Url"].Value;
-                    if (!fetched.Contains(itemUrl))
+                    string searchUrl = BuildSearchPconlineUrl(keyword, page++);
+                    string searchResult = Http.Get(searchUrl);
+
+                    // 匹配出商品的Url
+                    var itemMatches = ItemUrlPattern.Matches(searchResult);
+                    if (itemMatches.Count == 0)
+                        return;
+                    foreach (var itemMatch in itemMatches.OfType<Match>())
                     {
-                        Goods goods = FetchGoods(itemUrl);
-                        fetched.Add(itemUrl);
+                        string itemUrl = itemMatch.Groups["Url"].Value;
+                        if (!fetched.Contains(itemUrl))
+                        {
+                            Goods goods = FetchGoods(itemUrl);
+                            if (OnGoodsFetched != null)
+                            {
+                                OnGoodsFetched.BeginInvoke(this, goods, null, null);
+                            }
+                            fetched.Add(itemUrl);
+                        }
                     }
                 }
-            }
+            }));
+            fetchThread.Start();
         }
+
+        public event GoodsFetchedEvent OnGoodsFetched;
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
@@ -105,7 +110,8 @@ namespace EWorm.Crawler.Fetcher
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
-                Price2 = priceMatch.Groups["Price"].Value,
+                //Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };

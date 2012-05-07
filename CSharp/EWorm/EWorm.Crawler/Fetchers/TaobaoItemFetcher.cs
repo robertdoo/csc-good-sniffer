@@ -10,10 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetchers
 {
-    [GoodsFetcher(
-        guid: "525E1313-1E04-47C2-A05A-D93079865079",
-        name: "Taobao",
-        url: "http://www.taobao.com")]
+    //[GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079",name: "Taobao",url: "http://www.taobao.com")]
     public class TaobaoItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -36,7 +33,13 @@ namespace EWorm.Crawler.Fetchers
         /// 匹配商品页面上商品卖家的信誉度
         /// </summary>
         private static readonly Regex CreditPattern = new Regex(@"http://pics.taobaocdn.com/newrank/s_(?<Level1>red|blue|cap|crown)_(?<Level2>[1-5])\.gif", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品页面上商品的图片url
+        /// </summary>
+        private static readonly Regex ImagePattern = new Regex(@"<img id=\042J_ImgBooth\042 src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
         #endregion
+       
 
         /// <summary>
         /// 淘宝搜索结果分页大小： 40
@@ -101,10 +104,11 @@ namespace EWorm.Crawler.Fetchers
         {
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch, creditMatch;
+            Match titleMatch, priceMatch, creditMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
+            imageMatch = ImagePattern.Match(itemResult);
 
             Goods goods = new Goods()
             {

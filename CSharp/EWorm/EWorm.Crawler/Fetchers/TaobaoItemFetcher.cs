@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetchers
 {
-    [GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079", name: "Taobao", url: "http://www.taobao.com")]
+    //[GoodsFetcher(guid: "525E1313-1E04-47C2-A05A-D93079865079", name: "Taobao", url: "http://www.taobao.com")]
     public class TaobaoItemFetcher : IGoodsFetcher
     {
         #region 正则表达式

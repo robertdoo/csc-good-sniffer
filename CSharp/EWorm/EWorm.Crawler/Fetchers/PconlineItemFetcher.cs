@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetcher
 {
-   // [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com")]
+    //[GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com")]
     public class PconlineItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -30,6 +30,10 @@ namespace EWorm.Crawler.Fetcher
         /// </summary>
         private static readonly Regex PricePattern = new Regex(@"i class=\042price\042>(?<Price>\d+?)</i>", RegexOptions.Compiled);
 
+        /// <summary>
+        /// 匹配商品页面上商品的图片url
+        /// </summary>
+        private static readonly Regex ImagePattern = new Regex(@"img id=\042idImage\042 width=.+? height=.+? src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
         #endregion
 
         /// <summary>
@@ -103,10 +107,14 @@ namespace EWorm.Crawler.Fetcher
         {
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch;//  creditMatch;
+            Match titleMatch, priceMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
+            imageMatch = ImagePattern.Match(itemResult);
 
+            string imageurl = imageMatch.Groups["ImageUrl"].Value;
+            //Console.Write(imageurl);
+            string downloadedImage = Http.DownloadImage(imageurl);
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
@@ -114,6 +122,7 @@ namespace EWorm.Crawler.Fetcher
                 SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
+                ImagePath = downloadedImage,
             };
 
             return goods;

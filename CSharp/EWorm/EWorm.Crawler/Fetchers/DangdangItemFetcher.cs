@@ -34,6 +34,12 @@ namespace EWorm.Crawler
         /// 匹配商品页面上商品卖家的信誉度
         /// </summary>
         private static readonly Regex CreditPattern = new Regex(@"<span><img src=\'images/(?<Level1>.+?).gif\' /><img src=\'images/(?<Level2>.+?).gif\' /><img src=\'images/(?<Level3>.+?).gif\' /><img src=\'images/(?<Level4>.+?).gif\' /><img src=\'images/(?<Level5>.+?).gif\' /></span>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品页面上商品的图片url
+        /// </summary>
+        private static readonly Regex ImagePattern = new Regex(@"<img src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
+        
         #endregion                                                
 
 
@@ -108,10 +114,16 @@ namespace EWorm.Crawler
         {
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch,priceMatch,creditMatch;
+            Match titleMatch,priceMatch,creditMatch,imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
+            imageMatch = ImagePattern.Match(itemResult);
+
+            string imageurl = imageMatch.Groups["ImageUrl"].Value;
+            
+            string downloadedImage = Http.DownloadImage(imageurl);
+
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
@@ -119,6 +131,7 @@ namespace EWorm.Crawler
                 SellerCredit = CalculateDangdangCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value, creditMatch.Groups["Level3"].Value, creditMatch.Groups["Level4"].Value, creditMatch.Groups["Level5"].Value),
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
+                ImagePath = downloadedImage,
             };
             return goods;
         }

@@ -27,6 +27,7 @@ namespace EWorm.Crawler
 
         public static string DownloadImage(string url)
         {
+            Console.Write(url);
             WebClient client = new WebClient();
             string ext = "jpg";
             string filename = String.Format("{0}.{1}", Guid.NewGuid(), ext);

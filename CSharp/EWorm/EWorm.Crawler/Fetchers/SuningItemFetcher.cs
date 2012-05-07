@@ -6,12 +6,13 @@ using EWorm.Model;
 using System.Text.RegularExpressions;
 using Ivony.Html.Parser;
 using Ivony.Html;
+using System.Threading;
 
 namespace EWorm.Crawler
 {
-    public delegate void BeforeFetchSuningItemEvent(string itemUrl);
-    public delegate void FetchSuningItemCompletedEvent(Goods goods);
-    class SuningItemFetcher
+   // [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com")]
+   
+   public class SuningItemFetcher:IGoodsFetcher
     {
         #region 正则表达式
         /// <summary>
@@ -30,19 +31,13 @@ namespace EWorm.Crawler
         private static readonly Regex PricePattern = new Regex(@"id=\042salePriceTag\042\s*?>\￥(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
 
         #endregion
-
-        #region 事件
-        public event BeforeFetchDangdangItemEvent BeforeFetchItem;
-        public event FetchDangdangItemCompletedEvent FetchItemComplete;
-        #endregion
-
         /// <summary>
         /// 生成太平洋网站搜索的地址
         /// </summary>
         /// <param name="keyword">搜索的关键字</param>
         /// <param name="pageIndex">表明搜索的页码</param>
         /// <returns></returns>
-        public string BuildSearchDangdangUrl(string keyword, int pageIndex)
+        public string BuildSearchSuningUrl(string keyword, int pageIndex)
         {
             string url;
             // 太平洋搜索结果搜索结果分页pageNo相差1，首页无pageNo
@@ -62,32 +57,42 @@ namespace EWorm.Crawler
         /// <param name="keyword">要搜索的商品的关键字</param>
         /// <param name="pageToFetch">表明要抓取多少页的商品</param>
         /// <returns></returns>
-        public IEnumerable<Goods> FetchByKeyword(string keyword, int pageToFetch = 1)
+        public void FetchByKeyword(string keyword, int limit)
         {
-            // 记录已经抓过的Url（去重复）
-            var fetched = new HashSet<string>();
-            var goodsList = new List<Goods>();
-
-            for (int pageIndex = 0; pageIndex < pageToFetch; pageIndex++)
+            Thread fetchThread = new Thread(new ThreadStart(delegate
             {
-                string searchUrl = BuildSearchDangdangUrl(keyword, pageIndex);
-                string searchResult = Http.Get(searchUrl);
+                // 记录已经抓过的Url（去重复）
+                var fetched = new HashSet<string>();
 
-                // 匹配出商品的Url
-                var itemMatches = ItemUrlPattern.Matches(searchResult);
-                foreach (var itemMatch in itemMatches.OfType<Match>())
+                int page = 0;
+                while (fetched.Count < limit)
                 {
-                    string itemUrl = itemMatch.Groups["Url"].Value;
-                    if (!fetched.Contains(itemUrl))
+                    string searchUrl = BuildSearchSuningUrl(keyword, page++);
+                    string searchResult = Http.Get(searchUrl);
+
+                    // 匹配出商品的Url
+                    var itemMatches = ItemUrlPattern.Matches(searchResult);
+                    if (itemMatches.Count == 0)
+                        return;
+                    foreach (var itemMatch in itemMatches.OfType<Match>())
                     {
-                        Goods goods = FetchGoods(itemUrl);
-                        goodsList.Add(goods);
-                        fetched.Add(itemUrl);
+                        string itemUrl = itemMatch.Groups["Url"].Value;
+                        if (!fetched.Contains(itemUrl))
+                        {
+                            Goods goods = FetchGoods(itemUrl);
+                            if (OnGoodsFetched != null)
+                            {
+                                OnGoodsFetched.BeginInvoke(this, goods, null, null);
+                            }
+                            fetched.Add(itemUrl);
+                        }
                     }
                 }
-            }
-            return goodsList;
+            }));
+            fetchThread.Start();
         }
+
+        public event GoodsFetchedEvent OnGoodsFetched;
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
@@ -95,11 +100,7 @@ namespace EWorm.Crawler
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
-            if (this.BeforeFetchItem != null)
-            {
-                this.BeforeFetchItem.Invoke(itemUrl);
-            }
-
+         
             string itemResult = Http.Get(itemUrl);
 
             Match titleMatch, priceMatch;//  creditMatch;
@@ -110,14 +111,10 @@ namespace EWorm.Crawler
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
             };
-
-            if (this.FetchItemComplete != null)
-            {
-                this.FetchItemComplete.Invoke(goods);
-            }
             return goods;
         }
     }

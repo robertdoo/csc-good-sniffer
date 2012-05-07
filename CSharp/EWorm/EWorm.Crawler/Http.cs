@@ -16,10 +16,22 @@ namespace EWorm.Crawler
         /// <returns></returns>
         public static String Get(String url, Encoding encoding)
         {
+            
+                WebClient client = new WebClient();
+                client.Encoding = encoding;
+                Uri uri = new Uri(url);
+                return client.DownloadString(uri);
+            
+          
+        }
+
+        public static string DownloadImage(string url)
+        {
             WebClient client = new WebClient();
-            client.Encoding = encoding;
-            Uri uri = new Uri(url);
-            return client.DownloadString(uri);
+            string ext = "jpg";
+            string filename = String.Format("{0}.{1}", Guid.NewGuid(), ext);
+            client.DownloadFile(url, filename);
+            return filename;
         }
 
         public static string Get(string url)

@@ -119,6 +119,9 @@ namespace EWorm.Crawler.Fetchers
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
+            string imageurl = imageMatch.Groups["ImageUrl"].Value;
+            string fileName = Http.DownloadImage(imageurl);
+            Console.Write(fileName);
 
             Goods goods = new Goods()
             {

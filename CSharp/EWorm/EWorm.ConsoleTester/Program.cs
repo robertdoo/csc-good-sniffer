@@ -31,6 +31,7 @@ namespace EWorm.ConsoleTester
             Console.WriteLine("Price: " + goods.Price);
             Console.WriteLine("Credit: " + goods.SellerCredit);
             Console.WriteLine("Update: " + goods.UpdateTime);
+            Console.WriteLine("Image: " + goods.ImagePath);
             if (goods.Properties != null)
             {
                 foreach (var property in goods.Properties.OfType<StringProperty>())

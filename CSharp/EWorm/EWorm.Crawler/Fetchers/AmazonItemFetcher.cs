@@ -35,9 +35,10 @@ namespace EWorm.Crawler.Fetchers
         private static readonly Regex PricePattern = new Regex(@"<b class=\042priceLarge\042>￥ (?<Price>.+?)</b>", RegexOptions.Compiled);
 
         /// <summary>
-        /// 匹配商品页面上商品卖家的信誉度
+        /// 匹配商品页面上商品的图片url
         /// </summary>
-        //   private static readonly Regex CreditPattern = new Regex(@"http://pics.taobaocdn.com/newrank/s_(?<Level1>red|blue|cap|crown)_(?<Level2>[1-5])\.gif", RegexOptions.Compiled);
+        private static readonly Regex ImagePattern = new Regex(@"<div id=\042rwImages_hidden\042 style=\042display:none;\042>\n<img src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
+        
         #endregion
 
     
@@ -123,13 +124,16 @@ namespace EWorm.Crawler.Fetchers
 
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch;// creditMatch;
+            Match titleMatch, priceMatch,imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
-            //    creditMatch = CreditPattern.Match(itemResult);
+            imageMatch = ImagePattern.Match(itemResult);
             string modifyPrice = priceMatch.Groups["Price"].Value;
             modifyPrice.Replace(",","");
 
+            string imageurl = imageMatch.Groups["ImageUrl"].Value;
+            //Console.Write(imageurl);
+            string downloadedImage = Http.DownloadImage(imageurl);
 
             Goods goods = new Goods()
             {
@@ -138,6 +142,7 @@ namespace EWorm.Crawler.Fetchers
                 SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
+                ImagePath = downloadedImage,
             };
 
            

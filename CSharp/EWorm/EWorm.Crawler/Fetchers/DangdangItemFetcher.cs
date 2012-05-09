@@ -39,7 +39,16 @@ namespace EWorm.Crawler
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"<img src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
-        
+
+        /// <summary>
+        /// 匹配商品的属性列表
+        /// </summary>
+        private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品属性
+        /// </summary>
+        private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion                                                
 
 

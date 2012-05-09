@@ -34,6 +34,16 @@ namespace EWorm.Crawler.Fetcher
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"img id=\042idImage\042 width=.+? height=.+? src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品的属性列表
+        /// </summary>
+        private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042param\sclearfix\042>\s(?<PropertyList>(.|\s)+?)</ul>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品属性
+        /// </summary>
+        private static readonly Regex PropertyPattern = new Regex(@"<li title=.+?><i class=\042tit\042>(?<Name>.+?)</i><a.+?target=\042_blank\042>(?<Value>.+?)</a>(,|\s)", RegexOptions.Compiled);
         #endregion
 
         /// <summary>
@@ -124,6 +134,24 @@ namespace EWorm.Crawler.Fetcher
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
             };
+            Match propertyListMatch = PropertyListPattern.Match(itemResult);
+            if (propertyListMatch.Success)
+            {
+                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
+                //Console.Write(propertyResult);
+                var propertyMatches = PropertyPattern.Matches(propertyResult);
+                var properties = new List<Property>();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    Property property = new StringProperty()
+                    {
+                        Name = propertyMatch.Groups["Name"].Value,
+                        Value = propertyMatch.Groups["Value"].Value
+                    };
+                    properties.Add(property);
+                }
+                goods.Properties = properties;
+            }
 
             return goods;
         }

@@ -30,6 +30,15 @@ namespace EWorm.Crawler
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"<div id=\042spec-n1\042.+?><img onerror=.+?src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
 
+        /// <summary>
+        /// 匹配商品的属性列表
+        /// </summary>
+        private static readonly Regex PropertyListPattern = new Regex(@"<ul id=\042i-detail\042>(?<PropertyList>(.|\s)+?)</ul>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品属性
+        /// </summary>
+        private static readonly Regex PropertyPattern = new Regex(@"<li(.+?|.*)>(?<Name>.+?):(?<Value>.+?)</li>", RegexOptions.Compiled);
         #endregion
 
         
@@ -112,7 +121,6 @@ namespace EWorm.Crawler
           //  priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
-            //Console.Write(imageurl);
             string downloadedImage = Http.DownloadImage(imageurl);
             Goods goods = new Goods()
             {
@@ -123,7 +131,29 @@ namespace EWorm.Crawler
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
             };
+            Match propertyListMatch = PropertyListPattern.Match(itemResult);
+            if (propertyListMatch.Success)
+            {
+                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
+                //Console.Write(propertyResult);
+                var propertyMatches = PropertyPattern.Matches(propertyResult);
+                var properties = new List<Property>();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    Property property = new StringProperty()
+                    {
+                        Name = propertyMatch.Groups["Name"].Value,
+                        Value = propertyMatch.Groups["Value"].Value
+                    };
+                    properties.Add(property);
+                }
+                goods.Properties = properties;
+            }
+
             return goods;
         }
+
+          
+        
     }
 }

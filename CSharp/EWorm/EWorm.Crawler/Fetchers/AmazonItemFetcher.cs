@@ -47,7 +47,7 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?)\s*?</b>\s*?(?<Value>.+?)</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?)\s*?</b>\s*?(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion
 
     
@@ -161,7 +161,7 @@ namespace EWorm.Crawler.Fetchers
             if (propertyListMatch.Success)
             {
                 string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-                Console.Write(propertyResult);
+               // Console.Write(propertyResult);
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)

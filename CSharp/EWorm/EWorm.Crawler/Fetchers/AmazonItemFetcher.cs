@@ -13,7 +13,7 @@ using System.Net;
 
 namespace EWorm.Crawler.Fetchers
 {
-    [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com")]
+    //[GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com")]
    
     
     public class AmazonItemFetcher : IGoodsFetcher
@@ -47,7 +47,7 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?)\s*?</b>\s*?(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?):\s*?</b>\s*?(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion
 
     

@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49",name: "Jingdong",url: "http://www.360buy.com")]
+    //[GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49",name: "Jingdong",url: "http://www.360buy.com")]
    
     public class JingdongItemFetcher : IGoodsFetcher
     {

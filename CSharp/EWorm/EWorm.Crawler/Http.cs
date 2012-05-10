@@ -38,7 +38,18 @@ namespace EWorm.Crawler
                 Directory.CreateDirectory(ImagePath);
             }
             filename = ImagePath + filename;
-            client.DownloadFile(url, filename);
+            try
+            {
+                client.DownloadFile(url, filename);
+            }
+            catch (Exception e)
+            {
+                //Console.Write(e.Message);
+            }
+            finally 
+            {
+                Console.Write("");
+            }
             return filename;
         }
 

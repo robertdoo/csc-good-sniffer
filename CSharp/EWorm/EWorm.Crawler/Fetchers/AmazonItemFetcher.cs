@@ -42,12 +42,12 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品的属性列表
         /// </summary>
-        private static readonly Regex PropertyListPattern = new Regex(@"<div class=\042content\042>\s*?<ul>(?<PropertyList>(.|\s)+?)<script type=.+?>", RegexOptions.Compiled);
+        private static readonly Regex PropertyListPattern = new Regex(@"<div class=\042content\042>\s*?<ul>(?<PropertyList>(.|\s)+?)<b>.+?</b>\s*?<script type=.+?>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li><b>(?<Name>.+?)<\b>\s*(?<Value>.+?)</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?)\s*?</b>\s*?(?<Value>.+?)</li>", RegexOptions.Compiled);
         #endregion
 
     

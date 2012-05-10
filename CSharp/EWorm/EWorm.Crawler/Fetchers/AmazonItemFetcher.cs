@@ -13,7 +13,7 @@ using System.Net;
 
 namespace EWorm.Crawler.Fetchers
 {
-    //[GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com")]
+    [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com")]
    
     
     public class AmazonItemFetcher : IGoodsFetcher
@@ -42,12 +42,12 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品的属性列表
         /// </summary>
-        private static readonly Regex PropertyListPattern = new Regex(@"div class=\042content\042>\s<ul>(?<PropertyList>(.|\s)+?)", RegexOptions.Compiled);
+        private static readonly Regex PropertyListPattern = new Regex(@"<div class=\042content\042>\s*?<ul>(?<PropertyList>(.|\s)+?)<script type=.+?>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"<li><b>(?<Name>.+?)<\b>\s*(?<Value>.+?)</li>", RegexOptions.Compiled);
         #endregion
 
     
@@ -109,9 +109,13 @@ namespace EWorm.Crawler.Fetchers
                                 fetched.Add(itemUrl);
                             }
                         }
-                        catch(WebException e)
+                        catch (WebException e)
                         {
-                            continue;
+                            Console.Write(e.Message);
+                        }
+                        finally 
+                        {
+                            Console.Write("");
                         }
                     }
                     
@@ -153,7 +157,24 @@ namespace EWorm.Crawler.Fetchers
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
             };
-
+            Match propertyListMatch = PropertyListPattern.Match(itemResult);
+            if (propertyListMatch.Success)
+            {
+                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
+                Console.Write(propertyResult);
+                var propertyMatches = PropertyPattern.Matches(propertyResult);
+                var properties = new List<Property>();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    Property property = new StringProperty()
+                    {
+                        Name = propertyMatch.Groups["Name"].Value,
+                        Value = propertyMatch.Groups["Value"].Value
+                    };
+                    properties.Add(property);
+                }
+                goods.Properties = properties;
+            }
            
             return goods;
         }

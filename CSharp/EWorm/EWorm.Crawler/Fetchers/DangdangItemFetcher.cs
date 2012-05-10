@@ -43,12 +43,12 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品的属性列表
         /// </summary>
-        private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
+       // private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
+        //private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion                                                
 
 

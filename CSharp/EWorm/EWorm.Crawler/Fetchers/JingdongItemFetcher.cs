@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    //[GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49",name: "Jingdong",url: "http://www.360buy.com")]
+    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49",name: "Jingdong",url: "http://www.360buy.com")]
    
     public class JingdongItemFetcher : IGoodsFetcher
     {
@@ -38,7 +38,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li(.+?|.*)>(?<Name>.+?):(?<Value>.+?)</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"(<li title=.+?>|<li>)(?<Name>.+?):(?<Value>.+?)</li>", RegexOptions.Compiled);
         #endregion
 
         
@@ -135,7 +135,7 @@ namespace EWorm.Crawler
             if (propertyListMatch.Success)
             {
                 string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-                //Console.Write(propertyResult);
+                Console.Write(propertyResult);
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)

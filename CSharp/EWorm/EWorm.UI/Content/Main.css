@@ -1,0 +1,63 @@
+﻿/* File Created: 四月 24, 2012 */
+html, body
+{
+	margin: 0;
+	padding: 0;
+	background: url(pic.jpg)  no-repeat center fixed;
+	/*background: url(pic.jpg) no-repeat center fixed;
+	*/font-family: Arial;
+}
+#bigtitle{
+	font-family: "Comic Sans MS";
+	font-size: 82px;
+	outline-width: thin;
+	/*text-align: center;*/
+	margin-top:90px;
+	color: #FFFFFF;
+}
+#smalltitle
+{
+	font-family: "楷体";
+	font-size: 38px;
+	outline-width: thin;
+	/*text-align: center;*/
+	color: #FFFFFF;
+}
+#main
+{
+	width: 80%;
+	margin: 0 auto;
+}
+#top, #search-bar
+{
+	width: 100%;
+	height: 100px;
+	margin: 10px 0;
+	/*background-color:Blue;*/
+}
+#search-bar
+{
+	text-align: center;
+	margin-top:155px;
+}
+#search-bar #search-form
+{
+    font-family:"华文仿宋";
+    font-size: 38px;
+	margin-top: 20px;    
+}
+#search-bar input#keyword 
+{
+	height: 30px;
+	font-size : 30px;
+}
+input#searchbutton
+{
+	width:60px;
+	height:38px;
+}
+
+#sections div.border
+{
+	margin-right: 0;    
+}

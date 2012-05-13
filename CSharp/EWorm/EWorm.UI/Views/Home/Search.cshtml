@@ -1,7 +1,8 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Search";
 }
 <link href="@Url.Content("~/Content/Layout.css")" rel="Stylesheet" type="text/css" />
+@model IEnumerable<EWorm.Model.Goods>
 <html>
 <head>
 <title>EWORM</title>
@@ -13,7 +14,6 @@
             EWORM
         </div>
     </div>
-    <br /><br /><br /><br /><br /><br />
     <div id="search-bar">
         <div class="search-form">
             @using(Html.BeginForm("Search","Home"))
@@ -23,18 +23,22 @@
             }
         </div>
     </div>
-    <div id="bottom">
-        <div class="explain">
-            找到你想要的商品信息
-        </div>
-    </div>
-    <!--<div id="sections">
-    @for(int i=0;i<10;i++){
-        <div class="section"></div>
-        <div class="section"></div>
-        <div class="section border"></div>
+    <div id="sections">
+
+        @foreach (var item in Model)
+        {
+            <div class="section">
+                <div class="result-image-top">
+                    <img src="@item.PictrueUrl" width=100% />
+                </div>
+                <a class="result-title" href="@item.SellingUrl" target="_blank">@item.Title</a><br />
+                <span class="result-text">价格：￥<strong style="color:red">@item.Price</strong></span><br />
+                <div class="more-link">
+                    <a href="#" target="_blank">更多信息</a>
+                </div>
+            </div>
         }
-    </div>-->
+    </div>
 </div>
 </body>
 </html>

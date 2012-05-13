@@ -1,38 +1,116 @@
 ﻿/* File Created: 四月 24, 2012 */
-div
+html, body
 {
-    border: 1px solid black;
+    margin: 0;
+    padding: 0;
+    background: url(mainpic.jpg) no-repeat center fixed;
+    font-family: Arial;
 }
-#top
+#main
+{
+    width: 80%;
+    margin: 0 auto;
+}
+#top, #search-bar,#bottom
 {
     width: 100%;
+    border: 1px solid White;
+    background-color: rgba(255,255,255,0.5);
     height: 100px;
+    margin: 10px 0;
+    border-radius: 10px;
 }
-#middle
+#search-bar
 {
-    margin-top: 10px;
-    border: none;
+    margin-top:40px;
+    text-align: center;
 }
-#left, #body
+.search-form
 {
-    float: left;
+    margin-top: 35px;    
 }
-#left
+#search-bar input#keyword
+{
+    height: 30px;
+    font-size : 18px;
+}
+#sections
+{
+    width: 100%;    
+}
+#sections div.section
 {
     width: 20%;
-    margin-right: -10px;
+    padding: 5px;
+    margin: auto;
+    display: inline-block;
+    vertical-align: top;
+   /* height: 200px;*/
+    overflow: hidden;
+    border: 1px solid White;
+    background-color: rgba(255,255,255,0.5);
+    border-radius: 10px;
+    margin-right: 3%;
+    margin-left: 0;
+    margin-top: 10px;
 }
-#body
+#sections div.border
 {
-    width: 79%;
+    margin-right: 0;    
 }
-#footer
+#big-title
 {
-    background: yellow;
-    height: 100px;
+  	font-family: "Comic Sans MS";
+	font-size: 82px;
+	
+	text-align: center;
+	margin-top:0px;
+	color: #9F5F9F;
 }
-div.round
+.btn-out
 {
-    border-radius: 20px;
-    padding: 30px;
+    background-color: rgba(0,0,0,0.5);
+    border: 0 none;
+    cursor: pointer;
+    font-size: 14px;
+    height: 32px;
+    padding: 0;
+    width: 95px;
+}
+.btn-dowm
+{
+    background-color: rgba(255,255,100,0.5);
+}
+.btn-over
+{
+    background-color: rgba(100,100,100,1);
+}
+#bottom
+{
+    margin-top:70px;
+}
+.explain
+{
+    font-family: "Comic Sans MS";
+	font-size: 30px;
+	
+	text-align: center;
+	margin:20px;
+	color: #5C3317;
+}
+.result-title
+{
+    font-size:13px;
+    float:left;
+    text-align:left;
+}
+.result-text
+{
+    font-size:13px;
+    float:left;
+    text-align:left;
+}
+.more-link
+{
+    float: right;
 }

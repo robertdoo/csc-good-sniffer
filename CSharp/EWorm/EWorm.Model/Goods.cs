@@ -17,6 +17,7 @@ namespace EWorm.Model
         /// </summary>
         public string Title { get; set; }
 
+        public string PictrueUrl { get; set; }
         /// <summary>
         /// 抓下商品信息的原始URL
         /// </summary>

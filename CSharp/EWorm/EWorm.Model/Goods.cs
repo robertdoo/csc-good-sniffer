@@ -40,9 +40,11 @@ namespace EWorm.Model
         /// <summary>
         /// 卖家信用值
         /// </summary>
-        public int SellerCredit { get; set; }
-        
+        public int SellerCredit { get; set; }        
 
+        /// <summary>
+        /// 商品额外属性
+        /// </summary>
         public IEnumerable<Property> Properties { get; set; }
     }
 }

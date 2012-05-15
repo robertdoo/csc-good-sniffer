@@ -43,11 +43,11 @@ namespace EWorm.Crawler
             // 苏宁易购搜索结果搜索结果分页pageNo相差1，首页无pageNo
             if (pageIndex == 0)
             {
-                url = String.Format("http://searchb.dangdang.com/?key={0}", keyword);
+                url = String.Format("http://www.suning.com/emall/Search?storeId=10052&catalogId=10051&searchKeywords={0}", keyword);
             }
             else
             {
-                url = String.Format("http://searchb.dangdang.com/?key={0}&page_index={1}", keyword, pageIndex + 1);
+                url = String.Format("http://www.suning.com/emall/Search?storeId=10052&catalogId=10051&searchKeywords={0}&isList=0&currentPage={1}", keyword, pageIndex);
             }
             return url;
         }

@@ -21,6 +21,7 @@ namespace EWorm.Crawler
             DirectoryCatalog catalog = new DirectoryCatalog(dir);
             CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
+            FetcherCollection = FetcherCollection.Where(x => x.Metadata.Disabled == false).ToList();
         }
 
         public IEnumerable<IGoodsFetcher> GetAllFetcher()

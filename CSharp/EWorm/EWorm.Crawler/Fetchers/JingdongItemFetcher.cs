@@ -10,8 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49",name: "Jingdong",url: "http://www.360buy.com")]
-   
+    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49", name: "Jingdong", url: "http://www.360buy.com", disabled: true)]
     public class JingdongItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -41,7 +40,7 @@ namespace EWorm.Crawler
         private static readonly Regex PropertyPattern = new Regex(@"(<li title=.+?>|<li>)(?<Name>.+?):(?<Value>.+?)</li>", RegexOptions.Compiled);
         #endregion
 
-        
+
 
         /// <summary>
         /// 生成太平洋网站搜索的地址
@@ -112,13 +111,13 @@ namespace EWorm.Crawler
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
-            
+
 
             string itemResult = Http.Get(itemUrl);
 
             Match titleMatch, imageMatch; //priceMatch;  
             titleMatch = TitlePattern.Match(itemResult);
-          //  priceMatch = PricePattern.Match(itemResult);
+            //  priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
@@ -153,7 +152,7 @@ namespace EWorm.Crawler
             return goods;
         }
 
-          
-        
+
+
     }
 }

@@ -10,8 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-   // [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com")]
-   
+   [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com")]   
    public class SuningItemFetcher:IGoodsFetcher
     {
         #region 正则表达式
@@ -31,8 +30,9 @@ namespace EWorm.Crawler
         private static readonly Regex PricePattern = new Regex(@"id=\042salePriceTag\042\s*?>\￥(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
 
         #endregion
+
         /// <summary>
-        /// 生成太平洋网站搜索的地址
+        /// 生成苏宁易购网站搜索的地址
         /// </summary>
         /// <param name="keyword">搜索的关键字</param>
         /// <param name="pageIndex">表明搜索的页码</param>
@@ -40,7 +40,7 @@ namespace EWorm.Crawler
         public string BuildSearchSuningUrl(string keyword, int pageIndex)
         {
             string url;
-            // 太平洋搜索结果搜索结果分页pageNo相差1，首页无pageNo
+            // 苏宁易购搜索结果搜索结果分页pageNo相差1，首页无pageNo
             if (pageIndex == 0)
             {
                 url = String.Format("http://searchb.dangdang.com/?key={0}", keyword);
@@ -51,6 +51,8 @@ namespace EWorm.Crawler
             }
             return url;
         }
+
+
         /// <summary>
         /// 抓取搜索结果中显示的商品
         /// </summary>

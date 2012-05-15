@@ -10,5 +10,6 @@ namespace EWorm.Crawler
         string Guid { get; }
         string Name { get; }
         string Url { get; }
+        bool Disabled { get; }
     }
 }

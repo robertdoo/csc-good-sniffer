@@ -13,13 +13,15 @@ namespace EWorm.Crawler
         public string Guid { get; private set; }
         public string Name { get; private set; }
         public string Url { get; private set; }
+        public bool Disabled { get; private set; }
 
-        public GoodsFetcherAttribute(string guid, string name, string url)
+        public GoodsFetcherAttribute(string guid, string name, string url, bool disabled = false)
             : base(typeof(IGoodsFetcher))
         {
             this.Guid = guid;
             this.Name = name;
             this.Url = url;
+            this.Disabled = disabled;
         }
     }
 }

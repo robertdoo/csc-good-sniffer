@@ -13,9 +13,7 @@ using System.Net;
 
 namespace EWorm.Crawler.Fetchers
 {
-    //[GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com")]
-   
-    
+    [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com", disabled: true)]
     public class AmazonItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -50,7 +48,7 @@ namespace EWorm.Crawler.Fetchers
         private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?):\s*?</b>\s*?(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
         #endregion
 
-    
+
         /// <summary>
         /// 生成亚马逊搜索的地址
         /// </summary>
@@ -113,12 +111,12 @@ namespace EWorm.Crawler.Fetchers
                         {
                             Console.Write(e.Message);
                         }
-                        finally 
+                        finally
                         {
                             Console.Write("");
                         }
                     }
-                    
+
                 }
             }));
             fetchThread.Start();
@@ -133,16 +131,16 @@ namespace EWorm.Crawler.Fetchers
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
-           
+
 
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch,imageMatch;
+            Match titleMatch, priceMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string modifyPrice = priceMatch.Groups["Price"].Value;
-            modifyPrice.Replace(",","");
+            modifyPrice.Replace(",", "");
 
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             //Console.Write(imageurl);
@@ -151,7 +149,7 @@ namespace EWorm.Crawler.Fetchers
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
-              //  Price = Convert.ToDouble(modifyPrice),
+                //  Price = Convert.ToDouble(modifyPrice),
                 SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,
@@ -161,7 +159,7 @@ namespace EWorm.Crawler.Fetchers
             if (propertyListMatch.Success)
             {
                 string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-               // Console.Write(propertyResult);
+                // Console.Write(propertyResult);
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)
@@ -175,7 +173,7 @@ namespace EWorm.Crawler.Fetchers
                 }
                 goods.Properties = properties;
             }
-           
+
             return goods;
         }
 

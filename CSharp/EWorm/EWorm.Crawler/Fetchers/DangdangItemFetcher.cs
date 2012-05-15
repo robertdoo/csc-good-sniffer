@@ -10,8 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    //[GoodsFetcher(guid: "8CD62BE2-640F-A964-09E1-E96C19EDF8BE",name: "Dangdang",url: "http://www.dangdang.com")]
- 
+    [GoodsFetcher(guid: "8CD62BE2-640F-A964-09E1-E96C19EDF8BE", name: "Dangdang", url: "http://www.dangdang.com", disabled: true)]
     public class DangdangItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -43,13 +42,13 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品的属性列表
         /// </summary>
-       // private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
+        // private static readonly Regex PropertyListPattern = new Regex(@"<ul\sclass=\042attributes-list\042\s?>\s+?(?<PropertyList>.+?)</ul>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
         //private static readonly Regex PropertyPattern = new Regex(@"<li.+?>(?<Name>.+?):&nbsp;(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
-        #endregion                                                
+        #endregion
 
 
         /// <summary>
@@ -123,14 +122,14 @@ namespace EWorm.Crawler
         {
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch,priceMatch,creditMatch,imageMatch;
+            Match titleMatch, priceMatch, creditMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
 
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
-            
+
             string downloadedImage = Http.DownloadImage(imageurl);
 
             Goods goods = new Goods()
@@ -145,7 +144,7 @@ namespace EWorm.Crawler
             return goods;
         }
 
-        public int CalculateDangdangCredit(string level1, string level2,string level3, string level4, string level5)
+        public int CalculateDangdangCredit(string level1, string level2, string level3, string level4, string level5)
         {
             if (String.IsNullOrWhiteSpace(level1) || String.IsNullOrWhiteSpace(level2) || String.IsNullOrWhiteSpace(level3) || String.IsNullOrWhiteSpace(level4) || String.IsNullOrWhiteSpace(level5))
             {
@@ -153,15 +152,15 @@ namespace EWorm.Crawler
             }
             int credit = 0;
             Console.Write(level1);
-            switch (level1) 
+            switch (level1)
             {
-                case"star_red":
+                case "star_red":
                     credit += 10;
                     break;
-                case"star_red2":
+                case "star_red2":
                     credit += 5;
                     break;
-                case"star_gray":
+                case "star_gray":
                     credit += 0;
                     break;
             }
@@ -215,7 +214,7 @@ namespace EWorm.Crawler
             }
 
             return credit;
-        
+
         }
     }
 }

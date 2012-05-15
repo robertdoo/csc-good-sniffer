@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetcher
 {
-    //[GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com")]
+    [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com", disabled: true)]
     public class PconlineItemFetcher : IGoodsFetcher
     {
         #region 正则表达式

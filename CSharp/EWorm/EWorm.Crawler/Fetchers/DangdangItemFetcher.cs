@@ -151,7 +151,7 @@ namespace EWorm.Crawler
                 return 0;
             }
             int credit = 0;
-            Console.Write(level1);
+           // Console.Write(level1);
             switch (level1)
             {
                 case "star_red":

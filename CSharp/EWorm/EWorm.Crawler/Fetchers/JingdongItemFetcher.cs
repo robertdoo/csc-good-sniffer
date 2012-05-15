@@ -10,7 +10,9 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
+
     [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49", name: "Jingdong", url: "http://www.360buy.com", disabled: true)]
+
     public class JingdongItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -134,7 +136,7 @@ namespace EWorm.Crawler
             if (propertyListMatch.Success)
             {
                 string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-                Console.Write(propertyResult);
+               // Console.Write(propertyResult);
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)

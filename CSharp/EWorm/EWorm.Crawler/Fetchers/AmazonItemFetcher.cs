@@ -13,7 +13,10 @@ using System.Net;
 
 namespace EWorm.Crawler.Fetchers
 {
+
     [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com", disabled: true)]
+   
+    
     public class AmazonItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -30,7 +33,7 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"<b class=\042priceLarge\042>￥ (?<Price>.+?)</b>", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"￥\s*?(?<Price>.+?)</b>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的图片url
@@ -140,8 +143,15 @@ namespace EWorm.Crawler.Fetchers
             priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string modifyPrice = priceMatch.Groups["Price"].Value;
-            modifyPrice.Replace(",", "");
 
+            if (modifyPrice == "")
+            { 
+                modifyPrice = "0"; 
+            }
+            Console.Write(modifyPrice);
+            modifyPrice.Replace(",","");
+
+           
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             //Console.Write(imageurl);
             string downloadedImage = Http.DownloadImage(imageurl);
@@ -149,7 +159,11 @@ namespace EWorm.Crawler.Fetchers
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
+
+                Price = Convert.ToDouble(modifyPrice),
+
                 //  Price = Convert.ToDouble(modifyPrice),
+
                 SellerCredit = -1,
                 SellingUrl = itemUrl,
                 UpdateTime = DateTime.Now,

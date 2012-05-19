@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace EWorm.Crawler.Fetcher
 {
-    [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com", disabled: true)]
+    [GoodsFetcher(guid: "6D9C16BD-02C1-4E55-A7DE-7365E21A228F", name: "Pconline", url: "http://www.pconline.com", disabled: false)]
     public class PconlineItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -26,9 +26,14 @@ namespace EWorm.Crawler.Fetcher
         private static readonly Regex TitlePattern = new Regex(@"<div class=\042hd clearfix\042>\s*?<h1>(?<Title>.+?)</h1>", RegexOptions.Compiled);
 
         /// <summary>
+        /// 匹配商品页面上商品的价格的url
+        /// </summary>
+        private static readonly Regex PriceUrlPattern = new Regex(@"<em id=\042curPrice\042></em>\s*?<a href=\042(?<PriceUrl>.+?)\042\s*?target=\042_blank\042>", RegexOptions.Compiled);
+
+        /// <summary>
         /// 匹配商品页面上商品的价格
         /// </summary>
-        private static readonly Regex PricePattern = new Regex(@"i class=\042price\042>(?<Price>\d+?)</i>", RegexOptions.Compiled);
+        private static readonly Regex PricePattern = new Regex(@"<span>￥<i class=\042price\042>(?<Price>\d+?)</i>	</span>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的图片url
@@ -117,23 +122,44 @@ namespace EWorm.Crawler.Fetcher
         {
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, priceMatch, imageMatch;
+            Match titleMatch, priceMatch, imageMatch, priceUrlMatch ;
+            priceUrlMatch = PriceUrlPattern.Match(itemResult);
             titleMatch = TitlePattern.Match(itemResult);
-            priceMatch = PricePattern.Match(itemResult);
+           
             imageMatch = ImagePattern.Match(itemResult);
-
+            string priceurl = priceUrlMatch.Groups["PriceUrl"].Value;
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
-            //Console.Write(imageurl);
             string downloadedImage = Http.DownloadImage(imageurl);
-            Goods goods = new Goods()
+            Goods goods = new Goods();
+            if (priceurl != null)
             {
-                Title = titleMatch.Groups["Title"].Value,
-                //Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                SellerCredit = -1,
-                SellingUrl = itemUrl,
-                UpdateTime = DateTime.Now,
-                ImagePath = downloadedImage,
-            };
+                string priceResult = Http.Get(priceurl);
+                priceMatch = PricePattern.Match(priceResult);
+                //Console.Write(priceMatch.Groups["Price"].Value);
+                
+                goods = new Goods()
+                {
+                    Title = titleMatch.Groups["Title"].Value,
+                    Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                    SellerCredit = -1,
+                    SellingUrl = itemUrl,
+                    UpdateTime = DateTime.Now,
+                    ImagePath = downloadedImage,
+                };
+
+            }
+            else
+            {
+                goods = new Goods()
+                {
+                    Title = titleMatch.Groups["Title"].Value,
+                    Price = 0,
+                    SellerCredit = -1,
+                    SellingUrl = itemUrl,
+                    UpdateTime = DateTime.Now,
+                    ImagePath = downloadedImage,
+                };
+            }
             Match propertyListMatch = PropertyListPattern.Match(itemResult);
             if (propertyListMatch.Success)
             {

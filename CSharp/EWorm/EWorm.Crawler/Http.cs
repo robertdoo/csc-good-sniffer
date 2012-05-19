@@ -19,8 +19,6 @@ namespace EWorm.Crawler
         /// <returns></returns>
         public static String Get(String url, Encoding encoding)
         {
-            
-            
                 WebClient client = new WebClient();
                 client.Encoding = encoding;
                 Uri uri = new Uri(url);

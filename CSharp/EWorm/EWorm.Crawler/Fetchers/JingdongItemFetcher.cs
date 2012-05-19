@@ -11,7 +11,7 @@ using System.Threading;
 namespace EWorm.Crawler
 {
 
-    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49", name: "Jingdong", url: "http://www.360buy.com", disabled: true)]
+    [GoodsFetcher(guid: "6EC22A43-9393-7106-C5D4-5C8FB886EA49", name: "Jingdong", url: "http://www.360buy.com", disabled: false)]
 
     public class JingdongItemFetcher : IGoodsFetcher
     {
@@ -25,6 +25,12 @@ namespace EWorm.Crawler
         /// 匹配商品页面上商品的标题
         /// </summary>
         private static readonly Regex TitlePattern = new Regex(@"<h1>(?<Title>.+?)<[/,f]", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配商品页面上商品的价格
+        /// </summary>
+        private static readonly Regex PricePattern = new Regex(@"￥\s*?(?<Price>.+?)</b>", RegexOptions.Compiled);
+
 
         /// <summary>
         /// 匹配商品页面上商品的图片url
@@ -117,12 +123,15 @@ namespace EWorm.Crawler
 
             string itemResult = Http.Get(itemUrl);
 
-            Match titleMatch, imageMatch; //priceMatch;  
+            Match titleMatch, imageMatch ; //priceMatch;  
             titleMatch = TitlePattern.Match(itemResult);
+           
             //  priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
+            
+
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,

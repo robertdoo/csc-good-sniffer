@@ -89,7 +89,7 @@ namespace EWorm.Crawler.Fetchers
                 while (fetched.Count < limit)
                 {
                     string searchUrl = BuildSearchAmazonUrl(keyword, page++);
-                    string searchResult = Http.Get(searchUrl);
+                    string searchResult = Http.Get(searchUrl,Encoding.Unicode);
 
                     // 匹配出商品的Url
                     var itemMatches = ItemUrlPattern.Matches(searchResult);

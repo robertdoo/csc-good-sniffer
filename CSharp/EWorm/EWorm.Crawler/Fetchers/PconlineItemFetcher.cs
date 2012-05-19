@@ -28,7 +28,7 @@ namespace EWorm.Crawler.Fetcher
         /// <summary>
         /// 匹配商品页面上商品的价格的url
         /// </summary>
-        private static readonly Regex PriceUrlPattern = new Regex(@"<em id=\042curPrice\042></em>\s*?<a href=\042(?<PriceUrl>.+?)\042\s*?target=\042_blank\042>", RegexOptions.Compiled);
+        private static readonly Regex PriceUrlPattern = new Regex(@"<em id=\042curPrice\042></em>\s+?<a href=\042(?<PriceUrl>.+?)\042\s+?target=\042_blank\042>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的价格
@@ -128,27 +128,11 @@ namespace EWorm.Crawler.Fetcher
            
             imageMatch = ImagePattern.Match(itemResult);
             string priceurl = priceUrlMatch.Groups["PriceUrl"].Value;
+            //Console.Write(priceurl);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
             Goods goods = new Goods();
-            if (priceurl != null)
-            {
-                string priceResult = Http.Get(priceurl);
-                priceMatch = PricePattern.Match(priceResult);
-                //Console.Write(priceMatch.Groups["Price"].Value);
-                
-                goods = new Goods()
-                {
-                    Title = titleMatch.Groups["Title"].Value,
-                    Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                    SellerCredit = -1,
-                    SellingUrl = itemUrl,
-                    UpdateTime = DateTime.Now,
-                    ImagePath = downloadedImage,
-                };
-
-            }
-            else
+            if (priceurl == "")//如果该商品未上市或者已经过期标价均记为0
             {
                 goods = new Goods()
                 {
@@ -159,6 +143,24 @@ namespace EWorm.Crawler.Fetcher
                     UpdateTime = DateTime.Now,
                     ImagePath = downloadedImage,
                 };
+               
+            }
+            else
+            {
+                string priceResult = Http.Get(priceurl);
+                priceMatch = PricePattern.Match(priceResult);
+                //Console.Write(priceMatch.Groups["Price"].Value);
+
+                goods = new Goods()
+                {
+                    Title = titleMatch.Groups["Title"].Value,
+                    Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                    SellerCredit = -1,
+                    SellingUrl = itemUrl,
+                    UpdateTime = DateTime.Now,
+                    ImagePath = downloadedImage,
+                };
+
             }
             Match propertyListMatch = PropertyListPattern.Match(itemResult);
             if (propertyListMatch.Success)

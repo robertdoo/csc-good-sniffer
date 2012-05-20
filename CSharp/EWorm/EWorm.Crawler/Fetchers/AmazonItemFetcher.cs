@@ -14,7 +14,7 @@ using System.Net;
 namespace EWorm.Crawler.Fetchers
 {
 
-    [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com", disabled: true)]
+    [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com", disabled: false)]
    
     
     public class AmazonItemFetcher : IGoodsFetcher

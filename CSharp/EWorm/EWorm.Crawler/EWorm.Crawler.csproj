@@ -65,6 +65,7 @@
     <Compile Include="Fetchers\JingdongItemFetcher.cs" />
     <Compile Include="Fetchers\PconlineItemFetcher.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="JobStatus.cs" />
     <Compile Include="Jobs\FetchGoodsJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fetchers\SuningItemFetcher.cs" />
@@ -75,6 +76,9 @@
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Eworm爬虫算法设计.pptx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

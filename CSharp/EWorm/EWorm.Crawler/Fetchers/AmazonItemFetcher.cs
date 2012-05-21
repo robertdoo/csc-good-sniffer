@@ -72,6 +72,7 @@ namespace EWorm.Crawler.Fetchers
             }
             return url;
         }
+
         /// <summary>
         /// 抓取搜索结果中显示的商品
         /// </summary>
@@ -134,8 +135,6 @@ namespace EWorm.Crawler.Fetchers
         /// <returns></returns>
         private Goods FetchGoods(string itemUrl)
         {
-
-
             string itemResult = Http.Get(itemUrl);
 
             Match titleMatch, priceMatch, imageMatch;

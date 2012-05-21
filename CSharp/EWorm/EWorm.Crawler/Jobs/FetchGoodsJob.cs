@@ -13,8 +13,9 @@ namespace EWorm.Crawler.Jobs
         public int Depth { get; set; }
 
         /// <summary>
-        /// 
+        /// 需要抓取的商品的URL
         /// </summary>
         public string Url { get; set; }
+
     }
 }

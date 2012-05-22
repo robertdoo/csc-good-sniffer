@@ -68,10 +68,9 @@ namespace EWorm.Crawler.Fetchers
             return url;
         }
 
-        public void FetchByKeyword(string keyword, int limit)
+        IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
-            Thread fetchThread = new Thread(new ThreadStart(delegate
-            {
+            
                 // 记录已经抓过的Url（去重复）
                 var fetched = new HashSet<string>();
 
@@ -84,35 +83,31 @@ namespace EWorm.Crawler.Fetchers
                     // 匹配出商品的Url
                     var itemMatches = ItemUrlPattern.Matches(searchResult);
                     if (itemMatches.Count == 0)
-                        return;
+                        return new List<Uri>();
                     foreach (var itemMatch in itemMatches.OfType<Match>())
                     {
                         string itemUrl = itemMatch.Groups["Url"].Value;
                         if (!fetched.Contains(itemUrl))
                         {
-                            Goods goods = FetchGoods(itemUrl);
-                            if (OnGoodsFetched != null)
-                            {
-                                OnGoodsFetched.BeginInvoke(this, goods, null, null);
-                            }
                             fetched.Add(itemUrl);
                         }
                     }
                 }
-            }));
-            fetchThread.Start();
+            
+           
+            return fetched.Select(x => new Uri(x));
         }
 
-        public event GoodsFetchedEvent OnGoodsFetched;
+       
 
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(string itemUrl)
+        private Goods FetchGoods(Uri goodsUri)
         {
-            string itemResult = Http.Get(itemUrl);
+            string itemResult = Http.Get(goodsUri.ToString());
 
             Match titleMatch, priceMatch, creditMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
@@ -128,7 +123,7 @@ namespace EWorm.Crawler.Fetchers
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
                 SellerCredit = CalculateTaobaoCredit(creditMatch.Groups["Level1"].Value, creditMatch.Groups["Level2"].Value),
-                SellingUrl = itemUrl,
+                SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage
             };

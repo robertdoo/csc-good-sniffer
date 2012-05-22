@@ -70,10 +70,8 @@ namespace EWorm.Crawler
         /// <param name="keyword">要搜索的商品的关键字</param>
         /// <param name="pageToFetch">表明要抓取多少页的商品</param>
         /// <returns></returns>
-        public void FetchByKeyword(string keyword, int limit)
-        {
-            Thread fetchThread = new Thread(new ThreadStart(delegate
-            {
+        public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
+        {          
                 // 记录已经抓过的Id（去重复）
                 var fetched = new HashSet<string>();
 
@@ -85,23 +83,17 @@ namespace EWorm.Crawler
                 
                 if (idMatches.Count == 0)
                 {
-                    return;
+                    return new List<Uri>();
                 }
                 foreach (var itemMatch in idMatches.OfType<Match>())
                 {
                     string catentry_Id = itemMatch.Groups["CatentryId"].Value;
                     if (!fetched.Contains(catentry_Id))
                     {
-                        Goods goods = FetchGoods(BuildShopItemUrl(catentry_Id), catentry_Id);
-                        if (OnGoodsFetched != null)
-                        {
-                            OnGoodsFetched.BeginInvoke(this, goods, null, null);
-                        }
                         fetched.Add(catentry_Id);
                     }
                 }
-            }));
-            fetchThread.Start();
+                return fetched.Select(x => new Uri(x));
         }
 
         public event GoodsFetchedEvent OnGoodsFetched;
@@ -110,10 +102,10 @@ namespace EWorm.Crawler
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(string itemUrl,string catentry_Id)
+        private Goods FetchGoods(Uri goodsUri, string catentry_Id)
         {
             string priceUrl = String.Format("http://www.suning.com/emall/SNProductStatusView?storeId=10052&catalogId=10051&productId={0}&langId=-7&cityId=9173&_=1337310463016", catentry_Id);
-            string itemResult = Http.Get(itemUrl);
+            string itemResult = Http.Get(goodsUri.ToString());
             string priceResult = Http.Get(priceUrl);
             Match titleMatch, priceMatch,imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
@@ -128,7 +120,7 @@ namespace EWorm.Crawler
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
                 SellerCredit = -1,
-                SellingUrl = itemUrl,
+                SellingUrl = goodsUri.ToString(),
                 ImagePath = downloadedImage,
                 UpdateTime = DateTime.Now,
             };

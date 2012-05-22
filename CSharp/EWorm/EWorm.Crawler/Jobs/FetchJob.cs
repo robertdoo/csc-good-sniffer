@@ -7,6 +7,13 @@ namespace EWorm.Crawler.Jobs
 {
     class FetchJob : Job
     {
+        public FetchJob(Job creator, IGoodsFetcher fetcher, Uri uri) : base(creator) 
+        {
+            this.Fetcher = fetcher;
+            this.Uri = uri;
+            this.Priority = creator.Priority;
+        }
+
         /// <summary>
         /// 当前抓取的深度
         /// </summary>
@@ -15,7 +22,11 @@ namespace EWorm.Crawler.Jobs
         /// <summary>
         /// 需要抓取的商品的URL
         /// </summary>
-        public string Url { get; set; }
+        public Uri Uri { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public IGoodsFetcher Fetcher { get; set; }
     }
 }

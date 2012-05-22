@@ -19,5 +19,10 @@ namespace EWorm.Crawler.Jobs
             SearchJob job = new SearchJob(this, this.Context, keyword, 50);
             this.Context.JobQueue.Enqueue(job);
         }
+
+        public override string ToString()
+        {
+            return String.Format("KeywordSelect({0})", this.Priority);
+        }
     }
 }

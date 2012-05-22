@@ -21,6 +21,7 @@ namespace EWorm.Crawler.Jobs
             if (this.WorkingThread == null)
             {
                 this.WorkingThread = new Thread(new ThreadStart(this.GetJobAndWork));
+                this.WorkingThread.Start();
             }
         }
 
@@ -30,7 +31,7 @@ namespace EWorm.Crawler.Jobs
             SearchJob job = new SearchJob(this, this.Context, keyword, 50);
             job.Priority = 9;
             this.Context.JobQueue.Enqueue(job);
-            if (this.WorkingThread.ThreadState == ThreadState.Suspended)
+            if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)
             {
                 this.WorkingThread.Interrupt();
             }
@@ -43,6 +44,7 @@ namespace EWorm.Crawler.Jobs
                 while (this.Context.JobQueue.HasJob)
                 {
                     Job job = this.Context.JobQueue.Dequeue();
+                    Crawler.NotifyJobQueueChange(this.Context.JobQueue.GetAll());
                     job.Work();
                 }
                 try
@@ -54,6 +56,11 @@ namespace EWorm.Crawler.Jobs
                     continue;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return "ActivateJob";
         }
     }
 }

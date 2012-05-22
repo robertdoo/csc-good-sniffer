@@ -58,7 +58,6 @@
     <Compile Include="Fetchers\DangdangItemFetcher.cs" />
     <Compile Include="GoodsBufferPool.cs" />
     <Compile Include="GoodsFetcherAttribute.cs" />
-    <Compile Include="GoodsFetcherEvents.cs" />
     <Compile Include="GoodsFetcherManager.cs" />
     <Compile Include="GoodStorage.cs" />
     <Compile Include="Http.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Fetchers\PconlineItemFetcher.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="JobQueue.cs" />
+    <Compile Include="JobQueueChangeEventArgs.cs" />
     <Compile Include="JobStatus.cs" />
     <Compile Include="Jobs\ActivateJob.cs" />
     <Compile Include="Jobs\FetchJob.cs" />
@@ -75,6 +75,7 @@
     <Compile Include="Jobs\KeywordSelectJob.cs" />
     <Compile Include="Jobs\SearchJob.cs" />
     <Compile Include="KeywordQueue.cs" />
+    <Compile Include="KeywordQueueChangeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fetchers\SuningItemFetcher.cs" />
     <Compile Include="Fetchers\TaobaoItemFetcher.cs" />

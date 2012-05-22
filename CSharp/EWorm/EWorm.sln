@@ -13,7 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.Analysis", "EWorm.Ana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.ConsoleTester", "EWorm.ConsoleTester\EWorm.ConsoleTester.csproj", "{AE87D178-9232-405E-A143-6BEEC5FC7ED6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.FormTester", "EWorm.FormTester\EWorm.FormTester.csproj", "{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+		Svn-Managed = True
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -53,6 +59,16 @@ Global
 		{68933AED-1400-4363-97CC-C7E0DA57E248}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{68933AED-1400-4363-97CC-C7E0DA57E248}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{68933AED-1400-4363-97CC-C7E0DA57E248}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}.Release|x86.ActiveCfg = Release|Any CPU
 		{AE87D178-9232-405E-A143-6BEEC5FC7ED6}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{AE87D178-9232-405E-A143-6BEEC5FC7ED6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{AE87D178-9232-405E-A143-6BEEC5FC7ED6}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -86,9 +102,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(SubversionScc) = preSolution
-		Manager = AnkhSVN - Subversion Support for Visual Studio
-		Svn-Managed = True
 	EndGlobalSection
 EndGlobal

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EWorm.Crawler
 {
-    public class GoodsFetcherManager
+    class GoodsFetcherManager
     {
         private static GoodsFetcherManager _instance = new GoodsFetcherManager();
         public static GoodsFetcherManager Instance { get { return _instance; } }

@@ -22,19 +22,31 @@ namespace EWorm.Crawler.Jobs
         {
             var fetchers = GoodsFetcherManager.Instance.GetAllFetcher();
             int sizePerFetcher = LimitSize / fetchers.Count();
+            List<FetchJob> fetchJobList = new List<FetchJob>();
+            Random rand = new Random();
             foreach (var fetcher in fetchers)
             {
                 IEnumerable<Uri> uriList = fetcher.GetGoodsUriByKeyowrd(this.Keyword, sizePerFetcher);
                 foreach (var uri in uriList)
                 {
                     FetchJob job = new FetchJob(this, Context, fetcher, uri);
-                    this.Context.JobQueue.Enqueue(job);
+                    fetchJobList.Insert(rand.Next(fetchJobList.Count),job);
                 }
             }
             KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this, Context);
             FilterJob filterJob = new FilterJob(this, Context);
-            this.Context.JobQueue.Enqueue(keywordSelectJob);
 
+            foreach (var fetchJob in fetchJobList)
+            {
+                this.Context.JobQueue.Enqueue(fetchJob);
+            }
+            this.Context.JobQueue.Enqueue(keywordSelectJob);
+            this.Context.JobQueue.Enqueue(filterJob);
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Search({0})", this.Priority);
         }
     }
 }

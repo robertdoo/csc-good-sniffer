@@ -8,9 +8,7 @@ namespace EWorm.Crawler
 {
     public interface IGoodsFetcher
     {
-        void FetchByKeyword(string keyword, int limit);
-        string Search(string keyword, int page);
-        IEnumerable<Uri> FindGoodsUri(string content);
-        event GoodsFetchedEvent OnGoodsFetched;
+        IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int count);
+        Goods FetchGoods(Uri goodsUri);
     }
 }

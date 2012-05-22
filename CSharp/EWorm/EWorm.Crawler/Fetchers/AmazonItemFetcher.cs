@@ -15,8 +15,6 @@ namespace EWorm.Crawler.Fetchers
 {
 
     [GoodsFetcher(guid: "44351351-EDB7-479A-88D7-AC2ECC5232AC", name: "Amazon", url: "http://www.amazon.com", disabled: false)]
-   
-    
     public class AmazonItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -73,69 +71,48 @@ namespace EWorm.Crawler.Fetchers
             return url;
         }
 
-        /// <summary>
-        /// 抓取搜索结果中显示的商品
-        /// </summary>
-        /// <param name="keyword">要搜索的商品的关键字</param>
-        /// <param name="pageToFetch">表明要抓取多少页的商品</param>
-        /// <returns></returns>
-        public void FetchByKeyword(string keyword, int limit)
+        public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
-            Thread fetchThread = new Thread(new ThreadStart(delegate
+            // 记录已经抓过的Url（去重复）
+            var fetched = new HashSet<string>();
+
+            int page = 0;
+            while (fetched.Count < limit)
             {
-                // 记录已经抓过的Url（去重复）
-                var fetched = new HashSet<string>();
+                string searchUrl = BuildSearchAmazonUrl(keyword, page++);
+                string searchResult = Http.Get(searchUrl, Encoding.Unicode);
 
-                int page = 0;
-                while (fetched.Count < limit)
+                // 匹配出商品的Url
+                var itemMatches = ItemUrlPattern.Matches(searchResult);
+                if (itemMatches.Count == 0)
+                    return new List<Uri>();
+                foreach (var itemMatch in itemMatches.OfType<Match>())
                 {
-                    string searchUrl = BuildSearchAmazonUrl(keyword, page++);
-                    string searchResult = Http.Get(searchUrl,Encoding.Unicode);
-
-                    // 匹配出商品的Url
-                    var itemMatches = ItemUrlPattern.Matches(searchResult);
-                    if (itemMatches.Count == 0)
-                        return;
-                    foreach (var itemMatch in itemMatches.OfType<Match>())
+                    try
                     {
-                        try
+                        string itemUrl = itemMatch.Groups["Url"].Value;
+                        if (!fetched.Contains(itemUrl))
                         {
-                            string itemUrl = itemMatch.Groups["Url"].Value;
-                            if (!fetched.Contains(itemUrl))
-                            {
-                                Goods goods = FetchGoods(itemUrl);
-                                if (OnGoodsFetched != null)
-                                {
-                                    OnGoodsFetched.BeginInvoke(this, goods, null, null);
-                                }
-                                fetched.Add(itemUrl);
-                            }
-                        }
-                        catch (WebException e)
-                        {
-                            Console.Write(e.Message);
-                        }
-                        finally
-                        {
-                            Console.Write("");
+                            fetched.Add(itemUrl);
                         }
                     }
-
+                    catch (WebException e)
+                    {
+                        Console.Write(e.Message);
+                    }
                 }
-            }));
-            fetchThread.Start();
+            }
+            return fetched.Select(x => new Uri(x));
         }
-
-        public event GoodsFetchedEvent OnGoodsFetched;
 
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(string itemUrl)
+        public Goods FetchGoods(Uri goodsUri)
         {
-            string itemResult = Http.Get(itemUrl);
+            string itemResult = Http.Get(goodsUri.ToString());
 
             Match titleMatch, priceMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
@@ -144,13 +121,13 @@ namespace EWorm.Crawler.Fetchers
             string modifyPrice = priceMatch.Groups["Price"].Value;
 
             if (modifyPrice == "")
-            { 
-                modifyPrice = "0"; 
+            {
+                modifyPrice = "0";
             }
             Console.Write(modifyPrice);
-            modifyPrice.Replace(",","");
+            modifyPrice.Replace(",", "");
 
-           
+
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             //Console.Write(imageurl);
             string downloadedImage = Http.DownloadImage(imageurl);
@@ -164,7 +141,7 @@ namespace EWorm.Crawler.Fetchers
                 //  Price = Convert.ToDouble(modifyPrice),
 
                 SellerCredit = -1,
-                SellingUrl = itemUrl,
+                SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
             };
@@ -189,6 +166,5 @@ namespace EWorm.Crawler.Fetchers
 
             return goods;
         }
-
     }
 }

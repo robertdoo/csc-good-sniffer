@@ -47,13 +47,6 @@ namespace EWorm.Crawler
             return choosen.Metadata;
         }
 
-        public void FetchByKeywordInAllShops(string keyword, int limitInEachShop)
-        {
-            foreach (var fetcher in GetAllFetcher())
-            {
-                fetcher.FetchByKeyword(keyword, limitInEachShop);
-            }
-        }
     }
 
 }

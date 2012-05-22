@@ -7,7 +7,8 @@ namespace EWorm.Crawler.Jobs
 {
     class FetchJob : Job
     {
-        public FetchJob(Job creator, IGoodsFetcher fetcher, Uri uri) : base(creator) 
+        public FetchJob(Job creator, Crawler context, IGoodsFetcher fetcher, Uri uri)
+            : base(creator, context)
         {
             this.Fetcher = fetcher;
             this.Uri = uri;
@@ -25,8 +26,14 @@ namespace EWorm.Crawler.Jobs
         public Uri Uri { get; set; }
 
         /// <summary>
-        /// 
+        /// 抓取商品的Fetcher
         /// </summary>
         public IGoodsFetcher Fetcher { get; set; }
+
+        public override void Work()
+        {
+            var goods = Fetcher.FetchGoods(this.Uri);
+            this.Context.GoodsBufferPool.Put(goods);
+        }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="GoodsFetcherAttribute.cs" />
     <Compile Include="GoodsFetcherEvents.cs" />
     <Compile Include="GoodsFetcherManager.cs" />
+    <Compile Include="GoodStorage.cs" />
     <Compile Include="Http.cs" />
     <Compile Include="IGoodsFetcher.cs" />
     <Compile Include="IGoodsFetcherMetadata.cs" />

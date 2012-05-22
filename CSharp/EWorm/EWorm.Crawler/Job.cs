@@ -33,9 +33,10 @@ namespace EWorm.Crawler
         /// <param name="context"></param>
         public abstract void Work();
 
-        public Job(Job creator)
+        public Job(Job creator, Crawler context)
         {
             this.Creator = creator;
+            this.Context = context;
         }
     }
 }

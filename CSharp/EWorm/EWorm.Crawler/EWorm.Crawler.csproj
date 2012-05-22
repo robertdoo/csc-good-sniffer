@@ -34,12 +34,6 @@
     <Reference Include="Ivony.Core">
       <HintPath>lib\Jumony\Ivony.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Ivony.Html">
-      <HintPath>lib\Jumony\Ivony.Html.dll</HintPath>
-    </Reference>
-    <Reference Include="Ivony.Html.Parser">
-      <HintPath>lib\Jumony\Ivony.Html.Parser.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />

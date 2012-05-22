@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using EWorm.Model;
 using System.Text.RegularExpressions;
-using Ivony.Html.Parser;
-using Ivony.Html;
 using System.Threading;
 
 namespace EWorm.Crawler.Fetchers

@@ -68,7 +68,7 @@ namespace EWorm.Crawler.Fetchers
             return url;
         }
 
-        IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
+        public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
             
                 // 记录已经抓过的Url（去重复）
@@ -105,7 +105,7 @@ namespace EWorm.Crawler.Fetchers
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(Uri goodsUri)
+        public Goods FetchGoods(Uri goodsUri)
         {
             string itemResult = Http.Get(goodsUri.ToString());
 

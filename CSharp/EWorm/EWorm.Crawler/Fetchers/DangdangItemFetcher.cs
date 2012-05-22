@@ -113,7 +113,7 @@ namespace EWorm.Crawler
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(Uri goodsUri)
+        public Goods FetchGoods(Uri goodsUri)
         {
             string itemResult = Http.Get(goodsUri.ToString());
 

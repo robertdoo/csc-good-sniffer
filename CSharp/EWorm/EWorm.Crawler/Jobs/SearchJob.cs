@@ -10,9 +10,10 @@ namespace EWorm.Crawler.Jobs
         public String Keyword { get; set; }
         public int LimitSize { get; set; }
 
-        public SearchJob(Job creator, int limitSize)
-            : base(creator)
+        public SearchJob(Job creator, Crawler context, string keyword, int limitSize)
+            : base(creator, context)
         {
+            this.Keyword = keyword;
             this.LimitSize = limitSize;
             this.Priority = creator.Priority;
         }
@@ -26,12 +27,12 @@ namespace EWorm.Crawler.Jobs
                 IEnumerable<Uri> uriList = fetcher.GetGoodsUriByKeyowrd(this.Keyword, sizePerFetcher);
                 foreach (var uri in uriList)
                 {
-                    FetchJob job = new FetchJob(this, fetcher, uri);
+                    FetchJob job = new FetchJob(this, Context, fetcher, uri);
                     this.Context.JobQueue.Enqueue(job);
                 }
             }
-            KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this);
-            FilterJob filterJob = new FilterJob(this);
+            KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this, Context);
+            FilterJob filterJob = new FilterJob(this, Context);
             this.Context.JobQueue.Enqueue(keywordSelectJob);
 
         }

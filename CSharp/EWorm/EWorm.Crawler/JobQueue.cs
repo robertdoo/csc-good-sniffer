@@ -9,6 +9,7 @@ namespace EWorm.Crawler
     {
         private List<Job> PendingJobs { get; set; }
         private int QueueLimit { get; set; }
+        private object sync = new object();
 
         public JobQueue(int capacity)
         {
@@ -17,23 +18,37 @@ namespace EWorm.Crawler
 
         public JobQueue() : this(1000) { }
 
+        public void Clear()
+        {
+            lock (sync)
+            {
+                PendingJobs.Clear();
+            }
+        }
+
         public void Enqueue(Job job)
         {
-            int insertPos = FindInsertPointForJob(job);
-            PendingJobs.Insert(insertPos, job);
-            if (PendingJobs.Count > QueueLimit)
+            lock (sync)
             {
-                PendingJobs.Remove(PendingJobs.Last());
+                int insertPos = FindInsertPointForJob(job);
+                PendingJobs.Insert(insertPos, job);
+                if (PendingJobs.Count > QueueLimit)
+                {
+                    PendingJobs.Remove(PendingJobs.Last());
+                }
             }
         }
 
         public Job Dequeue()
         {
-            if (PendingJobs.Count == 0)
-                return null;
-            Job head = PendingJobs[0];
-            PendingJobs.Remove(head);
-            return head;
+            lock (sync)
+            {
+                if (PendingJobs.Count == 0)
+                    return null;
+                Job head = PendingJobs[0];
+                PendingJobs.Remove(head);
+                return head;
+            }
         }
 
         private int FindInsertPointForJob(Job job)
@@ -44,5 +59,7 @@ namespace EWorm.Crawler
                 insertPos--;
             return insertPos;
         }
+
+        public bool HasJob { get { return this.PendingJobs.Count > 0; } }
     }
 }

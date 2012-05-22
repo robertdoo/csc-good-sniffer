@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EWorm.Model;
 
 namespace EWorm.Crawler
 {
-    public enum JobStatus
+    class GoodStorage
     {
-        Pending,
-        Running,
-        Finished,
-        Delayed,
+        public void SaveGoods(IEnumerable<Goods> goods)
+        {
+
+        }
     }
 }

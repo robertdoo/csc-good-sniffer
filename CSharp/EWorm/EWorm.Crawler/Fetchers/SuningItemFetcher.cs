@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com", disabled: false)]
+    [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com", disabled: true)]
     public class SuningItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -102,7 +102,7 @@ namespace EWorm.Crawler
         /// </summary>
         /// <param name="itemUrl">商品的Url</param>
         /// <returns></returns>
-        private Goods FetchGoods(Uri goodsUri, string catentry_Id)
+        public Goods FetchGoods(Uri goodsUri, string catentry_Id)
         {
             string priceUrl = String.Format("http://www.suning.com/emall/SNProductStatusView?storeId=10052&catalogId=10051&productId={0}&langId=-7&cityId=9173&_=1337310463016", catentry_Id);
             string itemResult = Http.Get(goodsUri.ToString());
@@ -146,5 +146,15 @@ namespace EWorm.Crawler
             }
             return goods;
         }
+
+        #region IGoodsFetcher 成员
+
+
+        public Goods FetchGoods(Uri goodsUri)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

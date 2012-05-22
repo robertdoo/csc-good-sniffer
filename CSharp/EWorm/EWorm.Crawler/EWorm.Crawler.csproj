@@ -56,6 +56,7 @@
     <Compile Include="Crawler.cs" />
     <Compile Include="Fetchers\AmazonItemFetcher.cs" />
     <Compile Include="Fetchers\DangdangItemFetcher.cs" />
+    <Compile Include="GoodsBufferPool.cs" />
     <Compile Include="GoodsFetcherAttribute.cs" />
     <Compile Include="GoodsFetcherEvents.cs" />
     <Compile Include="GoodsFetcherManager.cs" />
@@ -65,8 +66,14 @@
     <Compile Include="Fetchers\JingdongItemFetcher.cs" />
     <Compile Include="Fetchers\PconlineItemFetcher.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="JobQueue.cs" />
     <Compile Include="JobStatus.cs" />
-    <Compile Include="Jobs\FetchGoodsJob.cs" />
+    <Compile Include="Jobs\ActivateJob.cs" />
+    <Compile Include="Jobs\FetchJob.cs" />
+    <Compile Include="Jobs\FilterJob.cs" />
+    <Compile Include="Jobs\KeywordSelectJob.cs" />
+    <Compile Include="Jobs\SearchJob.cs" />
+    <Compile Include="KeywordQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Fetchers\SuningItemFetcher.cs" />
     <Compile Include="Fetchers\TaobaoItemFetcher.cs" />

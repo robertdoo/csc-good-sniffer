@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EWorm.Crawler.Jobs
 {
-    class FetchGoodsJob
+    class FetchJob : Job
     {
         /// <summary>
         /// 当前抓取的深度

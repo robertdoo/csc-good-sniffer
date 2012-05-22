@@ -96,7 +96,6 @@ namespace EWorm.Crawler
                 return fetched.Select(x => new Uri(x));
         }
 
-        public event GoodsFetchedEvent OnGoodsFetched;
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
@@ -148,7 +147,6 @@ namespace EWorm.Crawler
         }
 
         #region IGoodsFetcher 成员
-
 
         public Goods FetchGoods(Uri goodsUri)
         {

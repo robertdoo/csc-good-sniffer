@@ -21,15 +21,19 @@ namespace EWorm.Crawler
                 KeywordData.Add(keyword, 0);
             }
             KeywordData[keyword]++;
+            Crawler.NotifyKeywordQueueChange(KeywordData);
         }
 
         public string Dequeue()
         {
             if (KeywordData.Count == 0)
+            {
                 return null;
+            }
             var maxSequence = KeywordData.Max(x => x.Value);
             var keyword = KeywordData.First(x => x.Value == maxSequence).Key;
             KeywordData.Remove(keyword);
+            Crawler.NotifyKeywordQueueChange(KeywordData);
             return keyword;
         }
     }

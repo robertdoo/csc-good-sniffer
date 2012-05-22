@@ -107,7 +107,6 @@ namespace EWorm.Crawler
             
         }
 
-        public event GoodsFetchedEvent OnGoodsFetched;
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>

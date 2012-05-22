@@ -34,6 +34,22 @@ namespace EWorm.Crawler.Jobs
         {
             var goods = Fetcher.FetchGoods(this.Uri);
             this.Context.GoodsBufferPool.Put(goods);
+            ExtractKeywords(goods.Title);
+        }
+
+        private void ExtractKeywords(string title)
+        {
+            IEnumerable<String> keywords = title.Split(new char[] { ' ' });
+            keywords = keywords.Where(x => !String.IsNullOrEmpty(x));
+            foreach (var keyword in keywords)
+            {
+                this.Context.KeywordQueue.Enqueue(keyword);
+            }
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Fetch({0}) {1}", this.Priority, this.Uri);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace EWorm.Crawler.Jobs
             var allGoods = this.Context.GoodsBufferPool.GetAll();
             var creditTotal = allGoods.Sum(x => x.SellerCredit);
             var sellTotal = allGoods.Sum(x => x.SellAmount);
-            var goodsWithRValue = allGoods.Select(x => new { Goods = x, RValue = CalculateRValue(x,creditTotal,sellTotal) });
+            var goodsWithRValue = allGoods.Select(x => new { Goods = x, RValue = CalculateRValue(x, creditTotal, sellTotal) });
             var ordered = goodsWithRValue.OrderByDescending(x => x.RValue);
             var takened = ordered.Take(allGoods.Count() / 2).Select(x => x.Goods);
             this.Context.GoodsStorage.SaveGoods(takened);
@@ -36,10 +36,16 @@ namespace EWorm.Crawler.Jobs
             {
                 return 100 * goods.SellerCredit / creditTotal;
             }
-            else if(goods.SellAmount>0) {
+            else if (goods.SellAmount > 0)
+            {
                 return 100 * goods.SellAmount / sellTotal;
             }
             return 0;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Filter Goods({0})", this.Priority);
         }
     }
 }

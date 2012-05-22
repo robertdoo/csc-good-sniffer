@@ -14,6 +14,7 @@ namespace EWorm.Crawler
         public JobQueue(int capacity)
         {
             this.QueueLimit = capacity;
+            this.PendingJobs = new List<Job>();
         }
 
         public JobQueue() : this(1000) { }
@@ -55,11 +56,16 @@ namespace EWorm.Crawler
         {
             //TODO: 可以改成二分的
             int insertPos = PendingJobs.Count;
-            while (insertPos >= 0 && PendingJobs[insertPos].Priority < job.Priority)
+            while (insertPos > 0 && PendingJobs[insertPos - 1].Priority < job.Priority)
                 insertPos--;
             return insertPos;
         }
 
         public bool HasJob { get { return this.PendingJobs.Count > 0; } }
+
+        internal IEnumerable<Job> GetAll()
+        {
+            return this.PendingJobs;
+        }
     }
 }

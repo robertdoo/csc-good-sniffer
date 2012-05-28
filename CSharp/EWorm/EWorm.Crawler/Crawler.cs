@@ -26,9 +26,9 @@ namespace EWorm.Crawler
             {
                 JobQueueChangeEventArgs args = new JobQueueChangeEventArgs()
                 {
-                    JobQueue = jobQueue.Select(x => x.ToString())
+                    JobQueue = jobQueue.Select(x => x.ToString()).ToList()
                 };
-                OnQueueChanged.Invoke(ActivateJob.Context, args);
+                OnQueueChanged.BeginInvoke(ActivateJob.Context, args, null, null);
             }
         }
 
@@ -38,9 +38,9 @@ namespace EWorm.Crawler
             {
                 KeywordQueueChangeEventArgs args = new KeywordQueueChangeEventArgs()
                 {
-                    KeywordQueue = keywordQueue
+                    KeywordQueue = keywordQueue.ToDictionary(x => x.Key, x => x.Value)
                 };
-                OnKeywordQueueChanged.Invoke(ActivateJob.Context, args);
+                OnKeywordQueueChanged.BeginInvoke(ActivateJob.Context, args, null, null);
             }
         }
 

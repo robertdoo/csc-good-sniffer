@@ -28,7 +28,7 @@ namespace EWorm.Crawler.Jobs
         public void AddSearchKeyword(string keyword)
         {
             //TODO 这里的参数应该可配置
-            SearchJob job = new SearchJob(this, this.Context, keyword, 50);
+            SearchJob job = new SearchJob(this, this.Context, keyword, 100);
             job.Priority = 9;
             this.Context.JobQueue.Enqueue(job);
             if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)
@@ -45,7 +45,14 @@ namespace EWorm.Crawler.Jobs
                 {
                     Job job = this.Context.JobQueue.Dequeue();
                     Crawler.NotifyJobQueueChange(this.Context.JobQueue.GetAll());
-                    job.Work();
+                    try
+                    {
+                        job.Work();
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Context.JobQueue.Enqueue(job);
+                    }
                 }
                 try
                 {

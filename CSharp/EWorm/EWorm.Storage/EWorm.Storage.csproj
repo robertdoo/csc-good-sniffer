@@ -1,15 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{169AF643-C55E-4053-9F9D-FF597B3E11F7}</ProjectGuid>
+    <ProjectGuid>{D5EB8824-175B-44FA-9E37-40586DC446C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EWorm.Crawler</RootNamespace>
-    <AssemblyName>EWorm.Crawler</AssemblyName>
+    <RootNamespace>EWorm.Storage</RootNamespace>
+    <AssemblyName>EWorm.Storage</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,15 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivony.Core">
-      <HintPath>lib\Jumony\Ivony.Core.dll</HintPath>
-    </Reference>
+    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,45 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crawler.cs" />
-    <Compile Include="Fetchers\AmazonItemFetcher.cs" />
-    <Compile Include="Fetchers\DangdangItemFetcher.cs" />
-    <Compile Include="GoodsBufferPool.cs" />
-    <Compile Include="GoodsFetcherAttribute.cs" />
-    <Compile Include="GoodsFetcherManager.cs" />
-    <Compile Include="GoodStorage.cs" />
-    <Compile Include="Http.cs" />
-    <Compile Include="IGoodsFetcher.cs" />
-    <Compile Include="IGoodsFetcherMetadata.cs" />
-    <Compile Include="Fetchers\JingdongItemFetcher.cs" />
-    <Compile Include="Fetchers\PconlineItemFetcher.cs" />
-    <Compile Include="Job.cs" />
-    <Compile Include="JobQueue.cs" />
-    <Compile Include="JobQueueChangeEventArgs.cs" />
-    <Compile Include="JobStatus.cs" />
-    <Compile Include="Jobs\ActivateJob.cs" />
-    <Compile Include="Jobs\FetchJob.cs" />
-    <Compile Include="Jobs\FilterJob.cs" />
-    <Compile Include="Jobs\KeywordSelectJob.cs" />
-    <Compile Include="Jobs\SearchJob.cs" />
-    <Compile Include="KeywordQueue.cs" />
-    <Compile Include="KeywordQueueChangeEventArgs.cs" />
+    <Compile Include="Storage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Fetchers\SuningItemFetcher.cs" />
-    <Compile Include="Fetchers\TaobaoItemFetcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
-      <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
+      <Project>{de87b604-1a8f-428a-a865-073f0f83753d}</Project>
       <Name>EWorm.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EWorm.Storage\EWorm.Storage.csproj">
-      <Project>{d5eb8824-175b-44fa-9e37-40586dc446c8}</Project>
-      <Name>EWorm.Storage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Eworm爬虫算法设计.pptx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

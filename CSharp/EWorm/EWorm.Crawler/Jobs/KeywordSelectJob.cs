@@ -16,7 +16,7 @@ namespace EWorm.Crawler.Jobs
         public override void Work()
         {
             var keyword = this.Context.KeywordQueue.Dequeue();
-            SearchJob job = new SearchJob(this, this.Context, keyword, 50);
+            SearchJob job = new SearchJob(this, this.Context, keyword, 100);
             this.Context.JobQueue.Enqueue(job);
         }
 

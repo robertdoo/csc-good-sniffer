@@ -50,10 +50,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Database.mwb" />
+    <None Include="Eworm.mwb" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database.sql" />
+    <Content Include="Eworm.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,10 +3,14 @@
     ViewBag.Title = String.Format("{0} 的搜素结果 - 综合购物网站搜索 - 聚焦爬虫应用", Request["q"]);
 }
 <div id="search">
-    <label for="q">输入关键字</label>
-    <input name="q" type="text" value="@Request["q"]" />
-    <input type="submit" value="搜索" />
+    @using (Html.BeginForm("Search", "Crawler", FormMethod.Get))
+    {
+        <label for="q">输入关键字</label>
+        <input name="q" type="text" />
+        <input type="submit" value="搜索" />
+    }
 </div>
+
 @if (Model != null && Model.Count() > 0)
 {
     <div id="search-result">

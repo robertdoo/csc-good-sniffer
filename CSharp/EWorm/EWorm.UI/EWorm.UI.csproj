@@ -20,6 +20,10 @@
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -154,6 +158,10 @@
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EWorm\EWorm.csproj">
+      <Project>{c17b57f3-283d-466e-89e8-1adfedb50248}</Project>
+      <Name>EWorm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

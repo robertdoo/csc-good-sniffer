@@ -57,6 +57,10 @@ namespace EWorm.Crawler
 
         public static void AddKeyword(string keyword)
         {
+            if (ActivateJob == null)
+            {
+                throw new InvalidOperationException("Please start the crawer first.");
+            }
             ActivateJob.AddSearchKeyword(keyword);
         }
 

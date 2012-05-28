@@ -22,8 +22,7 @@ namespace EWorm.Crawler
                 WebClient client = new WebClient();
                 client.Encoding = encoding;
                 Uri uri = new Uri(url);
-                return client.DownloadString(uri);
-           
+                return client.DownloadString(uri);           
         }
 
         public static string DownloadImage(string url)

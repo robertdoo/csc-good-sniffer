@@ -76,33 +76,33 @@ namespace EWorm.Crawler
         /// <returns></returns>
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
-                // 记录已经抓过的Url（去重复）
-                var fetched = new HashSet<string>();
+            // 记录已经抓过的Url（去重复）
+            var fetched = new HashSet<string>();
 
-                int page = 0;
-                while (fetched.Count < limit)
+            int page = 0;
+            while (fetched.Count < limit)
+            {
+                string searchUrl = BuildSearchJingdongUrl(keyword, page++);
+                string searchResult = Http.Get(searchUrl);
+
+                // 匹配出商品的Url
+                var itemMatches = ItemUrlPattern.Matches(searchResult);
+
+                var itemsNotFetched = itemMatches.OfType<Match>().Select(x => x.Groups["Url"].Value).Where(x => !fetched.Contains(x));
+                if (itemsNotFetched.Count() == 0)
                 {
-                    string searchUrl = BuildSearchJingdongUrl(keyword, page++);
-                    string searchResult = Http.Get(searchUrl);
-
-                    // 匹配出商品的Url
-                    var itemMatches = ItemUrlPattern.Matches(searchResult);
-                    if (itemMatches.Count == 0)
-                        return new List<Uri>();
-                    foreach (var itemMatch in itemMatches.OfType<Match>())
-                    {
-                        string itemUrl = itemMatch.Groups["Url"].Value;
-                        if (!fetched.Contains(itemUrl))
-                        {
-                            fetched.Add(itemUrl);
-                        }
-                    }
+                    break;
                 }
-                return fetched.Select(x => new Uri(x));
-            
+                foreach (var item in itemsNotFetched)
+                {
+                    fetched.Add(item);
+                }
+            }
+            return fetched.Select(x => new Uri(x));
+
         }
 
-       
+
         /// <summary>
         /// 在指定的URL上提取商品数据
         /// </summary>
@@ -114,14 +114,14 @@ namespace EWorm.Crawler
 
             string itemResult = Http.Get(goodsUri.ToString());
 
-            Match titleMatch, imageMatch ; //priceMatch;  
+            Match titleMatch, imageMatch; //priceMatch;  
             titleMatch = TitlePattern.Match(itemResult);
-           
+
             //  priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
-            
+
 
             Goods goods = new Goods()
             {
@@ -136,7 +136,7 @@ namespace EWorm.Crawler
             if (propertyListMatch.Success)
             {
                 string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-               // Console.Write(propertyResult);
+                // Console.Write(propertyResult);
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)

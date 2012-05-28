@@ -8,9 +8,10 @@ namespace EWorm
 {
     public class Service
     {
-        public IEnumerable<Goods> ListGoods(string keyword, string order, int start, int limit)
+        public IEnumerable<Goods> ListGoods(string keyword, int start = 0, int limit = 50, string order = null, bool desc = false)
         {
-            return new List<Goods>();
+            Storage.Storage sto = new Storage.Storage(System.Configuration.ConfigurationManager.ConnectionStrings["eworm"].ConnectionString);
+            return sto.SearchGoods(keyword, start, limit, order, false);
         }
 
         public Goods GetGoods(int id)

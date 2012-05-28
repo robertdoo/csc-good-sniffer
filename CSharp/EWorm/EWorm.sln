@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm", "EWorm\EWorm.csproj", "{C17B57F3-283D-466E-89E8-1ADFEDB50248}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.Model", "EWorm.Model\EWorm.Model.csproj", "{DE87B604-1A8F-428A-A865-073F0F83753D}"
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.ConsoleTester", "EWorm.ConsoleTester\EWorm.ConsoleTester.csproj", "{AE87D178-9232-405E-A143-6BEEC5FC7ED6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.FormTester", "EWorm.FormTester\EWorm.FormTester.csproj", "{7C8ABC49-46DA-4D43-8778-AAE101BBAA76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWorm.Storage", "EWorm.Storage\EWorm.Storage.csproj", "{D5EB8824-175B-44FA-9E37-40586DC446C8}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -89,6 +91,16 @@ Global
 		{C17B57F3-283D-466E-89E8-1ADFEDB50248}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C17B57F3-283D-466E-89E8-1ADFEDB50248}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C17B57F3-283D-466E-89E8-1ADFEDB50248}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5EB8824-175B-44FA-9E37-40586DC446C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{DE87B604-1A8F-428A-A865-073F0F83753D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE87B604-1A8F-428A-A865-073F0F83753D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE87B604-1A8F-428A-A865-073F0F83753D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

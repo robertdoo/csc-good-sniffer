@@ -7,6 +7,11 @@ namespace EWorm.Model
 {
     public class IntegerProperty : Property
     {
-        protected int Value { get; set; }
+        public int Value { get; set; }
+
+        public static IntegerProperty BuildFromString(string name, string value)
+        {
+            return new IntegerProperty() { Name = name, Type = PropertyType.Integer, Value = Convert.ToInt32(value) };
+        }
     }
 }

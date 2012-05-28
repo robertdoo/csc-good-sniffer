@@ -18,19 +18,26 @@ namespace EWorm.FormTester
             Crawler.Crawler.OnKeywordQueueChanged += Crawler_OnKeywordQueueChanged;
         }
 
+        private volatile bool InvokingKeywordChanged = false;
         void Crawler_OnKeywordQueueChanged(object sender, Crawler.KeywordQueueChangeEventArgs e)
         {
             if (txtKeywordQueue.InvokeRequired)
             {
-                this.Invoke(new EventHandler<Crawler.KeywordQueueChangeEventArgs>(this.Crawler_OnKeywordQueueChanged), new object[] { sender, e });
+                if (!InvokingKeywordChanged)
+                {
+                    this.Invoke(new EventHandler<Crawler.KeywordQueueChangeEventArgs>(this.Crawler_OnKeywordQueueChanged), new object[] { sender, e });
+                }
             }
             else
             {
-                txtKeywordQueue.Clear();
+                InvokingKeywordChanged = true;
+                string text = "";
                 foreach (var keyword in e.KeywordQueue)
                 {
-                    txtKeywordQueue.Text += String.Format("{0} ({1})", keyword.Key, keyword.Value) + Environment.NewLine;
+                    text += String.Format("{0} ({1})", keyword.Key, keyword.Value) + Environment.NewLine;
                 }
+                txtKeywordQueue.Text = text;
+                InvokingKeywordChanged = false;
             }
         }
 

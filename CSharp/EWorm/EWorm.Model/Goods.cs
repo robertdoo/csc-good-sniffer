@@ -17,7 +17,6 @@ namespace EWorm.Model
         /// </summary>
         public string Title { get; set; }
 
-        public string PictrueUrl { get; set; }
         /// <summary>
         /// 抓下商品信息的原始URL
         /// </summary>
@@ -41,7 +40,7 @@ namespace EWorm.Model
         /// <summary>
         /// 卖家信用值
         /// </summary>
-        public int SellerCredit { get; set; }        
+        public int SellerCredit { get; set; }
 
         /// <summary>
         /// 商品额外属性

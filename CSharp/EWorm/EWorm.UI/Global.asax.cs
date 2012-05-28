@@ -32,7 +32,7 @@ namespace EWorm.UI
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
+            Service.StartCrawler();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }

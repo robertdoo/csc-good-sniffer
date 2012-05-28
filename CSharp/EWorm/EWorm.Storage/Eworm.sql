@@ -20,7 +20,7 @@ CREATE  TABLE IF NOT EXISTS `eworm`.`t_goods` (
   `sellercredit` INT(11) NOT NULL DEFAULT '0' ,
   `sellamount` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
-  FULLTEXT INDEX `title` USING BTREE (`title` ASC) )
+  INDEX `title` USING BTREE (`title`(333) ASC) )
 ENGINE = MyISAM
 AUTO_INCREMENT = 1000
 DEFAULT CHARACTER SET = utf8;

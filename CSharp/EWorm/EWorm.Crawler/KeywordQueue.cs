@@ -16,9 +16,14 @@ namespace EWorm.Crawler
 
         public void Enqueue(string keyword)
         {
+            this.Enqueue(keyword, 0);
+        }
+
+        public void Enqueue(string keyword, int initFeq)
+        {
             if (!KeywordData.ContainsKey(keyword))
             {
-                KeywordData.Add(keyword, 0);
+                KeywordData.Add(keyword, initFeq);
             }
             KeywordData[keyword]++;
             Crawler.NotifyKeywordQueueChange(KeywordData);

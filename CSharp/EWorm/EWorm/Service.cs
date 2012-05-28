@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EWorm.Crawler;
 using EWorm.Model;
 
 namespace EWorm
@@ -23,6 +24,11 @@ namespace EWorm
         public Goods GetGoods(int id)
         {
             return new Goods();
+        }
+
+        public IEnumerable<IGoodsFetcherMetadata> GetGoodsFetcherInfo()
+        {
+            return GoodsFetcherManager.Instance.GetGoodsGetherMetadatas();
         }
     }
 }

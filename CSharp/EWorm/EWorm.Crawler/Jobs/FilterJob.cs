@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using EWorm.Model;
@@ -8,14 +9,14 @@ namespace EWorm.Crawler.Jobs
 {
     class FilterJob : Job
     {
-        public FilterJob(Job creator, Crawler context)
-            : base(creator, context)
+        public FilterJob(Job creator)
+            : base(creator)
         {
-            this.Priority = this.Creator.Priority - 1;
         }
 
         public override void Work()
         {
+            Debug.WriteLine(String.Format("Filterling({0})", this.Priority));
             var allGoods = this.Context.GoodsBufferPool.GetAll();
             var creditTotal = allGoods.Sum(x => x.SellerCredit);
             var sellTotal = allGoods.Sum(x => x.SellAmount);

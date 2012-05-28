@@ -71,6 +71,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CrawlerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -142,7 +143,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Content\Goods\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,10 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EWorm.Crawler\EWorm.Crawler.csproj">
+      <Project>{169af643-c55e-4053-9f9d-ff597b3e11f7}</Project>
+      <Name>EWorm.Crawler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
@@ -166,6 +171,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Crawler\Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Crawler\SearchResult.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

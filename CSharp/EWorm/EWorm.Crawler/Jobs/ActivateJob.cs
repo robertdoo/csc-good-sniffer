@@ -9,9 +9,9 @@ namespace EWorm.Crawler.Jobs
     class ActivateJob : Job
     {
         private Thread WorkingThread { get; set; }
-        public ActivateJob(Crawler crawler)
-            : base(null, crawler)
+        public ActivateJob(Crawler crawler) : base(null)
         {
+            this.Context = crawler;
             this.Priority = 10;
         }
 
@@ -28,8 +28,8 @@ namespace EWorm.Crawler.Jobs
         public void AddSearchKeyword(string keyword)
         {
             //TODO 这里的参数应该可配置
-            SearchJob job = new SearchJob(this, this.Context, keyword, 100);
-            job.Priority = 9;
+            this.Context.KeywordQueue.Enqueue(keyword, 100);
+            KeywordSelectJob job = new KeywordSelectJob(this);
             this.Context.JobQueue.Enqueue(job);
             if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)
             {

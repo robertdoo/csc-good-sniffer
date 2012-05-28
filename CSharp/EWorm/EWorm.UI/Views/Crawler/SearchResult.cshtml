@@ -18,7 +18,7 @@
         { 
             <div class="goods-display">
                 <div class="title">
-                    <h2>@Html.ActionLink(goods.Title, "Detail", new { id = goods.Id })@goods.Title</h2>
+                    <h2>@Html.ActionLink(goods.Title, "Detail", new { id = goods.Id })</h2>
                 </div>
                 <div class="image">
                     <img src="@Url.Content("~/Content/Goods/" + goods.ImagePath)" />

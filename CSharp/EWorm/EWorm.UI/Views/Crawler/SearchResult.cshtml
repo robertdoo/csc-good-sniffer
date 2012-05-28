@@ -1,0 +1,46 @@
+﻿@model IEnumerable<EWorm.Model.Goods>
+@{
+    ViewBag.Title = String.Format("{0} 的搜素结果 - 综合购物网站搜索 - 聚焦爬虫应用", Request["q"]);
+}
+<div id="search">
+    <label for="q">输入关键字</label>
+    <input name="q" type="text" value="@Request["q"]" />
+    <input type="submit" value="搜索" />
+</div>
+@if (Model != null && Model.Count() > 0)
+{
+    <div id="search-result">
+        @foreach (var goods in Model)
+        { 
+            <div class="goods-display">
+                <div class="title">
+                    <h2>@Html.ActionLink(goods.Title, "Detail", new { id = goods.Id })@goods.Title</h2>
+                </div>
+                <div class="image">
+                    <img src="@Url.Content("~/Content/Goods/" + goods.ImagePath)" />
+                </div>
+                <div class="detail">
+                    <span>价格：</span><span class="price">@goods.Price</span>
+                    @if (goods.SellAmount > 0)
+                    {
+                        <span>销量：</span><span class="sell-amount">@goods.SellAmount</span>
+                    }
+                    @if (goods.SellerCredit > 0)
+                    { 
+                        <span>卖家信誉：</span><span class="seller-credit">@goods.SellerCredit</span>
+                    }
+                </div>
+                <div class="sell-address">
+                    <span>购买地址：</span>
+                    <a href="@goods.SellingUrl" target="_blank">@goods.SellingUrl</a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="no-result">
+        <span>当前没有搜素结果，您的搜索请求已经添加到队列中，您可以稍后重试。</span>
+    </div>
+}

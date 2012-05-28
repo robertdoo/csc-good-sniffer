@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -7,12 +8,11 @@ namespace EWorm.Crawler.Jobs
 {
     class FetchJob : Job
     {
-        public FetchJob(Job creator, Crawler context, IGoodsFetcher fetcher, Uri uri)
-            : base(creator, context)
+        public FetchJob(Job creator, IGoodsFetcher fetcher, Uri uri)
+            : base(creator)
         {
             this.Fetcher = fetcher;
             this.Uri = uri;
-            this.Priority = creator.Priority;
         }
 
         /// <summary>
@@ -32,6 +32,7 @@ namespace EWorm.Crawler.Jobs
 
         public override void Work()
         {
+            Debug.WriteLine(String.Format("Fetching({0}) {1}", this.Priority, this.Uri));
             var goods = Fetcher.FetchGoods(this.Uri);
             this.Context.GoodsBufferPool.Put(goods);
             ExtractKeywords(goods.Title);

@@ -29,6 +29,8 @@ namespace EWorm.Crawler
 
         public void Enqueue(Job job)
         {
+            if (job.Priority < 6)
+                return;
             lock (sync)
             {
                 int insertPos = FindInsertPointForJob(job);

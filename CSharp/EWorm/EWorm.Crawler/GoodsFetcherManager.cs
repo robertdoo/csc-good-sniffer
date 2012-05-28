@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EWorm.Crawler
 {
-    class GoodsFetcherManager
+    public class GoodsFetcherManager
     {
         private static GoodsFetcherManager _instance = new GoodsFetcherManager();
         public static GoodsFetcherManager Instance { get { return _instance; } }
@@ -21,15 +21,18 @@ namespace EWorm.Crawler
             DirectoryCatalog catalog = new DirectoryCatalog(dir);
             CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
+            catalog = new DirectoryCatalog(dir + "/bin");
+            container = new CompositionContainer(catalog);
+            container.ComposeParts(this);
             FetcherCollection = FetcherCollection.Where(x => x.Metadata.Disabled == false).ToList();
         }
 
-        public IEnumerable<IGoodsFetcher> GetAllFetcher()
+        internal IEnumerable<IGoodsFetcher> GetAllFetcher()
         {
             return FetcherCollection.Select(x => x.Value);
         }
 
-        public IGoodsFetcher GetFetcher(string name)
+        internal IGoodsFetcher GetFetcher(string name)
         {
             var fetcher = FetcherCollection.SingleOrDefault(x => x.Metadata.Name == name);
             if (fetcher == null)
@@ -37,7 +40,7 @@ namespace EWorm.Crawler
             return fetcher.Value;
         }
 
-        public IGoodsFetcherMetadata GetMetadata(IGoodsFetcher fetcher)
+        internal IGoodsFetcherMetadata GetMetadata(IGoodsFetcher fetcher)
         {
             var choosen = FetcherCollection.SingleOrDefault(x => x.Value == fetcher);
             if (choosen == null)
@@ -45,6 +48,11 @@ namespace EWorm.Crawler
                 return null;
             }
             return choosen.Metadata;
+        }
+
+        public IEnumerable<IGoodsFetcherMetadata> GetGoodsGetherMetadatas()
+        {
+            return FetcherCollection.Select(x => x.Metadata);
         }
 
     }

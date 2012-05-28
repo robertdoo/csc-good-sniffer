@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -7,16 +8,17 @@ namespace EWorm.Crawler.Jobs
 {
     class KeywordSelectJob : Job
     {
-        public KeywordSelectJob(Job creator, Crawler context)
-            : base(creator, context)
+        public KeywordSelectJob(Job creator)
+            : base(creator)
         {
-            this.Priority = creator.Priority - 1;
+            this.Priority--;
         }
 
         public override void Work()
         {
             var keyword = this.Context.KeywordQueue.Dequeue();
-            SearchJob job = new SearchJob(this, this.Context, keyword, 100);
+            Debug.WriteLine(String.Format("Selected Keyword({0}) {1}", this.Priority, keyword));
+            SearchJob job = new SearchJob(this, keyword, 100);
             this.Context.JobQueue.Enqueue(job);
         }
 

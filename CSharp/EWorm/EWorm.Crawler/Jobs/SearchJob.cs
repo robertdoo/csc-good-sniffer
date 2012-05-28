@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -10,16 +11,16 @@ namespace EWorm.Crawler.Jobs
         public String Keyword { get; set; }
         public int LimitSize { get; set; }
 
-        public SearchJob(Job creator, Crawler context, string keyword, int limitSize)
-            : base(creator, context)
+        public SearchJob(Job creator, string keyword, int limitSize)
+            : base(creator)
         {
             this.Keyword = keyword;
             this.LimitSize = limitSize;
-            this.Priority = creator.Priority;
         }
 
         public override void Work()
         {
+            Debug.WriteLine(String.Format("Search({0}) {1}", this.Priority, this.Keyword));
             var fetchers = GoodsFetcherManager.Instance.GetAllFetcher();
             int sizePerFetcher = LimitSize / fetchers.Count();
             List<FetchJob> fetchJobList = new List<FetchJob>();
@@ -29,12 +30,12 @@ namespace EWorm.Crawler.Jobs
                 IEnumerable<Uri> uriList = fetcher.GetGoodsUriByKeyowrd(this.Keyword, sizePerFetcher);
                 foreach (var uri in uriList)
                 {
-                    FetchJob job = new FetchJob(this, Context, fetcher, uri);
+                    FetchJob job = new FetchJob(this, fetcher, uri);
                     fetchJobList.Insert(rand.Next(fetchJobList.Count),job);
                 }
             }
-            KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this, Context);
-            FilterJob filterJob = new FilterJob(this, Context);
+            KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this);
+            FilterJob filterJob = new FilterJob(this);
 
             foreach (var fetchJob in fetchJobList)
             {

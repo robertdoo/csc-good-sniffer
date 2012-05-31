@@ -88,16 +88,15 @@ namespace EWorm.Crawler
 
                     // 匹配出商品的Url
                     var itemMatches = ItemUrlPattern.Matches(searchResult);
-                    if (itemMatches.Count == 0)
-                        return new List<Uri>();
-                    foreach (var itemMatch in itemMatches.OfType<Match>())
+
+                    var itemsNotFetched = itemMatches.OfType<Match>().Select(x => x.Groups["Url"].Value).Where(x => !fetched.Contains(x));
+                    if (itemsNotFetched.Count() == 0)
                     {
-                        string itemUrl = itemMatch.Groups["Url"].Value;
-                        if (!fetched.Contains(itemUrl))
-                        {
-                            
-                            fetched.Add(itemUrl);
-                        }
+                        break;
+                    }
+                    foreach (var item in itemsNotFetched)
+                    {
+                        fetched.Add(item);
                     }
                 }
          return fetched.Select(x => new Uri(x));

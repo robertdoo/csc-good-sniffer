@@ -29,6 +29,9 @@ namespace EWorm.Crawler.Jobs
         {
             //TODO 这里的参数应该可配置
             this.Context.KeywordQueue.Enqueue(keyword, 100);
+            SearchJob searching = this.Context.JobQueue.CurrentJob as SearchJob;
+            if (searching != null && searching.Keyword == keyword)
+                return;
             KeywordSelectJob job = new KeywordSelectJob(this);
             this.Context.JobQueue.Enqueue(job);
             if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)

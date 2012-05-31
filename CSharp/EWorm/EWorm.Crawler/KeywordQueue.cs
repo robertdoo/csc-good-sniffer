@@ -37,7 +37,7 @@ namespace EWorm.Crawler
             }
             var maxSequence = KeywordData.Max(x => x.Value);
             var keyword = KeywordData.First(x => x.Value == maxSequence).Key;
-            KeywordData.Remove(keyword);
+            KeywordData[keyword] = -KeywordData[keyword];
             Crawler.NotifyKeywordQueueChange(KeywordData);
             return keyword;
         }

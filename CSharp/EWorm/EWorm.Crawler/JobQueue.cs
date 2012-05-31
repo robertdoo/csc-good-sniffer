@@ -11,6 +11,8 @@ namespace EWorm.Crawler
         private int QueueLimit { get; set; }
         private object sync = new object();
 
+        public Job CurrentJob { get; set; }
+
         public JobQueue(int capacity)
         {
             this.QueueLimit = capacity;
@@ -48,9 +50,9 @@ namespace EWorm.Crawler
             {
                 if (PendingJobs.Count == 0)
                     return null;
-                Job head = PendingJobs[0];
-                PendingJobs.Remove(head);
-                return head;
+                CurrentJob = PendingJobs[0];
+                PendingJobs.Remove(CurrentJob);
+                return CurrentJob;
             }
         }
 

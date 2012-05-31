@@ -50,7 +50,9 @@ namespace EWorm.Storage
         {
             MySqlCommand cmd = this.Connection.CreateCommand();
             cmd.CommandText = @"UPDATE t_goods
-                                SET title = ?title, sellingurl = ?sellingurl, updatetime = ?updatetime, imagepath = ?imagepath, price = ?price, sellercredit = ?sellercredit, sellamount = ?sellamount";
+                                SET title = ?title, sellingurl = ?sellingurl, updatetime = ?updatetime, imagepath = ?imagepath, price = ?price, sellercredit = ?sellercredit, sellamount = ?sellamount
+                                WHERE id = ?id";
+            cmd.Parameters.AddWithValue("id", goods.Id);
             cmd.Parameters.AddWithValue("title", goods.Title);
             cmd.Parameters.AddWithValue("sellingurl", goods.SellingUrl);
             cmd.Parameters.AddWithValue("updatetime", goods.UpdateTime);

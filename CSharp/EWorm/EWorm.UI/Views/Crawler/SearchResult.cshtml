@@ -6,7 +6,7 @@
     @using (Html.BeginForm("Search", "Crawler", FormMethod.Get))
     {
         <label for="q">输入关键字</label>
-        <input name="q" type="text" />
+        <input name="q" type="text" value="@Request["q"]" />
         <input type="submit" value="搜索" />
     }
 </div>

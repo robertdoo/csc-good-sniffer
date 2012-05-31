@@ -42,7 +42,7 @@ CREATE  TABLE IF NOT EXISTS `eworm`.`t_properties` (
     REFERENCES `eworm`.`t_goods` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8;
 
 

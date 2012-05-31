@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Eworm.mwb" />
+    <None Include="MySql Connector\mysql-connector-net-6.5.4.msi" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Eworm.sql" />

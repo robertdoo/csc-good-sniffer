@@ -15,6 +15,7 @@ namespace EWorm.UI
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -24,17 +25,20 @@ namespace EWorm.UI
             routes.MapRoute(
                 "Default", // 路由名称
                 "{controller}/{action}/{id}", // 带有参数的 URL
-                new { controller = "Crawler", action = "Search", id = UrlParameter.Optional } // 参数默认值
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // 参数默认值
+
             );
 
         }
 
         protected void Application_Start()
         {
+            
             AreaRegistration.RegisterAllAreas();
             Service.StartCrawler();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
         }
     }
 }

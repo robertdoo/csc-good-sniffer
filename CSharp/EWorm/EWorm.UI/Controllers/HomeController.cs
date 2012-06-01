@@ -18,15 +18,28 @@ namespace EWorm.UI.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Search(FormCollection formCollection)
         {
-            string keyword = formCollection["keyword"];
-            List<Goods> retViewList = new List<Goods>
-                        {
-                            new Goods(){Title="TEST ONE TEST ONE TEST ONE TEST ONE TEST ONE" + "[via:"+keyword+"]",PictrueUrl = "http://img01.taobaocdn.com/bao/uploaded/i1/T17uS6Xf0oXXahfOg0_035536.jpg_310x310.jpg", SellingUrl="http://item.taobao.com/item.htm?id=14287271419&ad_id=&am_id=&cm_id=&pm_id=1500479714fd39ddc4f8",Price=109 },
-                            new Goods(){Title="TEST SECOND TEST SECOND TEST SECOND TEST SECOND" + "[via:"+keyword+"]",PictrueUrl = "http://img01.taobaocdn.com/bao/uploaded/i1/T17uS6Xf0oXXahfOg0_035536.jpg_310x310.jpg",SellingUrl="http://item.taobao.com/item.htm?id=14287271419&ad_id=&am_id=&cm_id=&pm_id=1500479714fd39ddc4f8",Price=109}
-                        };
-
-            return View(retViewList);
+            string q = formCollection["keyword"];
+            string s = Request["s"];
+            string o = Request["o"];
+            string d = Request["d"];
+            if (q == null)
+            {
+                return View();
+            }
+            else
+            {
+                int start = Convert.ToInt32(s);
+                Service service = new Service();
+                IEnumerable<Goods> result = service.Search(q, start, 50, o, d == "true");
+                return View("Search", result);
+            }
         }
+        public ActionResult detail(long id)
+        {
 
+            Goods goods = new Goods(){Title="TEST ONE TEST ONE TEST ONE TEST ONE TEST ONE"+ "[via:"+id+"]"};
+
+            return View(goods);
+        }
     }
 }

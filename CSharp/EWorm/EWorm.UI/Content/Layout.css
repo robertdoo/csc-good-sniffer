@@ -3,8 +3,8 @@ html, body
 {
     margin: 0;
     padding: 0;
-    background: url(mainpic.jpg) no-repeat center fixed;
-    font-family: Arial;
+    /*background: url(mainpic.jpg) no-repeat center fixed;
+    */font-family: Arial;
 }
 #main
 {
@@ -60,12 +60,12 @@ html, body
 }
 #big-title
 {
-  	font-family: "Comic Sans MS";
+  	font-family: "Times New Roman";
 	font-size: 82px;
 	
 	text-align: center;
 	margin-top:0px;
-	color: #9F5F9F;
+	color: black;
 }
 .btn-out
 {

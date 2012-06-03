@@ -3,9 +3,9 @@ html, body
 {
 	margin: 0;
 	padding: 0;
-	background: url(pic.jpg)  no-repeat center fixed;
-	/*background: url(pic.jpg) no-repeat center fixed;
-	*/font-family: Arial;
+	/*background: url(mainpic.jpg)  no-repeat center fixed;*/
+	/*background: url(pic.jpg) no-repeat center fixed;*/
+	font-family: Arial;
 }
 #bigtitle{
 	font-family: "Comic Sans MS";

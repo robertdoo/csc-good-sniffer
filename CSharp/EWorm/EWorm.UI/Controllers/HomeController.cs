@@ -10,7 +10,7 @@ namespace EWorm.UI.Controllers
     {
         //
         // GET: /Home/
-
+        IEnumerable<Goods> result;
         public ActionResult Index()
         {
             return View();
@@ -30,7 +30,7 @@ namespace EWorm.UI.Controllers
             {
                 int start = Convert.ToInt32(s);
                 Service service = new Service();
-                IEnumerable<Goods> result = service.Search(q, start, 50, o, d == "true");
+                result = service.Search(q, start, 50, o, d == "true");
                 return View("Search", result);
             }
         }

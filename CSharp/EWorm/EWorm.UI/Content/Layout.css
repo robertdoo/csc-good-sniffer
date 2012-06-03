@@ -3,8 +3,8 @@ html, body
 {
     margin: 0;
     padding: 0;
-    /*background: url(mainpic.jpg) no-repeat center fixed;
-    */font-family: Arial;
+   background: url(mainpic.jpg) no-repeat center fixed; /**/
+    font-family: Arial;
 }
 #main
 {
@@ -14,8 +14,8 @@ html, body
 #top, #search-bar,#bottom
 {
     width: 100%;
-    border: 1px solid White;
-    background-color: rgba(255,255,255,0.5);
+    /*border: 1px solid White;*/
+    /*background-color: rgba(255,255,255,0.5);*/
     height: 100px;
     margin: 10px 0;
     border-radius: 10px;
@@ -48,7 +48,7 @@ html, body
    /* height: 200px;*/
     overflow: hidden;
     border: 1px solid White;
-    background-color: rgba(255,255,255,0.5);
+    background-color:rgba(255,255,255,0.5);
     border-radius: 10px;
     margin-right: 3%;
     margin-left: 0;

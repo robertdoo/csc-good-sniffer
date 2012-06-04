@@ -23,7 +23,8 @@ namespace EWorm
 
         public Goods GetGoods(int id)
         {
-            return new Goods();
+            Storage.Storage sto = new Storage.Storage(System.Configuration.ConfigurationManager.ConnectionStrings["eworm"].ConnectionString);
+            return sto.GetGoodsById(id);
         }
 
         public IEnumerable<IGoodsFetcherMetadata> GetGoodsFetcherInfo()

@@ -1,11 +1,28 @@
 ﻿@{
-    ViewBag.Title = "detail";
+    ViewBag.Title = "商品详细信息";
 }
-
+<link href="@Url.Content("~/Content/detail.css")" rel="Stylesheet" type="text/css" />
 <h2>detail</h2>
 
 @model EWorm.Model.Goods
            
-title:
+<div class="dmain">
+    <div class="dpic">
+        <img src="@Url.Content("~/Content/Goods/" + Model.ImagePath)" style="width:250px;height:250px"/>
+    <div>
+    <div class="dproperty">
+        <div class="title">@Model.Title</div>
+        <div class="price">价格：￥@Model.Price</div>
+        <div class="others">
+            最近卖出：@Model.SellAmount 笔<br>
+            商家信用：@for (int i = 0; i < Model.SellerCredit; i++)
+                 {<text>★</text>}<br>
+            @Model.Properties
+        </div>
+        <div class="buy">
+            <button class="toweb">购买</button>
+        </div>
+    </div>
+</div>
 
 @Model.Title

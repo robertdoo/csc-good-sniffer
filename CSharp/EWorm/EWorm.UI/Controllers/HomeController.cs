@@ -34,10 +34,10 @@ namespace EWorm.UI.Controllers
                 return View("Search", result);
             }
         }
-        public ActionResult detail(long id)
+        public ActionResult detail(int id)
         {
-
-            Goods goods = new Goods(){Title="TEST ONE TEST ONE TEST ONE TEST ONE TEST ONE"+ "[via:"+id+"]"};
+             Service service = new Service();
+            Goods goods = service.GetGoods(id);
 
             return View(goods);
         }

@@ -1,0 +1,39 @@
+﻿/* File Created: 四月 24, 2012 */
+html, body
+{
+    margin: 0;
+    padding: 0;
+   background: url(mainpic.jpg) no-repeat center fixed; /**/
+    font-family: Arial;
+}
+#depic
+{
+    width:40%;
+    margin:5 auto;
+}
+#dproperty
+{
+    width:58%;
+    margin:5 auto;
+}
+#title
+{
+    font-size:xx-large;
+    font-style:oblique;
+    font-family:黑体;
+    color:Red;
+}
+#price
+{
+    font-size:x-large;
+    font-style:normal;
+    font-family:Bernard MT Condensed;
+    color:Blue;
+}
+#buy
+{
+    font-size:xx-large;
+    font-style:normal;
+    font-family:黑体;
+    color:Orange;
+}

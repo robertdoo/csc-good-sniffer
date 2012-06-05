@@ -45,7 +45,7 @@ namespace EWorm.Model
         /// <summary>
         /// 商品额外属性
         /// </summary>
-        public IEnumerable<Property> Properties { get; set; }
+        public IEnumerable<Property> Properties { get; set; }//返回定义值
 
         public int SellAmount { get; set; }
     }

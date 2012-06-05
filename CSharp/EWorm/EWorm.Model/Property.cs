@@ -9,5 +9,7 @@ namespace EWorm.Model
     {
         public String Name { get; set; }
         public PropertyType Type { get; set; }
+        public abstract String ValueAsString { get; }
+
     }
 }

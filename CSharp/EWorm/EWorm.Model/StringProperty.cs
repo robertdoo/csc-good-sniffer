@@ -13,5 +13,10 @@ namespace EWorm.Model
         {
             return new StringProperty() { Name = name, Type = PropertyType.String, Value = value };
         }
+        public override String ValueAsString
+        {
+
+            get { return Value.ToString(); }
+        }
     }
 }

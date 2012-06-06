@@ -21,9 +21,13 @@ namespace EWorm.Crawler
             DirectoryCatalog catalog = new DirectoryCatalog(dir);
             CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
-            catalog = new DirectoryCatalog(dir + "/bin");
-            container = new CompositionContainer(catalog);
-            container.ComposeParts(this);
+            try
+            {
+                catalog = new DirectoryCatalog(dir + "/bin");
+                container = new CompositionContainer(catalog);
+                container.ComposeParts(this);
+            }
+            catch (Exception) { }
             FetcherCollection = FetcherCollection.Where(x => x.Metadata.Disabled == false).ToList();
         }
 

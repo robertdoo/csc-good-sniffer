@@ -32,7 +32,7 @@ namespace EWorm.FormTester
             {
                 InvokingKeywordChanged = true;
                 string text = "";
-                foreach (var keyword in e.KeywordQueue)
+                foreach (var keyword in e.KeywordQueue.OrderByDescending(x => x.Value))
                 {
                     text += String.Format("{0} ({1})", keyword.Key, keyword.Value) + Environment.NewLine;
                 }
@@ -49,11 +49,12 @@ namespace EWorm.FormTester
             }
             else
             {
-                txtJobQueue.Clear();
+                string text = "[Current] " + e.CurrentJob + Environment.NewLine;
                 foreach (var job in e.JobQueue)
                 {
-                    txtJobQueue.Text += job + Environment.NewLine;
+                    text += job + Environment.NewLine;
                 }
+                txtJobQueue.Text = text;
             }
         }
         private void Form1_Load(object sender, EventArgs e)

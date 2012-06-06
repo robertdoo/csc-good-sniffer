@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 
@@ -47,14 +48,18 @@ namespace EWorm.Crawler.Jobs
                 while (this.Context.JobQueue.HasJob)
                 {
                     Job job = this.Context.JobQueue.Dequeue();
-                    Crawler.NotifyJobQueueChange(this.Context.JobQueue.GetAll());
+                    Crawler.NotifyJobQueueChange(this.Context.JobQueue);
                     try
                     {
                         job.Work();
                     }
+                    catch (WebException) { }
                     catch (Exception ex)
                     {
                         this.Context.JobQueue.Enqueue(job);
+#if DEBUG
+                        throw ex;
+#endif
                     }
                 }
                 try

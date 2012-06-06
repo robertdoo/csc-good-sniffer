@@ -7,6 +7,7 @@ namespace EWorm.Crawler
 {
     public class JobQueueChangeEventArgs : EventArgs
     {
+        public string CurrentJob { get; set; }
         public IEnumerable<String> JobQueue { get; set; }
     }
 }

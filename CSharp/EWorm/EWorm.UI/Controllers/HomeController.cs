@@ -7,14 +7,12 @@ using EWorm.Model;
 namespace EWorm.UI.Controllers
 {
     public class HomeController : Controller
-    {
-        //
-        // GET: /Home/
-        IEnumerable<Goods> result;
+    {        
         public ActionResult Index()
         {
             return View();
         }
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Search(FormCollection formCollection)
         {
@@ -30,13 +28,14 @@ namespace EWorm.UI.Controllers
             {
                 int start = Convert.ToInt32(s);
                 Service service = new Service();
-                result = service.Search(q, start, 50, o, d == "true");
+                IEnumerable<Goods> result = service.Search(q, start, 50, o, d == "true");
                 return View("Search", result);
             }
         }
-        public ActionResult detail(int id)
+
+        public ActionResult Detail(int id)
         {
-             Service service = new Service();
+            Service service = new Service();
             Goods goods = service.GetGoods(id);
 
             return View(goods);

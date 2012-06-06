@@ -20,13 +20,14 @@ namespace EWorm.Crawler
             this.GoodsStorage = new GoodStorage();
         }
 
-        internal static void NotifyJobQueueChange(IEnumerable<Job> jobQueue)
+        internal static void NotifyJobQueueChange(JobQueue queue)
         {
             if (OnQueueChanged != null)
             {
                 JobQueueChangeEventArgs args = new JobQueueChangeEventArgs()
                 {
-                    JobQueue = jobQueue.Select(x => x.ToString()).ToList()
+                    JobQueue = queue.GetAll().Select(x => x.ToString()).ToList(),
+                    CurrentJob = queue.CurrentJob.ToString()
                 };
                 OnQueueChanged.BeginInvoke(ActivateJob.Context, args, null, null);
             }

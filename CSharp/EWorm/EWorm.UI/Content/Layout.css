@@ -3,13 +3,18 @@ html, body
 {
     margin: 0;
     padding: 0;
+}
+
+body
+{
     font-family: "Microsoft YaHei";
     background-color: #efefef;
     background-image: -webkit-gradient(linear, 0 0, 0 600, from(#e2e5e9), to(#efefef));
-    background-repeat:  no-repeat;
+    background-repeat: no-repeat;
     color: #333;
     min-height: 600px;
     font-size: 14px;
+    overflow-y: scroll;
 }
 
 a
@@ -252,6 +257,46 @@ div#search-result:after,
 div#search-result::after,
 div.pager:before,
 div.pager::before
+{
+    content: '.';
+    display: block;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+    zoom: 1;
+    clear: both;
+}
+
+div#job-queue
+{
+    width: 60%;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+div#keyword-queue
+{
+    float: left;
+    width: 38%;
+    border-left: 1px solid gray;    
+    margin: 0;
+    padding: 0;
+    padding-left: 10px;
+}
+
+    div#job-queue p, div#keyword-queue p
+    {
+        font-size: 12px;
+        margin: 3px;
+    }
+
+        div#job-queue p.current-job
+        {
+            color: red;
+        }
+
+div#monitor:after
 {
     content: '.';
     display: block;

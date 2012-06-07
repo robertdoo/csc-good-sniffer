@@ -10,7 +10,8 @@ namespace EWorm.Crawler.Jobs
     class ActivateJob : Job
     {
         private Thread WorkingThread { get; set; }
-        public ActivateJob(Crawler crawler) : base(null)
+        public ActivateJob(Crawler crawler)
+            : base(null)
         {
             this.Context = crawler;
             this.Priority = 10;
@@ -29,20 +30,24 @@ namespace EWorm.Crawler.Jobs
         public void AddSearchKeyword(string keyword)
         {
             //TODO 这里的参数应该可配置
-            this.Context.KeywordQueue.Enqueue(keyword, 100);
-            SearchJob searching = this.Context.JobQueue.CurrentJob as SearchJob;
-            if (searching != null && searching.Keyword == keyword)
-                return;
-            KeywordSelectJob job = new KeywordSelectJob(this);
-            this.Context.JobQueue.Enqueue(job);
-            if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)
+            bool firstEnqueue = this.Context.KeywordQueue.Enqueue(keyword, 100);
+            if (firstEnqueue)
             {
-                this.WorkingThread.Interrupt();
+                SearchJob searching = this.Context.JobQueue.CurrentJob as SearchJob;
+                if (searching != null && searching.Keyword == keyword)
+                    return;
+                KeywordSelectJob job = new KeywordSelectJob(this);
+                this.Context.JobQueue.Enqueue(job);
+                if (this.WorkingThread.ThreadState == ThreadState.WaitSleepJoin)
+                {
+                    this.WorkingThread.Interrupt();
+                }
             }
         }
 
         private void GetJobAndWork()
         {
+            Job lastExceptionJob = null;
             while (true)
             {
                 while (this.Context.JobQueue.HasJob)
@@ -56,7 +61,12 @@ namespace EWorm.Crawler.Jobs
                     catch (WebException) { }
                     catch (Exception ex)
                     {
-                        this.Context.JobQueue.Enqueue(job);
+                        job.Priority--;
+                        if (job != lastExceptionJob)
+                        {
+                            this.Context.JobQueue.Enqueue(job);
+                        }
+                        lastExceptionJob = job;
 #if DEBUG
                         throw ex;
 #endif

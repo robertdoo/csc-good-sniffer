@@ -31,18 +31,21 @@ namespace EWorm.Crawler.Jobs
                 foreach (var uri in uriList)
                 {
                     FetchJob job = new FetchJob(this, fetcher, uri);
-                    fetchJobList.Insert(rand.Next(fetchJobList.Count),job);
+                    fetchJobList.Insert(rand.Next(fetchJobList.Count), job);
                 }
             }
-            KeywordSelectJob keywordSelectJob = new KeywordSelectJob(this);
-            FilterJob filterJob = new FilterJob(this);
 
+            int i = 0;
             foreach (var fetchJob in fetchJobList)
             {
                 this.Context.JobQueue.Enqueue(fetchJob);
+                if (++i % 10 == 0)
+                {
+                    this.Context.JobQueue.Enqueue(new FilterJob(this, 0.6, false));
+                }
             }
-            this.Context.JobQueue.Enqueue(keywordSelectJob);
-            this.Context.JobQueue.Enqueue(filterJob);
+            this.Context.JobQueue.Enqueue(new FilterJob(this, 0.8, true));
+            this.Context.JobQueue.Enqueue(new KeywordSelectJob(this));
         }
 
         public override string ToString()

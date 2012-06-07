@@ -18,7 +18,7 @@ namespace EWorm
         {
             Crawler.Crawler.AddKeyword(keyword);
             Storage.Storage sto = new Storage.Storage(System.Configuration.ConfigurationManager.ConnectionStrings["eworm"].ConnectionString);
-            return sto.SearchGoods(keyword, start, limit, order, false);
+            return sto.SearchGoods(keyword, start, limit, order, desc);
         }
 
         public Goods GetGoods(int id)
@@ -30,6 +30,12 @@ namespace EWorm
         public IEnumerable<IGoodsFetcherMetadata> GetGoodsFetcherInfo()
         {
             return GoodsFetcherManager.Instance.GetGoodsGetherMetadatas();
+        }
+
+        public int SearchCount(string query)
+        {
+            Storage.Storage sto = new Storage.Storage(System.Configuration.ConfigurationManager.ConnectionStrings["eworm"].ConnectionString);
+            return sto.SearchGoodsCount(query);
         }
     }
 }

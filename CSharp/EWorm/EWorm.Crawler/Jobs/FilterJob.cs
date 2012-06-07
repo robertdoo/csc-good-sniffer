@@ -9,9 +9,14 @@ namespace EWorm.Crawler.Jobs
 {
     class FilterJob : Job
     {
-        public FilterJob(Job creator)
+        private double KeepPercent { get; set; }
+        private bool Clear { get; set; }
+
+        public FilterJob(Job creator, double keepPercent, bool clear)
             : base(creator)
         {
+            this.KeepPercent = keepPercent;
+            this.Clear = clear;
         }
 
         public override void Work()
@@ -22,9 +27,12 @@ namespace EWorm.Crawler.Jobs
             var sellTotal = allGoods.Sum(x => x.SellAmount);
             var goodsWithRValue = allGoods.Select(x => new { Goods = x, RValue = CalculateRValue(x, creditTotal, sellTotal) });
             var ordered = goodsWithRValue.OrderByDescending(x => x.RValue);
-            var takened = ordered.Take(allGoods.Count() / 2).Select(x => x.Goods);
+            var takened = ordered.Take((int)(allGoods.Count() * KeepPercent)).Select(x => x.Goods);
             this.Context.GoodsStorage.SaveGoods(takened);
-            this.Context.GoodsBufferPool.Clear();
+            if (this.Clear)
+            {
+                this.Context.GoodsBufferPool.Clear();
+            }
         }
 
         private double CalculateRValue(Goods goods, double creditTotal, double sellTotal)

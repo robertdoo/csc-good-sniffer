@@ -217,5 +217,23 @@ namespace EWorm.Storage
         {
             this.Connection.Close();
         }
+
+        public int SearchGoodsCount(string keyword)
+        {
+            MySqlCommand cmd = this.Connection.CreateCommand();
+            cmd.CommandText = @"SELECT COUNT(*) 
+                                FROM t_goods
+                                WHERE title LIKE CONCAT('%', ?keyword, '%')";
+            cmd.Parameters.AddWithValue("keyword", keyword);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                int cnt = reader.GetInt32(0);
+                reader.Close();
+                return cnt;
+            }
+            reader.Close();
+            return 0;
+        }
     }
 }

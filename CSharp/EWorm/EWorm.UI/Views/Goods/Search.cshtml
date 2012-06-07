@@ -1,0 +1,50 @@
+﻿@model PagedResult<EWorm.Model.Goods>
+@{
+    ViewBag.Title = "聚焦搜索引擎——Eworm";
+    if (Model != null)
+    {
+        Model.Pager.LinkOfPage = x => Url.Action("Search", new { q = Request["q"], p = x });
+    }
+}
+
+<div id="search-bar">
+    @using (Html.BeginForm("Search", "Goods", FormMethod.Get, new { id = "search-form" }))
+    {
+        <label for="keyword"></label>
+        <input id="keyword" name="q" type="text" value="@Request["q"]" />
+        <input id="search-button" type="submit" value="搜索" />
+        <a id="advance-search" href="#">高级搜索</a>
+    }
+</div>
+@if (Model != null)
+{
+    @Html.Pager(Model.Pager)
+    <div id="search-result">        
+        @foreach (var item in Model.Records)
+        {
+            <div class="goods-section">
+                <div class="goods-image">
+                    <a href="@Url.Action("Detail", "Goods", new { id = item.Id })">
+                        <img src="@item.ImagePath" alt="@item.Title"/>
+                    </a>
+                </div>
+                <div class="goods-title">
+                    <h2><a href="@item.SellingUrl">@item.Title</a></h2>
+                </div>                
+                <div class="goods-price">
+                    价格:<span>@item.Price</span>元
+                </div>
+                <div class="sell-amount">
+                    最近销售:<span>@item.SellAmount</span>
+                </div>
+                <div class="seller-credit">
+                    卖家信誉:<span>@item.SellerCredit</span>
+                </div>
+                <div class="goods-detail">
+                    @Html.ActionLink("更多信息", "Detail", "Goods", new { id = @item.Id }, null)
+                </div>
+            </div>
+        }        
+    </div>
+    @Html.Pager(Model.Pager)
+}

@@ -3,114 +3,270 @@ html, body
 {
     margin: 0;
     padding: 0;
-   background: url(mainpic.jpg) no-repeat center fixed; /**/
-    font-family: Arial;
+    font-family: "Microsoft YaHei";
+    background-color: #efefef;
+    background-image: -webkit-gradient(linear, 0 0, 0 600, from(#e2e5e9), to(#efefef));
+    background-repeat:  no-repeat;
+    color: #333;
+    min-height: 600px;
+    font-size: 14px;
 }
-#main
+
+a
 {
-    width: 80%;
+    color: #333;
+}
+
+    a:hover
+    {
+        color: #be6918;
+        text-decoration: none;
+    }
+
+#wrapper
+{
+    width: 90%;
     margin: 0 auto;
 }
-#top, #search-bar,#bottom
+
+#header
 {
-    width: 100%;
-    /*border: 1px solid White;*/
-    /*background-color: rgba(255,255,255,0.5);*/
-    height: 100px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding-left: 180px;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    margin: 10px auto;
+    background-image: url(Insect-robot.png);
+    background-repeat: no-repeat;
 }
+
+    #header h1
+    {
+        font-weight: normal;
+        margin: 5px 0;
+    }
+
+    #header h2
+    {
+        font-weight: normal;
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+    }
+
+    #header #links
+    {
+        float: right;
+    }
+
+#content
+{
+    background-color: white;
+    background-color: RGBA(255,255,255,.8);
+    box-shadow: 2px 2px 10px gray;
+    padding: 40px;
+}
+
 #search-bar
 {
-    margin-top:40px;
-    text-align: center;
+    margin: 20px 0;
 }
-.search-form
+
+    #search-bar input#keyword
+    {
+        width: 400px;
+        height: 30px;
+        padding: 0 35px 0 5px;
+        display: inline-block;
+        margin: 0;
+    }
+
+    #search-bar input#search-button
+    {
+        display: inline-block;
+        margin: 0;
+        margin-left: -35px;
+        height: 24px;
+        width: 24px;
+        text-indent: -10000px;
+        background: url(search.png) 2px 2px no-repeat #aacfeb;
+        border: 1px solid;
+        border-color: #62aac6;
+        border-radius: 3px;
+    }
+
+        #search-bar input#search-button:hover,
+        #search-bar input#search-button:focus
+        {
+            background-color: #d8e8f3;
+        }
+
+    #search-bar #advance-search
+    {
+        margin-left: 15px;
+    }
+
+div.pager
 {
-    margin-top: 35px;    
+    margin: 20px 0;
 }
-#search-bar input#keyword
+
+    div.pager a, div.pager span
+    {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 5px;
+        border-radius: 5px;
+    }
+
+    div.pager a
+    {
+        text-decoration: none;
+        color: white;
+        background-color: #dd8526;
+        text-shadow: 1px 1px 1px #874e17;
+    }
+
+        div.pager a:hover
+        {
+            background-color: #f6ac15;
+        }
+
+    div.pager span
+    {
+        background-color: #DDD;
+    }
+
+
+div.goods-section
 {
-    height: 30px;
-    font-size : 18px;
-}
-#sections
-{
-    width: 100%;    
-}
-#sections div.section
-{
-    width: 20%;
-    padding: 5px;
-    margin: auto;
     display: inline-block;
-    vertical-align: top;
-   /* height: 200px;*/
-    overflow: hidden;
-    border: 1px solid White;
-    background-color:rgba(255,255,255,0.5);
+    float: left;
+    width: 240px;
+    height: 360px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid Transparent;
+    font-size: 12px;
+}
+
+    div.goods-section:hover
+    {
+        border-bottom: 2px solid Orange;
+    }
+
+        div.goods-section:hover div.goods-image
+        {
+            border: 1px solid orange;
+            box-shadow: 0 0 5px orange;
+        }
+
+
+div.goods-image
+{
+    height: 218px;
+    line-height: 218px;
+    width: 218px;
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 10px;
-    margin-right: 3%;
-    margin-left: 0;
-    margin-top: 10px;
+    text-align: center;
+    vertical-align: middle;
 }
-#sections div.border
+
+
+    div.goods-image img
+    {
+        max-height: 218px;
+        max-width: 218px;
+        margin: auto;
+        vertical-align: middle;
+        border: none;
+    }
+
+div.goods-section span
 {
-    margin-right: 0;    
+    padding: 0 5px;
+    color: blue;
 }
-#big-title
+
+div.goods-title
 {
-  	font-family: "Times New Roman";
-	font-size: 82px;
-	
-	text-align: center;
-	margin-top:0px;
-	color: black;
 }
-.btn-out
+
+    div.goods-title h2
+    {
+        font-size: 12px;
+        font-weight: normal;
+        margin-bottom: 5px;
+        height: 51px;
+    }
+
+div.goods-price
 {
-    background-color: rgba(0,0,0,0.5);
-    border: 0 none;
-    cursor: pointer;
-    font-size: 14px;
-    height: 32px;
-    padding: 0;
-    width: 95px;
+    color: red;
+    float: left;
+    line-height: 24px;
+    vertical-align: bottom;
 }
-.btn-dowm
-{
-    background-color: rgba(255,255,100,0.5);
-}
-.btn-over
-{
-    background-color: rgba(100,100,100,1);
-}
-#bottom
-{
-    margin-top:70px;
-}
-.explain
-{
-    font-family: "Comic Sans MS";
-	font-size: 30px;
-	
-	text-align: center;
-	margin:20px;
-	color: #5C3317;
-}
-.result-title
-{
-    font-size:13px;
-    float:left;
-    text-align:left;
-}
-.result-text
-{
-    font-size:13px;
-    float:left;
-    text-align:left;
-}
-.more-link
+
+    div.goods-price span
+    {
+        font-size: large;
+        color: red;
+    }
+
+div.sell-amount
 {
     float: right;
+    margin-bottom: 0;
+    line-height: 24px;
+    vertical-align: bottom;
+}
+
+div.seller-credit
+{
+    clear: left;
+    float: left;
+}
+
+    div.seller-credit:after
+    {
+        content: '.';
+        display: block;
+        visibility: hidden;
+        height: 0;
+        font-size: 0;
+        zoom: 1;
+        clear: left;
+    }
+
+
+div.goods-detail
+{
+    clear: right;
+    float: right;
+    vertical-align: bottom;
+}
+
+div#search-result:after,
+div#search-result::after,
+div.pager:before,
+div.pager::before
+{
+    content: '.';
+    display: block;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+    zoom: 1;
+    clear: both;
+}
+
+#footer
+{
+    text-align: center;
+    font-family: "Arial";
+    font-size: small;
+    text-align: center;
+    margin-top: 50px;
 }

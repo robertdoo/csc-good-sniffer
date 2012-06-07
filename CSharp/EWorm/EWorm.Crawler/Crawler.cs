@@ -20,27 +20,34 @@ namespace EWorm.Crawler
             this.GoodsStorage = new GoodStorage();
         }
 
+        public static JobQueueChangeEventArgs LastJobQueue { get; private set; }
+        public static KeywordQueueChangeEventArgs LastKeywordQueue { get; private set; }
+
         internal static void NotifyJobQueueChange(JobQueue queue)
         {
+
+            JobQueueChangeEventArgs args = new JobQueueChangeEventArgs()
+            {
+                JobQueue = queue.GetAll().Select(x => x.ToString()).ToList(),
+                CurrentJob = queue.CurrentJob.ToString()
+            };
+            LastJobQueue = args;
             if (OnQueueChanged != null)
             {
-                JobQueueChangeEventArgs args = new JobQueueChangeEventArgs()
-                {
-                    JobQueue = queue.GetAll().Select(x => x.ToString()).ToList(),
-                    CurrentJob = queue.CurrentJob.ToString()
-                };
                 OnQueueChanged.BeginInvoke(ActivateJob.Context, args, null, null);
             }
         }
 
         internal static void NotifyKeywordQueueChange(Dictionary<string, int> keywordQueue)
         {
+
+            KeywordQueueChangeEventArgs args = new KeywordQueueChangeEventArgs()
+            {
+                KeywordQueue = keywordQueue.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value)
+            };
+            LastKeywordQueue = args;
             if (OnKeywordQueueChanged != null)
             {
-                KeywordQueueChangeEventArgs args = new KeywordQueueChangeEventArgs()
-                {
-                    KeywordQueue = keywordQueue.ToDictionary(x => x.Key, x => x.Value)
-                };
                 OnKeywordQueueChanged.BeginInvoke(ActivateJob.Context, args, null, null);
             }
         }

@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\CrawlerController.cs" />
     <Compile Include="Controllers\GoodsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -128,6 +129,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\monitor.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -155,6 +157,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EWorm.Crawler\EWorm.Crawler.csproj">
+      <Project>{169af643-c55e-4053-9f9d-ff597b3e11f7}</Project>
+      <Name>EWorm.Crawler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EWorm.Model\EWorm.Model.csproj">
       <Project>{DE87B604-1A8F-428A-A865-073F0F83753D}</Project>
       <Name>EWorm.Model</Name>
@@ -172,6 +178,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Publish To Web %28EWorm%29.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Crawler\Monitor.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

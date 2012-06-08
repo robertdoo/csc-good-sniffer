@@ -57,15 +57,16 @@ namespace EWorm.Crawler.Fetcher
         /// <returns></returns>
         public string BuildSearchPconlineUrl(string keyword, int pageIndex)
         {
+           
             string url;
             // 太平洋搜索结果搜索结果分页pageNo相差1，首页无pageNo
             if (pageIndex == 0)
             {
-                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}", HttpUtility.UrlEncodeUnicode(keyword));
+                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}", keyword);
             }
             else
             {
-                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}&pageNo={1}", HttpUtility.UrlEncodeUnicode(keyword), pageIndex + 1);
+                url = String.Format("http://ks.pconline.com.cn/product.jsp?q={0}&pageNo={1}", keyword, pageIndex + 1);
             }
             return url;
         }
@@ -77,14 +78,18 @@ namespace EWorm.Crawler.Fetcher
         /// <returns></returns>
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
-           
+
+                keyword = System.Web.HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GBK"));
+              //  Console.Write(keyword);
                 // 记录已经抓过的Url（去重复）
                 var fetched = new HashSet<string>();
 
                 int page = 0;
                 while (fetched.Count < limit)
                 {
+                   
                     string searchUrl = BuildSearchPconlineUrl(keyword, page++);
+             
                     string searchResult = Http.Get(searchUrl);
 
                     // 匹配出商品的Url

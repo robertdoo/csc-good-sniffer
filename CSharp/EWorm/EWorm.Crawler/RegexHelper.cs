@@ -8,9 +8,14 @@ namespace EWorm.Crawler
 {
     public static class RegexHelper
     {
-        public static String RemoveHtmlTag()
+        public static String RemoveHtmlTag(this String html)
         {
-            Regex regex = new Regex(@"<(?<TagName>\w+?).*?>(?<Content>.*?)</\1>");
+            Regex regex = new Regex(@"<(?<TagName>\w+?).*?>(?<Content>.*?)</\k<TagName>>");
+            while (regex.Match(html).Success)
+            {
+                html = regex.Replace(html, "${Content}");
+            }
+            return html;
         }
     }
 }

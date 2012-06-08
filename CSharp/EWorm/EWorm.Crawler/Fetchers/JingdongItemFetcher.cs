@@ -38,12 +38,12 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品的属性列表
         /// </summary>
-        private static readonly Regex PropertyListPattern = new Regex(@"<ul id=\042i-detail\042>(?<PropertyList>(.|\s)+?)</ul>", RegexOptions.Compiled);
+        private static readonly Regex PropertyListPattern = new Regex(@"<table.+?class=\042Ptable\042>.+?</table>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"(<li title=.+?>|<li>)(?<Name>.+?):(?<Value>.+?)</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"<tr><td class=\042tdTitle\042>(?<Name>.+?)</td><td>(?<Value>.+?)</td></tr>", RegexOptions.Compiled);
         #endregion
 
 
@@ -76,6 +76,7 @@ namespace EWorm.Crawler
         /// <returns></returns>
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
+            keyword = System.Web.HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GBK"));
             // 记录已经抓过的Url（去重复）
             var fetched = new HashSet<string>();
 
@@ -135,16 +136,15 @@ namespace EWorm.Crawler
             Match propertyListMatch = PropertyListPattern.Match(itemResult);
             if (propertyListMatch.Success)
             {
-                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-                // Console.Write(propertyResult);
+                string propertyResult = propertyListMatch.Value;
                 var propertyMatches = PropertyPattern.Matches(propertyResult);
                 var properties = new List<Property>();
                 foreach (Match propertyMatch in propertyMatches)
                 {
                     Property property = new StringProperty()
                     {
-                        Name = propertyMatch.Groups["Name"].Value,
-                        Value = propertyMatch.Groups["Value"].Value
+                        Name = propertyMatch.Groups["Name"].Value.RemoveHtmlTag(),
+                        Value = propertyMatch.Groups["Value"].Value.RemoveHtmlTag()
                     };
                     properties.Add(property);
                 }

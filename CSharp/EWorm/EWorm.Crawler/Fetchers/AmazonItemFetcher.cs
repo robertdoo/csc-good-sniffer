@@ -78,7 +78,7 @@ namespace EWorm.Crawler.Fetchers
             while (fetched.Count < limit)
             {
                 string searchUrl = BuildSearchAmazonUrl(keyword, page++);
-                string searchResult = Http.Get(searchUrl, Encoding.Unicode);
+                string searchResult = Http.Get(searchUrl, Encoding.UTF8);
 
                 // 匹配出商品的Url
                 var itemMatches = ItemUrlPattern.Matches(searchResult);
@@ -103,7 +103,7 @@ namespace EWorm.Crawler.Fetchers
         /// <returns></returns>
         public Goods FetchGoods(Uri goodsUri)
         {
-            string itemResult = Http.Get(goodsUri.ToString());
+            string itemResult = Http.Get(goodsUri.ToString(), Encoding.UTF8);
 
             Match titleMatch, priceMatch, imageMatch;
             titleMatch = TitlePattern.Match(itemResult);
@@ -129,9 +129,7 @@ namespace EWorm.Crawler.Fetchers
 
                 Price = Convert.ToDouble(modifyPrice),
 
-                //  Price = Convert.ToDouble(modifyPrice),
-
-                SellerCredit = -1,
+                SellerCredit = 0,
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,

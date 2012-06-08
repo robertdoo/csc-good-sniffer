@@ -76,32 +76,34 @@ namespace EWorm.Crawler
         /// <param name="pageToFetch">表明要抓取多少页的商品</param>
         /// <returns></returns>
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
-        {       
-                // 记录已经抓过的Url（去重复）
-                var fetched = new HashSet<string>();
+        {
 
-                int page = 0;
-                while (fetched.Count < limit)
+            keyword = System.Web.HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GBK"));
+            // 记录已经抓过的Url（去重复）
+            var fetched = new HashSet<string>();
+
+            int page = 0;
+            while (fetched.Count < limit)
+            {
+                string searchUrl = BuildSearchDangdangUrl(keyword, page++);
+                string searchResult = Http.Get(searchUrl, Encoding.GetEncoding("GBK"));
+
+                // 匹配出商品的Url
+                var itemMatches = ItemUrlPattern.Matches(searchResult);
+
+                var itemsNotFetched = itemMatches.OfType<Match>().Select(x => x.Groups["Url"].Value).Where(x => !fetched.Contains(x));
+                if (itemsNotFetched.Count() == 0)
                 {
-                    string searchUrl = BuildSearchDangdangUrl(keyword, page++);
-                    string searchResult = Http.Get(searchUrl);
-
-                    // 匹配出商品的Url
-                    var itemMatches = ItemUrlPattern.Matches(searchResult);
-
-                    var itemsNotFetched = itemMatches.OfType<Match>().Select(x => x.Groups["Url"].Value).Where(x => !fetched.Contains(x));
-                    if (itemsNotFetched.Count() == 0)
-                    {
-                        break;
-                    }
-                    foreach (var item in itemsNotFetched)
-                    {
-                        fetched.Add(item);
-                    }
+                    break;
                 }
-         return fetched.Select(x => new Uri(x));
-        
-            
+                foreach (var item in itemsNotFetched)
+                {
+                    fetched.Add(item);
+                }
+            }
+            return fetched.Select(x => new Uri(x));
+
+
         }
 
         /// <summary>
@@ -142,7 +144,7 @@ namespace EWorm.Crawler
                 return 0;
             }
             int credit = 0;
-           // Console.Write(level1);
+            // Console.Write(level1);
             switch (level1)
             {
                 case "star_red":

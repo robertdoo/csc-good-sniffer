@@ -17,12 +17,17 @@ namespace EWorm.Crawler
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static String Get(String url, Encoding encoding)
+        public static String Get(String url, Encoding encoding, int timeout = 5000)
         {
-                WebClient client = new WebClient();
-                client.Encoding = encoding;
-                Uri uri = new Uri(url);
-                return client.DownloadString(uri);           
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = WebRequestMethods.Http.Get;
+            request.AllowAutoRedirect = false;
+            request.Timeout = timeout;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            StreamReader reader = new StreamReader(response.GetResponseStream(), encoding);
+            string ret = reader.ReadToEnd();
+            reader.Close();
+            return ret;
         }
 
         public static string DownloadImage(string url)

@@ -31,12 +31,12 @@ namespace EWorm.Crawler
             FetcherCollection = FetcherCollection.Where(x => x.Metadata.Disabled == false).ToList();
         }
 
-        internal IEnumerable<IGoodsFetcher> GetAllFetcher()
+        public IEnumerable<IGoodsFetcher> GetAllFetcher()
         {
             return FetcherCollection.Select(x => x.Value);
         }
 
-        internal IGoodsFetcher GetFetcher(string name)
+        public IGoodsFetcher GetFetcher(string name)
         {
             var fetcher = FetcherCollection.SingleOrDefault(x => x.Metadata.Name == name);
             if (fetcher == null)
@@ -44,7 +44,7 @@ namespace EWorm.Crawler
             return fetcher.Value;
         }
 
-        internal IGoodsFetcherMetadata GetMetadata(IGoodsFetcher fetcher)
+        public IGoodsFetcherMetadata GetMetadata(IGoodsFetcher fetcher)
         {
             var choosen = FetcherCollection.SingleOrDefault(x => x.Value == fetcher);
             if (choosen == null)

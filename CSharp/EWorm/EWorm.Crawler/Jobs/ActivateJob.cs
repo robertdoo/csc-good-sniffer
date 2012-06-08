@@ -47,7 +47,6 @@ namespace EWorm.Crawler.Jobs
 
         private void GetJobAndWork()
         {
-            Job lastExceptionJob = null;
             while (true)
             {
                 while (this.Context.JobQueue.HasJob)
@@ -62,14 +61,15 @@ namespace EWorm.Crawler.Jobs
                     catch (Exception ex)
                     {
                         job.Priority--;
-                        if (job != lastExceptionJob)
-                        {
-                            this.Context.JobQueue.Enqueue(job);
-                        }
-                        lastExceptionJob = job;
 #if DEBUG
                         throw ex;
 #endif
+                    }
+                    if (!this.Context.JobQueue.HasJob)
+                    {
+                        job = new KeywordSelectJob(this);
+                        job.Priority--;
+                        this.Context.JobQueue.Enqueue(job);
                     }
                 }
                 try

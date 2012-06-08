@@ -1,28 +1,31 @@
 ﻿@{
     ViewBag.Title = "商品详细信息";
 }
-<link href="@Url.Content("~/Content/detail.css")" rel="Stylesheet" type="text/css" />
-<h2>detail</h2>
-
+<h2 class="dtitle">@Model.Title</h2>
 @model EWorm.Model.Goods
-           
 <div class="dmain">
     <div class="dpic">
-        <img src="@Url.Content("~/Content/Goods/" + Model.ImagePath)" style="width:250px;height:250px"/>
-    <div>
+        <img src="@Url.Content(Model.ImagePath)" style="width:250px;height:250px"/>
+    </div>
     <div class="dproperty">
-        <div class="title">@Model.Title</div>
-        <div class="price">价格：￥@Model.Price</div>
+        
+        <div class="price">
+            价格：￥@Model.Price
+        </div>
         <div class="others">
             最近卖出：@Model.SellAmount 笔<br>
-            商家信用：@for (int i = 0; i < Model.SellerCredit; i++)
-                 {<text>★</text>}<br>
-            @Model.Properties
+            商家信用：@Model.SellerCredit<br>
+            关键词：
+            @foreach (var item in Model.Properties)
+            {
+                @Html.Raw(@item.Name);<text>&#58;</text>
+                @Html.Raw(@item.ValueAsString);
+                                <span style="font-size: 12px;">&nbsp;&nbsp;&nbsp;</span>
+            }
         </div>
         <div class="buy">
-            <button class="toweb">购买</button>
+            <a class="buyit" style="background-color:inherit" href=@Model.SellingUrl >购买</a>
         </div>
     </div>
 </div>
-
-@Model.Title
+</div> 

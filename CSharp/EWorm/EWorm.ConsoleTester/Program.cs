@@ -29,8 +29,6 @@ namespace EWorm.ConsoleTester
                 GetKeywordAndSearch(testFetcher, fetcherName);
                 Console.WriteLine();
             }
-
-
         }
 
         private static void GetKeywordAndSearch(IGoodsFetcher testFetcher, string fetcherName)

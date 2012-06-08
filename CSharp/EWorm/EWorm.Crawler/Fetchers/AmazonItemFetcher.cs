@@ -34,17 +34,12 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品页面上商品的图片url
         /// </summary>
-        private static readonly Regex ImagePattern = new Regex(@"<div id=\042rwImages_hidden\042 style=\042display:none;\042>\n<img src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
-
-        /// <summary>
-        /// 匹配商品的属性列表
-        /// </summary>
-        private static readonly Regex PropertyListPattern = new Regex(@"<div class=\042content\042>\s*?<ul>(?<PropertyList>(.|\s)+?)<b>.+?</b>\s*?<script type=.+?>", RegexOptions.Compiled);
+        private static readonly Regex ImagePattern = new Regex(@"src=\042(?<ImageUrl>.+?)\042\sid=\042prodImage\042", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品属性
         /// </summary>
-        private static readonly Regex PropertyPattern = new Regex(@"<li><b>\s*?(?<Name>.+?):\s*?</b>\s*?(?<Value>.+?)\s*?</li>", RegexOptions.Compiled);
+        private static readonly Regex PropertyPattern = new Regex(@"tr class=\042techSpecRow\042><td class=\042techSpecTD1\042>(?<Name>.+?):</td><td class=\042techSpecTD2\042>(?<Value>.+?)</td></tr>", RegexOptions.Compiled);
         #endregion
 
 
@@ -71,6 +66,8 @@ namespace EWorm.Crawler.Fetchers
 
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
+            
+
             // 记录已经抓过的Url（去重复）
             var fetched = new HashSet<string>();
 
@@ -115,12 +112,10 @@ namespace EWorm.Crawler.Fetchers
             {
                 modifyPrice = "0";
             }
-            Console.Write(modifyPrice);
             modifyPrice.Replace(",", "");
 
 
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
-            //Console.Write(imageurl);
             string downloadedImage = Http.DownloadImage(imageurl);
 
             Goods goods = new Goods()
@@ -128,30 +123,24 @@ namespace EWorm.Crawler.Fetchers
                 Title = titleMatch.Groups["Title"].Value,
 
                 Price = Convert.ToDouble(modifyPrice),
-
                 SellerCredit = 0,
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
             };
-            Match propertyListMatch = PropertyListPattern.Match(itemResult);
-            if (propertyListMatch.Success)
+
+            var propertyMatches = PropertyPattern.Matches(itemResult);
+            var properties = new List<Property>();
+            foreach (Match propertyMatch in propertyMatches)
             {
-                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
-                // Console.Write(propertyResult);
-                var propertyMatches = PropertyPattern.Matches(propertyResult);
-                var properties = new List<Property>();
-                foreach (Match propertyMatch in propertyMatches)
+                Property property = new StringProperty()
                 {
-                    Property property = new StringProperty()
-                    {
-                        Name = propertyMatch.Groups["Name"].Value,
-                        Value = propertyMatch.Groups["Value"].Value
-                    };
-                    properties.Add(property);
-                }
-                goods.Properties = properties;
+                    Name = propertyMatch.Groups["Name"].Value.RemoveHtmlTag(),
+                    Value = propertyMatch.Groups["Value"].Value.RemoveHtmlTag()
+                };
+                properties.Add(property);
             }
+            goods.Properties = properties;
 
             return goods;
         }

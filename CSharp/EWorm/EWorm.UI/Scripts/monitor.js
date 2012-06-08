@@ -50,7 +50,7 @@ var loadJobQueueSuccess = function (result) {
     } else {
         $("#job-queue").html("爬虫启动中...");
     }
-    setTimeout(loadJobQueue, 300);
+    setTimeout("loadJobQueue();", 300);
 }
 
 var loadKeywordQueue = function () {
@@ -72,7 +72,7 @@ var loadKeywordQueueSuccess = function (result) {
     } else {
         $("#keyword-queue").html("爬虫启动中...");
     }
-    setTimeout(loadKeywordQueue, 300);
+    setTimeout("loadKeywordQueue();", 300);
 };
 
 $(document).ready(function () {

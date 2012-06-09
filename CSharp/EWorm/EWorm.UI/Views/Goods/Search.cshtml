@@ -6,6 +6,11 @@
         Model.Pager.LinkOfPage = x => Url.Action("Search", new { q = Request["q"], p = x });
     }
 }
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/uri.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Search.js")"></script>
+}
 
 <div id="search-bar">
     @using (Html.BeginForm("Search", "Goods", FormMethod.Get, new { id = "search-form" }))
@@ -18,8 +23,17 @@
 </div>
 @if (Model != null)
 {
+    <div id="search-options">
+        <label>排序：</label>
+        <select id="sel-sort-option">
+            <option value="price"@(Request["o"] == "price" ? " selected=\"selected\"" : "")>价格</option>
+            <option value="sellamount"@(Request["o"] == "sellamount" ? " selected=\"selected\"" : "")>销量</option>
+            <option value="sellercredit"@(Request["o"] == "sellercredit" ? " selected=\"selected\"" : "")>卖家信誉</option>
+            <option value="updatetime"@(Request["o"] == "updatetime" ? " selected=\"selected\"" : "")>更新时间</option>
+        </select>
+    </div>
     @Html.Pager(Model.Pager)
-    <div id="search-result">        
+    <div id="search-result">
         @foreach (var item in Model.Records)
         {
             <div class="goods-section">
@@ -30,7 +44,7 @@
                 </div>
                 <div class="goods-title">
                     <h2><a href="@item.SellingUrl">@item.Title</a></h2>
-                </div>                
+                </div>
                 <div class="goods-price">
                     价格:<span>@item.Price</span>元
                 </div>
@@ -44,7 +58,7 @@
                     @Html.ActionLink("更多信息", "Detail", "Goods", new { id = @item.Id }, null)
                 </div>
             </div>
-        }        
+        }
     </div>
     @Html.Pager(Model.Pager)
 }

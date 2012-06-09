@@ -34,7 +34,7 @@ namespace EWorm.Crawler.Fetchers
         /// <summary>
         /// 匹配商品页面上商品卖家的信誉度
         /// </summary>
-        private static readonly Regex CreditPattern = new Regex(@"<a style=\042.+?><span class=\042swSprite s_star_(?<Level>\d)_0 \042", RegexOptions.Compiled);
+        private static readonly Regex CreditPattern = new Regex(@"<a style=\042.+?><span class=\042swSprite s_star_(?<Level>\d)_\d \042", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的图片url

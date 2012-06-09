@@ -32,6 +32,11 @@ namespace EWorm.Crawler.Fetchers
         private static readonly Regex PricePattern = new Regex(@"￥\s*?(?<Price>.+?)</b>", RegexOptions.Compiled);
 
         /// <summary>
+        /// 匹配商品页面上商品卖家的信誉度
+        /// </summary>
+        private static readonly Regex CreditPattern = new Regex(@"<a style=\042.+?><span class=\042swSprite s_star_(?<Level>\d)_0 \042", RegexOptions.Compiled);
+
+        /// <summary>
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"src=\042(?<ImageUrl>.+?)\042\sid=\042prodImage\042", RegexOptions.Compiled);
@@ -102,12 +107,14 @@ namespace EWorm.Crawler.Fetchers
         {
             string itemResult = Http.Get(goodsUri.ToString(), Encoding.UTF8);
 
-            Match titleMatch, priceMatch, imageMatch;
+            Match titleMatch, priceMatch, imageMatch, creditMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
+            creditMatch = CreditPattern.Match(itemResult);
             string modifyPrice = priceMatch.Groups["Price"].Value;
-
+            Console.Write(creditMatch.Groups["Level"].Value);
+            int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
             if (modifyPrice == "")
             {
                 modifyPrice = "0";
@@ -123,7 +130,7 @@ namespace EWorm.Crawler.Fetchers
                 Title = titleMatch.Groups["Title"].Value,
 
                 Price = Convert.ToDouble(modifyPrice),
-                SellerCredit = 35,
+                SellerCredit = CalculateSuningCredit(a),
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
@@ -143,6 +150,36 @@ namespace EWorm.Crawler.Fetchers
             goods.Properties = properties;
 
             return goods;
+        }
+        public int CalculateSuningCredit(int level)
+        {
+            int credit = 0;
+            switch (level)
+            {
+                case 0:
+                    credit += 0;
+                    break;
+                case 1:
+                    credit += 10;
+                    break;
+                case 2:
+                    credit += 20;
+                    break;
+                case 3:
+                    credit += 30;
+                    break;
+                case 4:
+                    credit += 40;
+                    break;
+                case 5:
+                    credit += 50;
+                    break;
+
+            }
+
+
+            return credit;
+
         }
     }
 }

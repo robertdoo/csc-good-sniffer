@@ -131,6 +131,8 @@
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Scripts\monitor.js" />
+    <Content Include="Scripts\Search.js" />
+    <Content Include="Scripts\uri.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

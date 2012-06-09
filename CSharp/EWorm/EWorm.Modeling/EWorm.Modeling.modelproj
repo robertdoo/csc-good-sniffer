@@ -9,6 +9,10 @@
     <ArchitectureToolsVersion>2.0.0.0</ArchitectureToolsVersion>
     <Name>EWorm.Modeling</Name>
     <RootNamespace>EWorm.Modeling</RootNamespace>
+    <SccProjectName>Svn</SccProjectName>
+    <SccProvider>SubversionScc</SccProvider>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccLocalPath>Svn</SccLocalPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>

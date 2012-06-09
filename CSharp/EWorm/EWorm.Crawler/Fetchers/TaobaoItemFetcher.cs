@@ -68,7 +68,7 @@ namespace EWorm.Crawler.Fetchers
 
         public IEnumerable<Uri> GetGoodsUriByKeyowrd(string keyword, int limit)
         {
-            
+                keyword = System.Web.HttpUtility.UrlEncode(keyword, Encoding.GetEncoding("GBK"));
                 // 记录已经抓过的Url（去重复）
                 var fetched = new HashSet<string>();
 
@@ -76,7 +76,7 @@ namespace EWorm.Crawler.Fetchers
                 while (fetched.Count < limit)
                 {
                     string searchUrl = BuildSearchTaobaoUrl(keyword, page++);
-                    string searchResult = Http.Get(searchUrl);
+                    string searchResult = Http.Get(searchUrl,Encoding.GetEncoding("GBK"));
 
                     // 匹配出商品的Url
                     var itemMatches = ItemUrlPattern.Matches(searchResult);

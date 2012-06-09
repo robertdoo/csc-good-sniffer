@@ -30,7 +30,7 @@ namespace EWorm.Crawler
         /// <summary>
         /// 匹配商品页面上商品卖家的信誉度
         /// </summary>
-        private static readonly Regex CreditPattern = new Regex(@"<span><img src=\'images/(?<Level1>.+?).gif\' /><img src=\'images/(?<Level2>.+?).gif\' /><img src=\'images/(?<Level3>.+?).gif\' /><img src=\'images/(?<Level4>.+?).gif\' /><img src=\'images/(?<Level5>.+?).gif\' /></span>", RegexOptions.Compiled);
+        private static readonly Regex CreditPattern = new Regex(@"<img src=\'images/(?<Level1>.+?).gif\' /><img src=\'images/(?<Level2>.+?).gif\' /><img src=\'images/(?<Level3>.+?).gif\' /><img src=\'images/(?<Level4>.+?).gif\' /><img src=\'images/(?<Level5>.+?).gif\' />", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的图片url

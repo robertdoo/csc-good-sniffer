@@ -123,7 +123,7 @@ namespace EWorm.Crawler.Fetchers
                 Title = titleMatch.Groups["Title"].Value,
 
                 Price = Convert.ToDouble(modifyPrice),
-                SellerCredit = 0,
+                SellerCredit = 35,
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,

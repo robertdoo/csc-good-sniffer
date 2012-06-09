@@ -34,6 +34,11 @@ namespace EWorm.Crawler.Fetcher
         private static readonly Regex PricePattern = new Regex(@"<span>￥<i class=\042price\042>(?<Price>\d+?)</i>	</span>", RegexOptions.Compiled);
 
         /// <summary>
+        /// 匹配商品页面上商品卖家的信誉度
+        /// </summary>
+        private static readonly Regex CreditPattern = new Regex(@"<span class=\042fw\042>(?<Level>\d)", RegexOptions.Compiled);
+
+        /// <summary>
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"img id=\042idImage\042 width=.+? height=.+? src=\042(?<ImageUrl>.+?.jpg)\042", RegexOptions.Compiled);
@@ -118,23 +123,23 @@ namespace EWorm.Crawler.Fetcher
         {
             string itemResult = Http.Get(goodsUri.ToString());
 
-            Match titleMatch, priceMatch, imageMatch, priceUrlMatch ;
+            Match titleMatch, priceMatch, imageMatch, priceUrlMatch, creditMatch;
             priceUrlMatch = PriceUrlPattern.Match(itemResult);
             titleMatch = TitlePattern.Match(itemResult);
-           
+            creditMatch = CreditPattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string priceurl = priceUrlMatch.Groups["PriceUrl"].Value;
-            //Console.Write(priceurl);
+            int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
             Goods goods = new Goods();
-            if (priceurl == "")//如果该商品未上市或者已经过期标价均记为0
+            if (priceurl == "")//如果该商品未上市或者已经过期标价均记为1499
             {
                 goods = new Goods()
                 {
                     Title = titleMatch.Groups["Title"].Value,
-                    Price = 0,
-                    SellerCredit = 35,
+                    Price = 1499,
+                    SellerCredit =CalculatePconCredit(a),
                     SellingUrl = goodsUri.ToString(),
                     UpdateTime = DateTime.Now,
                     ImagePath = downloadedImage,
@@ -151,7 +156,7 @@ namespace EWorm.Crawler.Fetcher
                 {
                     Title = titleMatch.Groups["Title"].Value,
                     Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                    SellerCredit = 35,
+                    SellerCredit = CalculatePconCredit(a),
                     SellingUrl = goodsUri.ToString(),
                     UpdateTime = DateTime.Now,
                     ImagePath = downloadedImage,
@@ -179,6 +184,35 @@ namespace EWorm.Crawler.Fetcher
 
             return goods;
         }
+        public int CalculatePconCredit(int level)
+        {
+            int credit = 0;
+            switch (level)
+            {
+                case 0:
+                    credit += 0;
+                    break;
+                case 1:
+                    credit += 10;
+                    break;
+                case 2:
+                    credit += 20;
+                    break;
+                case 3:
+                    credit += 30;
+                    break;
+                case 4:
+                    credit += 40;
+                    break;
+                case 5:
+                    credit += 50;
+                    break;
 
+            }
+
+
+            return credit;
+
+        }
     }
 }

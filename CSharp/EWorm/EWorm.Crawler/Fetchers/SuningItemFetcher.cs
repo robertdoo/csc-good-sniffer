@@ -28,6 +28,11 @@ namespace EWorm.Crawler
         private static readonly Regex PricePattern = new Regex(@"\042promotionPrice\042:\042(?<Price>\d+\.\d{2})", RegexOptions.Compiled);
 
         /// <summary>
+        /// 匹配商品页面上商品卖家的信誉度
+        /// </summary>
+        private static readonly Regex CreditPattern = new Regex(@"<div class=\042stars starslel(?<Level>\d)\042></div>", RegexOptions.Compiled);
+
+        /// <summary>
         /// 匹配商品页面上商品的图片url
         /// </summary>
         private static readonly Regex ImagePattern = new Regex(@"<img src=\042(?<ImageUrl>.+?.jpg)\042 width=", RegexOptions.Compiled);
@@ -111,10 +116,11 @@ namespace EWorm.Crawler
             string priceUrl = String.Format("http://www.suning.com/emall/SNProductStatusView?storeId=10052&catalogId=10051&productId={0}&langId=-7&cityId=9173&_=1337310463016", catentry_Id);
             string itemResult = Http.Get(goodsUri.ToString());
             string priceResult = Http.Get(priceUrl);
-            Match titleMatch, priceMatch,imageMatch;
+            Match titleMatch, priceMatch, imageMatch, creditMatch;
             titleMatch = TitlePattern.Match(itemResult);
             priceMatch = PricePattern.Match(priceResult);
             imageMatch = ImagePattern.Match(itemResult);
+            creditMatch = CreditPattern.Match(itemResult);
             //根据图片url下载图片
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
@@ -160,19 +166,20 @@ namespace EWorm.Crawler
             string priceUrl = String.Format("http://www.suning.com/emall/SNProductStatusView?storeId=10052&catalogId=10051&productId={0}&langId=-7&cityId=9173&_=1337310463016", productId);
             string itemResult = Http.Get(goodsUri.ToString(), Encoding.UTF8);
             string priceResult = Http.Get(priceUrl);
-            Match titleMatch, priceMatch, imageMatch;
+            Match titleMatch, priceMatch, imageMatch, creditMatch;
             titleMatch = TitlePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             priceMatch = PricePattern.Match(priceResult);
+            creditMatch = CreditPattern.Match(itemResult);
             //根据图片url下载图片
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
-
+            int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
                 Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                SellerCredit = -1,
+                SellerCredit = CalculateSuningCredit(a),
                 SellingUrl = goodsUri.ToString(),
                 ImagePath = downloadedImage,
                 UpdateTime = DateTime.Now,
@@ -200,6 +207,36 @@ namespace EWorm.Crawler
             return goods;
         }
 
+        public int CalculateSuningCredit(int level)
+        {
+            int credit = 0;
+            switch (level)
+            {
+                case 0:
+                    credit += 0;
+                    break;
+                case 1:
+                    credit += 10;
+                    break;
+                case 2:
+                    credit += 20;
+                    break;
+                case 3:
+                    credit += 30;
+                    break;
+                case 4:
+                    credit += 40;
+                    break;
+                case 5:
+                    credit += 50;
+                    break;
+
+            }
+            
+
+            return credit;
+
+        }
         #endregion
     }
 }

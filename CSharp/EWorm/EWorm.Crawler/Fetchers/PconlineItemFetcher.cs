@@ -134,7 +134,7 @@ namespace EWorm.Crawler.Fetcher
                 {
                     Title = titleMatch.Groups["Title"].Value,
                     Price = 0,
-                    SellerCredit = -1,
+                    SellerCredit = 35,
                     SellingUrl = goodsUri.ToString(),
                     UpdateTime = DateTime.Now,
                     ImagePath = downloadedImage,
@@ -151,7 +151,7 @@ namespace EWorm.Crawler.Fetcher
                 {
                     Title = titleMatch.Groups["Title"].Value,
                     Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
-                    SellerCredit = -1,
+                    SellerCredit = 35,
                     SellingUrl = goodsUri.ToString(),
                     UpdateTime = DateTime.Now,
                     ImagePath = downloadedImage,

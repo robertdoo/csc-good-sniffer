@@ -128,7 +128,7 @@ namespace EWorm.Crawler
             {
                 Title = titleMatch.Groups["Title"].Value,
                 //Price =Convert.ToDouble( priceMatch.Groups["Price"].Value),
-                SellerCredit = -1,
+                SellerCredit = 35,
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,

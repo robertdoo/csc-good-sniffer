@@ -126,36 +126,71 @@ namespace EWorm.Crawler
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
-            int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
+            if (creditMatch.Groups["Level"].Value != "")
+            {
+                int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
 
-            Goods goods = new Goods()
-            {
-                Title = titleMatch.Groups["Title"].Value,
-                //Price =Convert.ToDouble( priceMatch.Groups["Price"].Value),
-                SellerCredit = CalculateJingdongCredit(a),
-                SellingUrl = goodsUri.ToString(),
-                UpdateTime = DateTime.Now,
-                ImagePath = downloadedImage,
-            };
-            Match propertyListMatch = PropertyListPattern.Match(itemResult);
-            if (propertyListMatch.Success)
-            {
-                string propertyResult = propertyListMatch.Value;
-                var propertyMatches = PropertyPattern.Matches(propertyResult);
-                var properties = new List<Property>();
-                foreach (Match propertyMatch in propertyMatches)
+                Goods goods = new Goods()
                 {
-                    Property property = new StringProperty()
+                    Title = titleMatch.Groups["Title"].Value,
+                    //Price =Convert.ToDouble( priceMatch.Groups["Price"].Value),
+                    SellerCredit = CalculateJingdongCredit(a),
+                    SellingUrl = goodsUri.ToString(),
+                    UpdateTime = DateTime.Now,
+                    ImagePath = downloadedImage,
+                };
+                Match propertyListMatch = PropertyListPattern.Match(itemResult);
+                if (propertyListMatch.Success)
+                {
+                    string propertyResult = propertyListMatch.Value;
+                    var propertyMatches = PropertyPattern.Matches(propertyResult);
+                    var properties = new List<Property>();
+                    foreach (Match propertyMatch in propertyMatches)
                     {
-                        Name = propertyMatch.Groups["Name"].Value.RemoveHtmlTag(),
-                        Value = propertyMatch.Groups["Value"].Value.RemoveHtmlTag()
-                    };
-                    properties.Add(property);
+                        Property property = new StringProperty()
+                        {
+                            Name = propertyMatch.Groups["Name"].Value.RemoveHtmlTag(),
+                            Value = propertyMatch.Groups["Value"].Value.RemoveHtmlTag()
+                        };
+                        properties.Add(property);
+                    }
+                    goods.Properties = properties;
                 }
-                goods.Properties = properties;
-            }
 
-            return goods;
+                return goods;
+            }
+            else {
+                Goods goods = new Goods()
+                {
+                    Title = titleMatch.Groups["Title"].Value,
+                    //Price =Convert.ToDouble( priceMatch.Groups["Price"].Value),
+                    SellerCredit = 35,
+                    SellingUrl = goodsUri.ToString(),
+                    UpdateTime = DateTime.Now,
+                    ImagePath = downloadedImage,
+                };
+                Match propertyListMatch = PropertyListPattern.Match(itemResult);
+                if (propertyListMatch.Success)
+                {
+                    string propertyResult = propertyListMatch.Value;
+                    var propertyMatches = PropertyPattern.Matches(propertyResult);
+                    var properties = new List<Property>();
+                    foreach (Match propertyMatch in propertyMatches)
+                    {
+                        Property property = new StringProperty()
+                        {
+                            Name = propertyMatch.Groups["Name"].Value.RemoveHtmlTag(),
+                            Value = propertyMatch.Groups["Value"].Value.RemoveHtmlTag()
+                        };
+                        properties.Add(property);
+                    }
+                    goods.Properties = properties;
+                }
+
+                return goods;
+            
+            
+            }
         }
         public int CalculateJingdongCredit(int level)
         {

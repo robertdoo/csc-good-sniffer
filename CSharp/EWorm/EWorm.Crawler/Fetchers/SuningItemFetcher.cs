@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace EWorm.Crawler
 {
-    [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com", disabled: true)]
+    [GoodsFetcher(guid: "546A637C-2310-460E-72CB-2288113C94C4", name: "Suning", url: "http://www.suning.com", disabled: false)]
     public class SuningItemFetcher : IGoodsFetcher
     {
         #region 正则表达式
@@ -41,6 +41,11 @@ namespace EWorm.Crawler
         /// 匹配商品属性
         /// </summary>
         private static readonly Regex PropertyPattern = new Regex(@"class=\042tt\042>(?<Name>.+?)\s*?</td>\s*?<td.*?>(?<Value>.+?)</td>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// 匹配页面内价格url上的一个ProdutId
+        /// </summary>
+        private static readonly Regex ProductIdPattern = new Regex(@"http://www.suning.com/emall/prd_10052_10051_-7_(?<ProductId>\d+?)_.html", RegexOptions.Compiled);
         #endregion
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace EWorm.Crawler
         private string BuildShopItemUrl(string catentry_Id)
         {
             string url =String.Format( "http://www.suning.com/emall/prd_10052_10051_-7_{0}_.html",catentry_Id);
-            return String.Format(url, catentry_Id);
+            return url;
         }
 
 
@@ -74,6 +79,7 @@ namespace EWorm.Crawler
                 var fetched = new HashSet<string>();
 
                 string searchUrl = BuildSearchSuningUrl(keyword, limit);
+                
                 string searchResult = Http.Get(searchUrl);
 
                 // 匹配出商品的Url
@@ -86,9 +92,10 @@ namespace EWorm.Crawler
                 foreach (var itemMatch in idMatches.OfType<Match>())
                 {
                     string catentry_Id = itemMatch.Groups["CatentryId"].Value;
-                    if (!fetched.Contains(catentry_Id))
+                    string newUrl = BuildShopItemUrl(catentry_Id); 
+                    if (!fetched.Contains(newUrl))
                     {
-                        fetched.Add(catentry_Id);
+                        fetched.Add(newUrl);
                     }
                 }
                 return fetched.Select(x => new Uri(x));
@@ -148,7 +155,49 @@ namespace EWorm.Crawler
 
         public Goods FetchGoods(Uri goodsUri)
         {
-            throw new NotImplementedException();
+            var proIdMatch = ProductIdPattern.Match(goodsUri.ToString());
+            string productId = proIdMatch.Groups["ProductId"].Value;
+            string priceUrl = String.Format("http://www.suning.com/emall/SNProductStatusView?storeId=10052&catalogId=10051&productId={0}&langId=-7&cityId=9173&_=1337310463016", productId);
+            string itemResult = Http.Get(goodsUri.ToString(), Encoding.UTF8);
+            string priceResult = Http.Get(priceUrl);
+            Match titleMatch, priceMatch, imageMatch;
+            titleMatch = TitlePattern.Match(itemResult);
+            imageMatch = ImagePattern.Match(itemResult);
+            priceMatch = PricePattern.Match(priceResult);
+            //根据图片url下载图片
+            string imageurl = imageMatch.Groups["ImageUrl"].Value;
+            string downloadedImage = Http.DownloadImage(imageurl);
+
+            Goods goods = new Goods()
+            {
+                Title = titleMatch.Groups["Title"].Value,
+                Price = Convert.ToDouble(priceMatch.Groups["Price"].Value),
+                SellerCredit = -1,
+                SellingUrl = goodsUri.ToString(),
+                ImagePath = downloadedImage,
+                UpdateTime = DateTime.Now,
+            };
+
+            Match propertyListMatch = PropertyListPattern.Match(itemResult);
+            // Console.Write(propertyListMatch.Groups["PropertyList"].Value);
+            if (propertyListMatch.Success)
+            {
+                string propertyResult = propertyListMatch.Groups["PropertyList"].Value;
+                var propertyMatches = PropertyPattern.Matches(propertyResult);
+                var properties = new List<Property>();
+                foreach (Match propertyMatch in propertyMatches)
+                {
+                    // Console.Write(propertyMatch.Groups["Name"].Value);
+                    Property property = new StringProperty()
+                    {
+                        Name = propertyMatch.Groups["Name"].Value,
+                        Value = propertyMatch.Groups["Value"].Value
+                    };
+                    properties.Add(property);
+                }
+                goods.Properties = properties;
+            }
+            return goods;
         }
 
         #endregion

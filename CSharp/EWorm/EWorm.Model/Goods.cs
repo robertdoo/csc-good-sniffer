@@ -43,10 +43,14 @@ namespace EWorm.Model
         public int SellerCredit { get; set; }
 
         /// <summary>
+        /// 商品最近的销量
+        /// </summary>
+        public int SellAmount { get; set; }
+
+        /// <summary>
         /// 商品额外属性
         /// </summary>
         public IEnumerable<Property> Properties { get; set; }//返回定义值
 
-        public int SellAmount { get; set; }
     }
 }

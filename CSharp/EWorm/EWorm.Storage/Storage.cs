@@ -66,7 +66,7 @@ namespace EWorm.Storage
 
 
         private void UpdateProperties(Goods goods)
-        {            
+        {
             MySqlCommand clearCmd = this.Connection.CreateCommand();
             clearCmd.CommandText = @"DELETE FROM t_properties
                                      WHERE goodsid = ?goodsid";
@@ -103,7 +103,7 @@ namespace EWorm.Storage
             cmd.CommandText = @"SELECT id, title, sellingurl, updatetime, imagepath, price, sellercredit, sellamount
                                 FROM t_goods
                                 WHERE title LIKE CONCAT('%', ?keyword ,'%')";
-            if (order != null)
+            if (order == "price" || order == "sellercredit" || order == "sellamount" || order == "updatetime")
             {
                 cmd.CommandText += " ORDER BY " + order;
                 if (desc)

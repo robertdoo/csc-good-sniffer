@@ -181,6 +181,7 @@
     <Content Include="Views\Goods\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Publish To Desktop.pubxml" />
     <None Include="Properties\PublishProfiles\Publish To Web %28EWorm%29.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Crawler\Monitor.cshtml" />

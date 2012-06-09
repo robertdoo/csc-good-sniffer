@@ -62,7 +62,7 @@ namespace EWorm.Crawler.Jobs
                     {
                         job.Priority--;
 #if DEBUG
-                        throw ex;
+                        //throw ex;
 #endif
                     }
                     if (!this.Context.JobQueue.HasJob)

@@ -35,17 +35,7 @@ namespace EWorm.Crawler.Jobs
             Debug.WriteLine(String.Format("Fetching({0}) {1}", this.Priority, this.Uri));
             var goods = Fetcher.FetchGoods(this.Uri);
             this.Context.GoodsBufferPool.Put(goods);
-            ExtractKeywords(goods.Title);
-        }
-
-        private void ExtractKeywords(string title)
-        {
-            IEnumerable<String> keywords = title.Split(new char[] { ' ' });
-            keywords = keywords.Where(x => !String.IsNullOrEmpty(x));
-            foreach (var keyword in keywords)
-            {
-                this.Context.KeywordQueue.Enqueue(keyword);
-            }
+            this.Context.KeywordQueue.ExtractAndEnqueue(goods.Title, 1);
         }
 
         public override string ToString()

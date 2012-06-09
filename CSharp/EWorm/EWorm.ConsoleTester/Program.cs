@@ -18,7 +18,7 @@ namespace EWorm.ConsoleTester
             Console.WriteLine();
 
             IGoodsFetcher testFetcher = null;
-            while (testFetcher == null)
+            while (true)
             {
                 Console.WriteLine("请输入要测试的商家(输入End结束)：");
                 string fetcherName = Console.ReadLine();
@@ -35,18 +35,41 @@ namespace EWorm.ConsoleTester
         {
             if (testFetcher == null)
                 return;
-            Console.WriteLine(String.Format("[{0}] 请输入要测试的关键字(输入End结束)：", fetcherName));
+            Console.Write(String.Format("[{0}] 请输入要测试的关键字(输入End结束)：", fetcherName));
             string keyword;
             while ((keyword = Console.ReadLine()).ToUpper() != "END")
             {
+                Console.Write("输入搜索结果数量上限：");
+                string limit = Console.ReadLine();
                 Console.Write("获得搜索列表中...");
-                var list = testFetcher.GetGoodsUriByKeyowrd(keyword, 100);
+                var list = testFetcher.GetGoodsUriByKeyowrd(keyword, Convert.ToInt32(limit));
                 Console.WriteLine(list.Count() + "结果");
                 foreach (var uri in list)
                 {
+                    Console.WriteLine();
+                    Console.WriteLine("--------------------------------------------------------------------------------");
                     Console.WriteLine("抓取 " + uri + " ...");
-                    Goods goods = testFetcher.FetchGoods(uri);
-                    OnGoodsFetched(testFetcher, goods);
+                    Console.WriteLine("--------------------------------------------------------------------------------");
+                    bool fetchAgain = true;
+                    while (fetchAgain)
+                    {
+                        try
+                        {
+                            Goods goods = testFetcher.FetchGoods(uri);
+                            OnGoodsFetched(testFetcher, goods);
+                            fetchAgain = false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("---------------发生异常！" + ex.Message + "---------------");
+                            Console.WriteLine("敲回车继续，输入R敲回车重抓此商品");
+                            string input = Console.ReadLine();
+                            if (input == "R" || input == "r")
+                            {
+                                fetchAgain = true;
+                            }
+                        }
+                    }
                 }
                 Console.WriteLine();
                 Console.WriteLine(String.Format("[{0}] 请输入要测试的关键字(输入End结束)：", fetcherName));
@@ -67,12 +90,6 @@ namespace EWorm.ConsoleTester
                 {
                     Console.WriteLine(String.Format(" - {0}: {1}", property.Name, property.Value));
                 }
-            }
-            Console.WriteLine("敲回车继续，输入R敲回车重抓此商品");
-            string input = Console.ReadLine();
-            if (input == "R" || input == "r")
-            {
-                OnGoodsFetched(fetcher, fetcher.FetchGoods(new Uri(goods.SellingUrl)));
             }
         }
     }

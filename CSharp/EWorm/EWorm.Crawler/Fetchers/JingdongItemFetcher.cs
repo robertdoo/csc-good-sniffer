@@ -29,6 +29,10 @@ namespace EWorm.Crawler
         /// </summary>
         private static readonly Regex PricePattern = new Regex(@"￥\s*?(?<Price>.+?)</b>", RegexOptions.Compiled);
 
+        /// <summary>
+        /// 匹配商品页面上商品卖家的信誉度
+        /// </summary>
+        private static readonly Regex CreditPattern = new Regex(@"<div class=.+?><div class=\042star sa(?<Level>\d)\042></div>", RegexOptions.Compiled);
 
         /// <summary>
         /// 匹配商品页面上商品的图片url
@@ -115,20 +119,20 @@ namespace EWorm.Crawler
 
             string itemResult = Http.Get(goodsUri.ToString());
 
-            Match titleMatch, imageMatch; //priceMatch;  
+            Match titleMatch, imageMatch, creditMatch; //priceMatch;  
             titleMatch = TitlePattern.Match(itemResult);
-
+            creditMatch = CreditPattern.Match(itemResult);
             //  priceMatch = PricePattern.Match(itemResult);
             imageMatch = ImagePattern.Match(itemResult);
             string imageurl = imageMatch.Groups["ImageUrl"].Value;
             string downloadedImage = Http.DownloadImage(imageurl);
-
+            int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
 
             Goods goods = new Goods()
             {
                 Title = titleMatch.Groups["Title"].Value,
                 //Price =Convert.ToDouble( priceMatch.Groups["Price"].Value),
-                SellerCredit = 35,
+                SellerCredit = CalculateJingdongCredit(a),
                 SellingUrl = goodsUri.ToString(),
                 UpdateTime = DateTime.Now,
                 ImagePath = downloadedImage,
@@ -153,7 +157,36 @@ namespace EWorm.Crawler
 
             return goods;
         }
+        public int CalculateJingdongCredit(int level)
+        {
+            int credit = 0;
+            switch (level)
+            {
+                case 0:
+                    credit += 0;
+                    break;
+                case 1:
+                    credit += 10;
+                    break;
+                case 2:
+                    credit += 20;
+                    break;
+                case 3:
+                    credit += 30;
+                    break;
+                case 4:
+                    credit += 40;
+                    break;
+                case 5:
+                    credit += 50;
+                    break;
 
+            }
+
+
+            return credit;
+
+        }
 
 
     }

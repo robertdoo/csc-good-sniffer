@@ -113,7 +113,6 @@ namespace EWorm.Crawler.Fetchers
             imageMatch = ImagePattern.Match(itemResult);
             creditMatch = CreditPattern.Match(itemResult);
             string modifyPrice = priceMatch.Groups["Price"].Value;
-            Console.Write(creditMatch.Groups["Level"].Value);
             int a = Convert.ToInt32(creditMatch.Groups["Level"].Value);
             if (modifyPrice == "")
             {

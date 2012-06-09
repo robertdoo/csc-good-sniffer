@@ -9,6 +9,8 @@ namespace EWorm.Crawler
     {
         private Dictionary<String, int> KeywordData { get; set; }
 
+        private static readonly char[] MeanlessChars = new char[] { ' ', '(', ')', '[', ']', '.', ',', '/', '!', '|' };
+
         public KeywordQueue()
         {
             this.KeywordData = new Dictionary<string, int>();
@@ -17,6 +19,16 @@ namespace EWorm.Crawler
         public void Enqueue(string keyword)
         {
             this.Enqueue(keyword, 0);
+        }
+
+        public void ExtractAndEnqueue(string keywords, int initFeq)
+        {
+            IEnumerable<String> keywordList = keywords.Split(MeanlessChars);
+            keywordList = keywordList.Where(x => !String.IsNullOrEmpty(x));
+            foreach (var keyword in keywordList)
+            {
+                this.Enqueue(keyword, initFeq);
+            }
         }
 
         public bool Enqueue(string keyword, int initFeq)

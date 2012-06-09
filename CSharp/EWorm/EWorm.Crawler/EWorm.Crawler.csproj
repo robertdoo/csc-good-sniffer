@@ -88,6 +88,9 @@
   <ItemGroup>
     <None Include="Eworm爬虫算法设计.pptx" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="bugs.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

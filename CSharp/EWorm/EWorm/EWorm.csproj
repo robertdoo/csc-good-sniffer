@@ -58,6 +58,9 @@
       <Name>EWorm.Storage</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="作品说明书.pdf" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

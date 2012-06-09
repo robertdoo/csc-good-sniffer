@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="88d82486-d4a5-4319-8920-e575bb807563" name="Model" linkedPackageId="06301487-cd83-4904-a6a8-f247e8b38ba8" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="169481cf-b499-4065-87f1-ddf4e7851208">
+      <profileInstance Id="8a7d8b6a-bfd3-431f-8b4f-59bbff6968ba" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="3e49d7c8-3383-4688-bf01-267bedaab39f">
+      <profileInstance Id="e333c8f9-dddf-410b-91a2-23a43f6eab6d" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="4ec7e0e4-51af-40be-97e8-3879f39e973c" name="Goods" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="edb25ecb-103d-448a-b5cd-c82e1468dd2d" />
+        <targetEnds>
+          <association Id="83be3263-d587-4f12-b97c-e7f4eea85b19" isDerived="false" sourceEndRoleName="" targetEndRoleName="技术参数" isLeaf="false" isAbstract="false">
+            <classMoniker Id="aba50676-875c-484c-9da5-9b1e3eec8a08" LastKnownName="Property" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="044f7c54-6990-4c68-b03a-7b10320ef062" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="Shared" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="e4e07c68-7052-4bbb-a0dd-38736e951589" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="547a50e3-9f58-478a-84d9-410d9a2c5740" name="技术参数" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <lowerValueInternal>
+                    <literalString Id="5b682303-f6c7-4ba8-83df-d7b4454253d6" name="Lower" value="0">
+                      <elementDefinition Id="cf787336-7d6c-4f59-8451-561caeeba4df" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="db8f832b-b101-465e-ab75-53bd2576dc76" name="Upper" value="n">
+                      <elementDefinition Id="a64da066-00a6-476d-9916-7ca5746d4dc0" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="d19f3386-96c8-409e-ba9a-25f4fb2de373" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="99605cb6-7203-4ced-b5b7-76161cee0fc6" />
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property Id="efccf5f4-cae8-45e6-81aa-704c719478ce" name="标题" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="99025a8a-b5a0-4e86-88d1-bce214a7e704" />
+          </property>
+          <property Id="780fec88-3786-4573-aa93-4ce77c6659de" name="销售地址" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="0bfabeae-fed2-4599-9c89-36d3be2f1c1e" />
+          </property>
+          <property Id="cd758080-8cfe-4d5c-a359-357fc4e22406" name="更新时间" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="4703884e-7121-4df3-a7f8-81b450300926" />
+          </property>
+          <property Id="918a5e51-4797-4dba-88ac-1697daf9f404" name="卖家信誉" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="077b6ab0-138a-4894-8beb-6bef52487d56" />
+          </property>
+          <property Id="269be6db-0f57-41d6-9c1e-a053b117657e" name="图片地址" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="5d8df4ce-db7c-4e43-ba60-624c321bf9ea" />
+          </property>
+          <property Id="345e8c34-a3b7-4580-9271-8dba14e7af5a" name="价格" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="2d520121-ba8a-4dab-981b-a83673335fdb" />
+          </property>
+          <property Id="ad03a4cd-6d77-4bf8-9304-24f000fa0422" name="最近销量" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="7cde8c76-d17b-4855-8c1e-0d52944b6b87" />
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="aba50676-875c-484c-9da5-9b1e3eec8a08" name="Property" isAbstract="true" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="e26e31d0-be3c-4720-9cbb-a766dbf7a51c" />
+        <ownedAttributesInternal>
+          <property Id="2c5c7728-549c-45ac-bb2a-6fdae653c092" name="Name" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="b228da4e-e8c0-46cf-bc52-53eedb3226ce" />
+          </property>
+          <property Id="b4bd9353-569d-4a42-bd12-07433a20ca23" name="Value" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="3e88d70b-db59-4143-874b-8bda14d13918" />
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="bc8e540c-cdcf-4a82-85ab-7946830bfd4c" name="StringProperty" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="3fa8e2ca-4308-4238-88b9-43ddd5eda6d6" />
+        <generalsInternal>
+          <generalization Id="ef6a6341-f89d-4f65-aa92-237f73608103" isSubstitutable="false">
+            <classMoniker Id="aba50676-875c-484c-9da5-9b1e3eec8a08" LastKnownName="Property" />
+            <elementDefinition Id="72e640bc-1670-42e1-8986-c8439e9b06e4" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="2b693f48-416f-4f59-9061-dc38eeda3812" name="IntegerPropery" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="dfe4da37-c6ca-4bce-b8a8-181ff175c185" />
+        <generalsInternal>
+          <generalization Id="bb99f31d-e7fc-48a4-82f5-ed7bf86dc288" isSubstitutable="false">
+            <classMoniker Id="aba50676-875c-484c-9da5-9b1e3eec8a08" LastKnownName="Property" />
+            <elementDefinition Id="0c35637e-61a9-490a-ba2c-a98b36683d86" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="86e29a80-3647-40ed-ac15-e9bc0daf928a" name="DateProperty" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="97125676-3676-45b7-9f61-a08059a21607" />
+        <generalsInternal>
+          <generalization Id="81281adb-08f5-4028-a3ae-1f34749296f4" isSubstitutable="false">
+            <classMoniker Id="aba50676-875c-484c-9da5-9b1e3eec8a08" LastKnownName="Property" />
+            <elementDefinition Id="69004c43-558d-4e24-9bec-da507724564f" />
+          </generalization>
+        </generalsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="06301487-cd83-4904-a6a8-f247e8b38ba8" name="EWorm.Modeling">
+    <elementDefinition Id="566db0f8-34c3-4eba-8df5-b3cb3a9a5f31" />
+    <profileInstances>
+      <packageHasProfileInstances Id="70c6bbb3-a593-4f1d-9327-74d04e186355">
+        <profileInstance Id="ec8113f5-cee1-4e2a-a8e8-bd03cb0a33a2" name="TextTemplateBindings">
+          <elementDefinition Id="c1a2d64d-2f1d-4988-b3cf-2b648f6898d3" />
+        </profileInstance>
+        <elementDefinition Id="88362ad8-7bf8-45c0-8142-980840311513" />
+      </packageHasProfileInstances>
+    </profileInstances>
+  </package>
+</logicalClassDesignerModel>

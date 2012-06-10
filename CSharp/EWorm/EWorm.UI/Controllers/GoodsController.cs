@@ -36,7 +36,7 @@ namespace EWorm.UI.Controllers
                     LastText = "尾页",
                     NextText = "下一页",
                     PrevText = "上一页",
-                    PageSize = 10
+                    PageSize = 60
                 };
                 if (pager.CurrentPage == 0)
                     pager.CurrentPage = 1;

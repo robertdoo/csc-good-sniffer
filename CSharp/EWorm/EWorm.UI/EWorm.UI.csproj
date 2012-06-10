@@ -189,6 +189,7 @@
     <None Include="Properties\PublishProfiles\Publish To Web %28EWorm%29.pubxml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Crawler\Monitor.cshtml" />
+    <Content Include="Views\Crawler\Start.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

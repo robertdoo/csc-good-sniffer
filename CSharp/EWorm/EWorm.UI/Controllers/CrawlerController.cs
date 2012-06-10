@@ -13,6 +13,20 @@ namespace EWorm.UI.Controllers
             return View();
         }
 
+        public ActionResult Start()
+        {
+            if (Session["started"] != null)
+            {
+                return RedirectToAction("Search", "Goods");
+            }
+            if (Request["pwd"] == "Csc-eWorm-2012")
+            {
+                Session["started"] = true;
+                Service.StartCrawler();
+                return Start();
+            }
+            return View();
+        }
 
         public ActionResult KeywordQueue()
         {

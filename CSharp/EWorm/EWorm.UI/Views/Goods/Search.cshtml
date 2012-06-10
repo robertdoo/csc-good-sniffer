@@ -23,6 +23,12 @@
 </div>
 @if (Model != null)
 {
+    if (Model.Records.Count() == 0)
+    {
+    <p>您的搜索当前没有结果，但是搜索请求已经加入到队列中，请稍后尝试</p>
+    }
+    else
+    {
     <div id="search-options">
         <label>排序：</label>
         <select id="sel-sort-option">
@@ -60,5 +66,6 @@
             </div>
         }
     </div>
+    }
     @Html.Pager(Model.Pager)
 }

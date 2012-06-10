@@ -25,8 +25,7 @@ namespace EWorm.UI
             routes.MapRoute(
                 "Default", // 路由名称
                 "{controller}/{action}/{id}", // 带有参数的 URL
-                new { controller = "Goods", action = "Search", id = UrlParameter.Optional } // 参数默认值
-
+                new { controller = "Crawler", action = "Start", id = UrlParameter.Optional } // 参数默认值
             );
 
         }
@@ -35,10 +34,8 @@ namespace EWorm.UI
         {
             
             AreaRegistration.RegisterAllAreas();
-            Service.StartCrawler();
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-
         }
     }
 }

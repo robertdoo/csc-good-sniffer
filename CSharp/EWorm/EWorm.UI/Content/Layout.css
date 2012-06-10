@@ -329,15 +329,14 @@ div#monitor:after
     border-color: #999999;
 }
 
-.dproperty {
+.dproperty 
+{
+    
     border-bottom: 2px solid Transparent;
     display: inline-block;
     font-size: 12px;
     height: 360px;
-    margin-bottom: 20px;
-    margin-right: 20px;
     width: 50%;
-    margin-top:5px;
 }
 
 
